@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Services\SlugService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,10 +17,12 @@ class FrontOfficeController extends AbstractController
      * @Route("/zaregistrovat", name="registerCompany")
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param SlugService $slugService
      * @return Response
      * @throws \Exception
      */
-    public function registerCompany(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function registerCompany(Request $request, UserPasswordEncoderInterface $passwordEncoder,
+                                    SlugService $slugService): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -32,9 +35,11 @@ class FrontOfficeController extends AbstractController
             $company->setPassword(
                 $passwordEncoder->encodePassword($company, $form->get('password')->getData())
             );
-            $company->setEmail($form->get('email')->getData());
-            $company->setName($form->get('name')->getData());
-            $company->setSlug($form->get('name')->getData());
+            $company->setEmail( $form->get('email')->getData() );
+            $company->setName( $form->get('name')->getData() );
+            $company->setSlug(
+                $slugService->createSlug($form->get('name')->getData())
+            );
 
             $currentDateTime = new \DateTime();
             $company->setCreatedAt($currentDateTime);
