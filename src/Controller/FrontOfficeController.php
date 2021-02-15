@@ -10,11 +10,20 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\Company;
 use App\Form\RegisterCompanyType;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class FrontOfficeController extends AbstractController
 {
+    /* TEMPORARY */
     /**
-     * @Route("/zaregistrovat", name="registerCompany")
+     * @Route("/", name="home")
+     */
+    public function index(): Response
+    {
+        return $this->render('front-office/home.html.twig');
+    }
+    /**
+     * @Route("/zaregistrovat", name="register")
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param SlugService $slugService
@@ -29,6 +38,8 @@ class FrontOfficeController extends AbstractController
         $company = new Company();
         $form = $this->createForm(RegisterCompanyType::class, $company);
         $form->handleRequest($request);
+
+
 
         if($form->isSubmitted() && $form->isValid())
         {
@@ -47,11 +58,29 @@ class FrontOfficeController extends AbstractController
 
             $entityManager->persist($company);
             $entityManager->flush();
+
+            return $this->redirectToRoute('home');
         }
 
 
-        return $this->render('front-office/registration/index.html.twig', [
+        return $this->render('front-office/registration.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/prihlasit", name="login")
+     * @param AuthenticationUtils $authenticationUtils
+     * @return void
+     */
+    public function loginCompany(AuthenticationUtils $authenticationUtils): Response
+    {
+        $error = $authenticationUtils->getLastAuthenticationError();
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('front-office/login.html.twig', [
+            'last_username' => $lastUsername,
+            'error' => $error
         ]);
     }
 }
