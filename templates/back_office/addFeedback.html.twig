@@ -8,7 +8,13 @@
         <div class="mb-3">
             Administrace<br />
             You are logged in as {{ app.user.username }}, <a href="{{ path('logout') }}">Logout</a>
-            <a href="{{ path('add-feedback', {slug: companySlug}) }}">Přidat feedback</a>
+            Přidat feedback!
         </div>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {{ form(form) }}
     {% endif %}
 {% endblock %}
