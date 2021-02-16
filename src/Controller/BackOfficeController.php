@@ -21,7 +21,7 @@ class BackOfficeController extends AbstractController
         dump($company);
 
         return $this->render('back_office/home.html.twig', [
-            'controller_name' => 'BackOfficeController',
+            'companySlug' => $company->getSlug()
         ]);
     }
 
@@ -43,4 +43,18 @@ class BackOfficeController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/admin/{slug}/feedback/pridat", name="add-feedback")
+     * @param Company $company
+     * @return Response
+     */
+    public function addFeedback(Company $company): Response
+    {
+
+        $this->denyAccessUnlessGranted('edit', $company);
+
+        return $this->render('back_office/addFeedback.html.twig', [
+            'companySlug' => $company->getSlug()
+        ]);
+    }
 }
