@@ -57,6 +57,7 @@ class FrontOfficeController extends AbstractController
             $currentDateTime = new \DateTime();
             $company->setCreatedAt($currentDateTime);
             $company->setUpdatedAt($currentDateTime);
+            $company->setRoles( $company->getRoles() );
 
             $entityManager->persist($company);
             $entityManager->flush();
