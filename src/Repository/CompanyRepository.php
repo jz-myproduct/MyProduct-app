@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Company;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -35,6 +36,19 @@ class CompanyRepository extends ServiceEntityRepository implements PasswordUpgra
         $this->_em->persist($user);
         $this->_em->flush();
     }
+
+    public function getSimilarSlugsCount(String $slug): int
+    {
+        $count = $this->createQueryBuilder('c')
+            ->select('count(c.id)')
+            ->where('c.slug LIKE :slug')
+            ->setParameter('slug', $slug.'%')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return (int)$count;
+    }
+
 
     // /**
     //  * @return Company[] Returns an array of Company objects
