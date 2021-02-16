@@ -10,5 +10,11 @@
             You are logged in as {{ app.user.username }}, <a href="{{ path('logout') }}">Logout</a>
             Přidat feedback!
         </div>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {{ form(form) }}
     {% endif %}
 {% endblock %}
