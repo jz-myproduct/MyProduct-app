@@ -41,8 +41,6 @@ class FrontOfficeController extends AbstractController
         $form = $this->createForm(RegisterCompanyType::class, $company);
         $form->handleRequest($request);
 
-
-
         if($form->isSubmitted() && $form->isValid())
         {
             $password = $passwordEncoder->encodePassword($company, $form->get('password')->getData());
@@ -64,7 +62,9 @@ class FrontOfficeController extends AbstractController
 
             $this->loginCompanyAfterRegistration($company, $password);
 
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('back-office-home',[
+                'slug' => $company->getSlug()
+            ]);
         }
 
 
