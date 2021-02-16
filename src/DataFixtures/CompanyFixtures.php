@@ -35,6 +35,7 @@ class CompanyFixtures extends Fixture
         $currentDateTime = new \DateTime();
         $company->setCreatedAt($currentDateTime);
         $company->setUpdatedAt($currentDateTime);
+        $company->setRoles( $company->getRoles() );
 
         $manager->persist($company);
         $manager->flush();
