@@ -18,7 +18,7 @@ class FrontOfficeController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function index(): Response
+    public function index(SlugService $slugService): Response
     {
         return $this->render('front-office/home.html.twig');
     }
@@ -49,7 +49,7 @@ class FrontOfficeController extends AbstractController
             $company->setEmail( $form->get('email')->getData() );
             $company->setName( $form->get('name')->getData() );
             $company->setSlug(
-                $slugService->createSlug($form->get('name')->getData())
+                $slugService->createCompanySlug($form->get('name')->getData())
             );
 
             $currentDateTime = new \DateTime();
