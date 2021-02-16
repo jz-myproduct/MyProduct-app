@@ -83,7 +83,7 @@ class BackOfficeController extends AbstractController
 
         }
 
-        return $this->render('back_office/addFeedback.html.twig', [
+        return $this->render('back_office/addEditFeedback.html.twig', [
             'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
@@ -98,10 +98,11 @@ class BackOfficeController extends AbstractController
      * @param Feedback $feedback
      * @param Request $request
      * @return Response
+     * @throws \Exception
      */
     public function editFeedback(Company $company, Feedback $feedback, Request $request)
     {
-        $this->denyAccessUnlessGranted('edit', $company);
+        $this->denyAccessUnlessGranted('edit', $feedback);
 
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -122,9 +123,30 @@ class BackOfficeController extends AbstractController
             $this->addFlash('success', 'Feedback updated');
         }
 
-        return $this->render('back_office/addFeedback.html.twig', [
+        return $this->render('back_office/addEditFeedback.html.twig', [
             'companySlug' => $company->getSlug(),
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/{slug}/feedbacks", name="feedback-list")
+     * @param Company $company
+     * @return Response
+     */
+    public function feedbackList(Company $company)
+    {
+        $this->denyAccessUnlessGranted('edit', $company);
+
+        $feedbacks = $this
+                        ->getDoctrine()
+                        ->getRepository(Feedback::class)
+                        ->findBy(['company' => $company->getId()], ['id' => 'DESC']);
+
+
+        return $this->render('back_office/feedbackList.html.twig',[
+            'feedbacks' => $feedbacks,
+            'companySlug' => $company->getSlug()
         ]);
     }
 }
