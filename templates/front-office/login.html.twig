@@ -1,4 +1,4 @@
-{% extends "front-office/base.html.twig" %}
+{% extends "base.html.twig" %}
 {% block title %}
     {{ 'login_action'|trans }}
 {% endblock %}
@@ -17,7 +17,7 @@
         <input type="hidden" name="_csrf_token"
                value="{{ csrf_token('authenticate') }}"
         >
-        <input type="hidden" name="_target_path" value="home" />
+        <input type="hidden" name="_target_path" value="after-login-route" />
 
         {#
             Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
