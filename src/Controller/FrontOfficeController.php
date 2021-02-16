@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\Company;
 use App\Form\RegisterCompanyType;
@@ -18,10 +19,11 @@ class FrontOfficeController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function index(SlugService $slugService): Response
+    public function index(): Response
     {
         return $this->render('front-office/home.html.twig');
     }
+
     /**
      * @Route("/zaregistrovat", name="register")
      * @param Request $request
@@ -43,9 +45,9 @@ class FrontOfficeController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
-            $company->setPassword(
-                $passwordEncoder->encodePassword($company, $form->get('password')->getData())
-            );
+            $password = $passwordEncoder->encodePassword($company, $form->get('password')->getData());
+
+            $company->setPassword( $password );
             $company->setEmail( $form->get('email')->getData() );
             $company->setName( $form->get('name')->getData() );
             $company->setSlug(
@@ -59,6 +61,8 @@ class FrontOfficeController extends AbstractController
             $entityManager->persist($company);
             $entityManager->flush();
 
+            $this->loginCompanyAfterRegistration($company, $password);
+
             return $this->redirectToRoute('home');
         }
 
@@ -71,7 +75,7 @@ class FrontOfficeController extends AbstractController
     /**
      * @Route("/prihlasit", name="login")
      * @param AuthenticationUtils $authenticationUtils
-     * @return void
+     * @return Response
      */
     public function loginCompany(AuthenticationUtils $authenticationUtils): Response
     {
@@ -82,5 +86,18 @@ class FrontOfficeController extends AbstractController
             'last_username' => $lastUsername,
             'error' => $error
         ]);
+    }
+
+    private function loginCompanyAfterRegistration(Company $company, $password)
+    {
+        $token = new UsernamePasswordToken(
+            $company,
+            $password,
+            'main',
+            $company->getRoles()
+        );
+
+        $this->get('security.token_storage')->setToken($token);
+        $this->get('session')->set('_security_main',serialize($token));
     }
 }
