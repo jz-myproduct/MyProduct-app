@@ -1,0 +1,20 @@
+{% extends "base.html.twig" %}
+{% block title %}
+    {{ 'register_action'|trans }}
+{% endblock %}
+{% block body %}
+    {{ 'home_title'|trans }}
+    {% if app.user %}
+        <div class="mb-3">
+            Administrace<br />
+            You are logged in as {{ app.user.username }}, <a href="{{ path('logout') }}">Logout</a>
+        </div>
+    {% endif %}
+    <h2>Features</h2>
+    <ul>
+        {% for feature in features %}
+            <li>{{ feature.name }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

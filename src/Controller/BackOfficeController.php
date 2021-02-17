@@ -292,8 +292,24 @@ class BackOfficeController extends AbstractController
             'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
-
     }
+
+    /**
+     * @Route("/admin/{slug}/features", name="feature-list")
+     * @param Company $company
+     * @return Response
+     */
+    public function featureList(Company $company)
+    {
+        $this->denyAccessUnlessGranted('edit', $company);
+
+        return $this->render('back_office/featureList.html.twig',[
+            'features' => $company->getFeatures(),
+            'companySlug' => $company->getSlug()
+        ]);
+    }
+
+
 
 
 }
