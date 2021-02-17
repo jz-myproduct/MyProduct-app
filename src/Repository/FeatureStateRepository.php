@@ -21,11 +21,13 @@ class FeatureStateRepository extends ServiceEntityRepository
 
     public function findInitialState()
     {
-        return $this->createQueryBuilder('s')
+        $result = $this->createQueryBuilder('s')
             ->orderBy('s.position', 'ASC')
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
+
+        return $result[0];
     }
 
     // /**
