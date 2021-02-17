@@ -8,8 +8,12 @@
         <div class="mb-3">
             Administrace<br />
             You are logged in as {{ app.user.username }}, <a href="{{ path('logout') }}">Logout</a>
-            <a href="{{ path('add-feedback', {slug: companySlug}) }}">Přidat feedback</a>
-            <a href="{{ path('add-feature', {slug: companySlug}) }}">Přidat feature</a>
         </div>
     {% endif %}
+    <ul>
+        <li>name: {{ feature.name }}</li>
+        <li>description: {{ feature.description  }}</li>
+        <li>created_at: {{ feature.createdAt|date('Y-m-d h:m:s') }}</li>
+        <li>updated_at: {{ feature.updatedAt|date('Y-m-d h:m:s') }}</li>
+    </ul>
 {% endblock %}
