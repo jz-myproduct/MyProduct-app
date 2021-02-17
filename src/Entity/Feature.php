@@ -45,6 +45,12 @@ class Feature
      */
     private $updatedAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=FeatureState::class, inversedBy="features")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $state;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -106,6 +112,18 @@ class Feature
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getState(): ?FeatureState
+    {
+        return $this->state;
+    }
+
+    public function setState(?FeatureState $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }

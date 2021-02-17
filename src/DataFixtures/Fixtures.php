@@ -66,6 +66,21 @@ class Fixtures extends Fixture
             $manager->persist($feedback);
         }
 
+        /* Features States */
+        foreach ( $this->getFeatureStatesData() as $stateData)
+        {
+            $featureState = new FeatureState();
+            $featureState->setName( $stateData[0] );
+            $featureState->setSlug( $this->slugService->createGeneralSlug($stateData[0]) );
+            $featureState->setPosition($stateData[1] );
+
+            $manager->persist($featureState);
+        }
+
+        /* TODO vylepšit, abych nemusel 2x dělat flush */
+        /* Persist */
+        $manager->flush();
+
         /* Features */
         foreach ( $this->getFeatureData() as $featureData)
         {
@@ -76,18 +91,11 @@ class Fixtures extends Fixture
             $feature->setCreatedAt( $currentDateTime );
             $feature->setUpdatedAt( $currentDateTime );
 
+            $feature->setstate(
+                $manager->getRepository(FeatureState::class)->findInitialState()
+            );
+
             $manager->persist($feature);
-        }
-
-        /* Features States */
-        foreach ( $this->getFeatureStatesData() as $stateData)
-        {
-            $featureState = new FeatureState();
-            $featureState->setName( $stateData[0] );
-            $featureState->setSlug( $this->slugService->createGeneralSlug($stateData[0]) );
-            $featureState->setPosition($stateData[1] );
-
-            $manager->persist($featureState);
         }
 
         /* Persist */
