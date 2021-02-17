@@ -339,6 +339,24 @@ class BackOfficeController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/admin/{company_slug}/feature/{feature_id}", name="feature-detail")
+     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
+     * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
+     * @param Company $company
+     * @param Feature $feature
+     * @return Response
+     */
+    public function featureDetail(Company $company, Feature $feature)
+    {
+        $this->denyAccessUnlessGranted('edit', $feature);
+
+        return $this->render('back_office/featureDetail.html.twig',[
+            'feature' => $feature,
+            'companySlug' => $company->getSlug()
+        ]);
+    }
+
 
 
 
