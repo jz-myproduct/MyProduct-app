@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Company;
+use App\Entity\Feature;
 use App\Entity\Feedback;
 use App\Services\SlugService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -64,6 +65,19 @@ class Fixtures extends Fixture
             $manager->persist($feedback);
         }
 
+        /* Features */
+        foreach ( $this->getFeatureData() as $featureData)
+        {
+            $feature = new Feature();
+            $feature->setName( $featureData[0] );
+            $feature->setDescription( $featureData[1]);
+            $feature->setCompany( $company );
+            $feature->setCreatedAt( $currentDateTime );
+            $feature->setUpdatedAt( $currentDateTime );
+
+            $manager->persist($feature);
+        }
+
         /* Persist */
         $manager->flush();
     }
@@ -75,6 +89,16 @@ class Fixtures extends Fixture
             ['feedback2', 'respondent 2', 'new'],
             ['feedback3', 'respondent 3', 'active'],
             ['feedback4', 'respondent 4', 'active']
+        ];
+    }
+
+    private function getFeatureData()
+    {
+        return [
+            ['feature1', 'feature popis 1'],
+            ['feature2', 'feature popis 2'],
+            ['feature3', 'feature popis 3'],
+            ['feature4', 'feature popis 4'],
         ];
     }
 }
