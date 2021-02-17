@@ -48,6 +48,14 @@ class Fixtures extends Fixture
             $feedback->setCompany( $company );
             $feedback->setDescription( $feedbackData[0] );
             $feedback->setSource( $feedbackData[1] );
+            if($feedbackData[2] === 'active')
+            {
+                $feedback->setActiveStatus();
+            }
+            if($feedbackData[2] === 'new')
+            {
+                $feedback->setNewStatus();
+            }
 
             $currentDateTime = new \DateTime();
             $feedback->setCreatedAt( $currentDateTime );
@@ -63,10 +71,10 @@ class Fixtures extends Fixture
     private function getFeedbackData()
     {
         return [
-            ['feedback1', 'respondent 1'],
-            ['feedback2', 'respondent 2'],
-            ['feedback3', 'respondent 3'],
-            ['feedback4', 'respondent 4']
+            ['feedback1', 'respondent 1', 'new'],
+            ['feedback2', 'respondent 2', 'new'],
+            ['feedback3', 'respondent 3', 'active'],
+            ['feedback4', 'respondent 4', 'active']
         ];
     }
 }
