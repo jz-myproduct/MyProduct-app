@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\FeatureState;
 use App\Services\SlugService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

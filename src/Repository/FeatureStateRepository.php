@@ -19,6 +19,15 @@ class FeatureStateRepository extends ServiceEntityRepository
         parent::__construct($registry, FeatureState::class);
     }
 
+    public function findInitialState()
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.position', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return FeatureState[] Returns an array of FeatureState objects
     //  */
