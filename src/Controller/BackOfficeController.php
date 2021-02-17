@@ -5,12 +5,12 @@ namespace App\Controller;
 use App\Entity\Company;
 use App\Entity\Feedback;
 use App\Form\FeedbackType;
+use DateTime;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class BackOfficeController extends AbstractController
 {
@@ -53,7 +53,7 @@ class BackOfficeController extends AbstractController
      * @param Company $company
      * @param Request $request
      * @return Response
-     * @throws \Exception
+     * @throws Exception
      */
     public function addFeedback(Company $company, Request $request): Response
     {
@@ -74,7 +74,7 @@ class BackOfficeController extends AbstractController
             );
             $feedback->setCompany( $company );
 
-            $currentDateTime = new \DateTime();
+            $currentDateTime = new DateTime();
             $feedback->setCreatedAt( $currentDateTime );
             $feedback->setUpdatedAt( $currentDateTime );
 
@@ -98,7 +98,7 @@ class BackOfficeController extends AbstractController
      * @param Feedback $feedback
      * @param Request $request
      * @return Response
-     * @throws \Exception
+     * @throws Exception
      */
     public function editFeedback(Company $company, Feedback $feedback, Request $request)
     {
@@ -116,7 +116,7 @@ class BackOfficeController extends AbstractController
             $feedback->setSource(
                 $form->get('source')->getData()
             );
-            $feedback->setUpdatedAt( new \DateTime() );
+            $feedback->setUpdatedAt( new DateTime() );
 
             $entityManager->flush();
 
@@ -147,6 +147,28 @@ class BackOfficeController extends AbstractController
         return $this->render('back_office/feedbackList.html.twig',[
             'feedbacks' => $feedbacks,
             'companySlug' => $company->getSlug()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/{company_slug}/feedback/smazat/{feedback_id}", name="delete-feedback")
+     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
+     * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
+     * @param Company $company
+     * @param Feedback $feedback
+     * @return RedirectResponse
+     */
+    public function feedbackDelete(Company $company, Feedback $feedback)
+    {
+        $this->denyAccessUnlessGranted('edit', $feedback);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $entityManager->remove($feedback);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('feedback-list',[
+            'slug' => $company->getSlug()
         ]);
     }
 }
