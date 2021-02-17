@@ -14,7 +14,7 @@
     <ul>
     {% for feedback in feedbacks %}
         <li>
-            {{ feedback.description }}
+            <a href="{{ path('feedback-detail', {'company_slug': companySlug, 'feedback_id': feedback.id} ) }}">{{ feedback.description }}</a>
             <a href="{{ path('edit-feedback', {'company_slug': companySlug, 'feedback_id': feedback.id} ) }}">Upravit</a>
             <a href="{{ path('delete-feedback', {'company_slug': companySlug, 'feedback_id': feedback.id} ) }}">Odstranit</a>
             {{ feedback.status }}
