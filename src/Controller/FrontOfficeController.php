@@ -21,7 +21,6 @@ class FrontOfficeController extends AbstractController
      */
     public function index(): Response
     {
-
         return $this->render('front-office/home.html.twig');
     }
 
@@ -30,12 +29,21 @@ class FrontOfficeController extends AbstractController
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param SlugService $slugService
+     * @param UserInterface $user
      * @return Response
      * @throws \Exception
      */
     public function registerCompany(Request $request, UserPasswordEncoderInterface $passwordEncoder,
                                     SlugService $slugService): Response
     {
+
+        if ($this->isGranted('ROLE_USER'))
+        {
+            return $this->redirectToRoute('back-office-home',[
+                'slug' => $this->getUser()->getSlug()
+            ]);
+        }
+
         $entityManager = $this->getDoctrine()->getManager();
 
         $company = new Company();
@@ -81,6 +89,13 @@ class FrontOfficeController extends AbstractController
      */
     public function loginCompany(AuthenticationUtils $authenticationUtils): Response
     {
+        if ($this->isGranted('ROLE_USER'))
+        {
+            return $this->redirectToRoute('back-office-home',[
+                'slug' => $this->getUser()->getSlug()
+            ]);
+        }
+
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
