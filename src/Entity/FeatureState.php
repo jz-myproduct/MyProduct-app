@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FeatureStateRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +33,16 @@ class FeatureState
      * @ORM\Column(type="smallint")
      */
     private $position;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Feature::class, mappedBy="state")
+     */
+    private $features;
+
+    public function __construct()
+    {
+        $this->features = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,6 +81,36 @@ class FeatureState
     public function setPosition(int $position): self
     {
         $this->position = $position;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Feature[]
+     */
+    public function getFeatures(): Collection
+    {
+        return $this->features;
+    }
+
+    public function addFeature(Feature $feature): self
+    {
+        if (!$this->features->contains($feature)) {
+            $this->features[] = $feature;
+            $feature->setState($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFeature(Feature $feature): self
+    {
+        if ($this->features->removeElement($feature)) {
+            // set the owning side to null (unless already changed)
+            if ($feature->getState() === $this) {
+                $feature->setState(null);
+            }
+        }
 
         return $this;
     }
