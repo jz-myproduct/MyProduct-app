@@ -87,6 +87,10 @@ class BackOfficeController extends AbstractController
             $entityManager->persist($feedback);
             $entityManager->flush();
 
+            return $this->redirectToRoute('feedback-list',[
+                'slug' => $company->getSlug()
+            ]);
+
         }
 
         return $this->render('back_office/addEditFeedback.html.twig', [
@@ -244,6 +248,10 @@ class BackOfficeController extends AbstractController
 
             $entityManager->persist($feature);
             $entityManager->flush();
+
+            return $this->redirectToRoute('feature-list',[
+                'slug' => $company->getSlug()
+            ]);
 
         }
 
