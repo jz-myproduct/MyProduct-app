@@ -13,11 +13,6 @@ class Fixtures extends Fixture
 {
     private $passwordEncoder;
     private $slugService;
-    /**
-     * @var ObjectManager
-     */
-    private $manager;
-    private $company;
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder, SlugService $slugService)
     {
