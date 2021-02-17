@@ -200,5 +200,23 @@ class BackOfficeController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/admin/{company_slug}/feedback/{feedback_id}", name="feedback-detail")
+     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
+     * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
+     * @param Company $company
+     * @param Feedback $feedback
+     * @return Response
+     */
+    public function feedbackDetail(Company $company, Feedback $feedback)
+    {
+        $this->denyAccessUnlessGranted('edit', $feedback);
+
+        return $this->render('back_office/feedbackDetail.html.twig',[
+            'feedback' => $feedback,
+            'companySlug' => $company->getSlug()
+        ]);
+    }
+
 
 }

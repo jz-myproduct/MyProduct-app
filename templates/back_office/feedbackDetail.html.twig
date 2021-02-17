@@ -1,0 +1,20 @@
+{% extends "base.html.twig" %}
+{% block title %}
+    {{ 'register_action'|trans }}
+{% endblock %}
+{% block body %}
+    {{ 'home_title'|trans }}
+    {% if app.user %}
+        <div class="mb-3">
+            Administrace<br />
+            You are logged in as {{ app.user.username }}, <a href="{{ path('logout') }}">Logout</a>
+        </div>
+    {% endif %}
+    <ul>
+      <li>description: {{ feedback.description }}</li>
+      <li>source: {{ feedback.source  }}</li>
+      <li>created_at: {{ feedback.createdAt|date('Y-m-d h:m:s') }}</li>
+      <li>updated_at: {{ feedback.updatedAt|date('Y-m-d h:m:s') }}</li>
+      <li>status: {{ feedback.status }}</li>
+    </ul>
+{% endblock %}
