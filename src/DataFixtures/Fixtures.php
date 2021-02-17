@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Company;
 use App\Entity\Feature;
+use App\Entity\FeatureState;
 use App\Entity\Feedback;
 use App\Services\SlugService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -78,6 +79,17 @@ class Fixtures extends Fixture
             $manager->persist($feature);
         }
 
+        /* Features States */
+        foreach ( $this->getFeatureStatesData() as $stateData)
+        {
+            $featureState = new FeatureState();
+            $featureState->setName( $stateData[0] );
+            $featureState->setSlug( $this->slugService->createGeneralSlug($stateData[0]) );
+            $featureState->setPosition($stateData[1] );
+
+            $manager->persist($featureState);
+        }
+
         /* Persist */
         $manager->flush();
     }
@@ -99,6 +111,16 @@ class Fixtures extends Fixture
             ['feature2', 'feature popis 2'],
             ['feature3', 'feature popis 3'],
             ['feature4', 'feature popis 4'],
+        ];
+    }
+
+    private function getFeatureStatesData()
+    {
+        return [
+          ['Idea', 1],
+          ['Upcoming', 2],
+          ['In-progress', 3],
+          ['Done', 4]
         ];
     }
 }
