@@ -42,6 +42,11 @@ class Feedback
      */
     private $updatedAt;
 
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $status;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -107,6 +112,48 @@ class Feedback
     {
         $this->updatedAt = $updatedAt;
 
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function getStatuses(): array
+    {
+        return ['new', 'active'];
+    }
+
+    public function setNewStatus(): self
+    {
+        $this->status = 'new';
+
+        return $this;
+    }
+
+    public function setActiveStatus(): self
+    {
+        $this->status = 'active';
+
+        return $this;
+    }
+
+    public function switchStatus(): self
+    {
+        if($this->getStatus() === 'new')
+        {
+            $this->setActiveStatus();
+            return $this;
+        }
+
+        if($this->getStatus() === 'active')
+        {
+            $this->setNewStatus();
+            return $this;
+        }
+
+        /* TODO tady by to asi chtělo spíše hodit exception */
         return $this;
     }
 }

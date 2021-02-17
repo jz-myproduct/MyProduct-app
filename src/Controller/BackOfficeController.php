@@ -76,6 +76,7 @@ class BackOfficeController extends AbstractController
                 $form->get('source')->getData()
             );
             $feedback->setCompany( $company );
+            $feedback->setNewStatus();
 
             $currentDateTime = new DateTime();
             $feedback->setCreatedAt( $currentDateTime );
@@ -94,7 +95,7 @@ class BackOfficeController extends AbstractController
 
 
     /**
-     * @Route("/admin/{company_slug}/feedback/upravit/{feedback_id}", name="edit-feedback")
+     * @Route("/admin/{company_slug}/feedback/{feedback_id}/upravit", name="edit-feedback")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
@@ -154,7 +155,7 @@ class BackOfficeController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feedback/smazat/{feedback_id}", name="delete-feedback")
+     * @Route("/admin/{company_slug}/feedback/{feedback_id}/smazat", name="delete-feedback")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
@@ -174,4 +175,30 @@ class BackOfficeController extends AbstractController
             'slug' => $company->getSlug()
         ]);
     }
+
+    /**
+     * @Route("/admin/{company_slug}/feedback/{feedback_id}/zmenit-status", name="change-status-feedback")
+     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
+     * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
+     * @param Company $company
+     * @param Feedback $feedback
+     * @return RedirectResponse
+     */
+    public function switchFeedbackStatus(Company $company, Feedback $feedback)
+    {
+        $this->denyAccessUnlessGranted('edit', $feedback);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $feedback->switchStatus();
+
+        $entityManager->flush();
+
+
+        return $this->redirectToRoute('feedback-list',[
+            'slug' => $company->getSlug()
+        ]);
+    }
+
+
 }
