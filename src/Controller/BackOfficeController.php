@@ -141,7 +141,7 @@ class BackOfficeController extends AbstractController
     public function feedbackList(Company $company)
     {
         $this->denyAccessUnlessGranted('edit', $company);
-        
+
         return $this->render('back_office/feedbackList.html.twig',[
             'feedbacks' => $company->getFeedbacks(),
             'companySlug' => $company->getSlug()
