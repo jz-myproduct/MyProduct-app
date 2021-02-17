@@ -72,4 +72,5 @@ class FeatureState
 
         return $this;
     }
+
 }

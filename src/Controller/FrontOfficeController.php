@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\FeatureState;
 use App\Services\SlugService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,7 @@ class FrontOfficeController extends AbstractController
      */
     public function index(): Response
     {
+       dump( $this->getDoctrine()->getRepository(FeatureState::class)->findInitialState() );
         return $this->render('front-office/home.html.twig');
     }
 
