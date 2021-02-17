@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\FeatureRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=FeatureRepository::class)
@@ -19,6 +21,7 @@ class Feature
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $name;
 

@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Company;
+use App\Entity\Feature;
 use App\Entity\Feedback;
+use App\Form\FeatureFormType;
 use App\Form\FeedbackType;
 use DateTime;
 use Exception;
@@ -210,6 +212,87 @@ class BackOfficeController extends AbstractController
             'feedback' => $feedback,
             'companySlug' => $company->getSlug()
         ]);
+    }
+
+    /**
+     * @Route("/admin/{slug}/feature/pridat", name="add-feature")
+     * @param Company $company
+     * @param Request $request
+     * @return Response
+     * @throws Exception
+     */
+    public function addFeature(Company $company, Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('edit', $company);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $feature = new Feature();
+        $form = $this->createForm(FeatureFormType::class, $feature);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+
+            $feature = new Feature();
+            $feature->setName( $form->get('name')->getData() );
+            $feature->setDescription( $form->get('description')->getData() );
+            $feature->setCompany( $company );
+
+            $currentDateTime = new \DateTime();
+            $feature->setCreatedAt( $currentDateTime );
+            $feature->setUpdatedAt( $currentDateTime );
+
+            $entityManager->persist($feature);
+            $entityManager->flush();
+
+        }
+
+        return $this->render('back_office/addEditFeature.html.twig', [
+            'companySlug' => $company->getSlug(),
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/{company_slug}/feature/{feature_id}/upravit", name="edit-feature")
+     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
+     * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
+     * @param Company $company
+     * @param Feature $feature
+     * @param Request $request
+     * @return Response
+     * @throws Exception
+     */
+    public function editFeature(Company $company, Feature $feature, Request $request)
+    {
+
+        $this->denyAccessUnlessGranted('edit', $feature);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $form = $this->createForm(FeatureFormType::class, $feature);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+
+           $feature->setName(
+               $form->get('name')->getData()
+           );
+           $feature->setDescription(
+               $form->get('description')->getData()
+           );
+           $feature->setUpdatedAt( new \DateTime() );
+
+           $entityManager->flush();
+
+            $this->addFlash('success', 'Feature updated');
+        }
+
+        return $this->render('back_office/addEditFeature.html.twig', [
+            'companySlug' => $company->getSlug(),
+            'form' => $form->createView()
+        ]);
+
     }
 
 
