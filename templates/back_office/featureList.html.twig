@@ -13,7 +13,11 @@
     <h2>Features</h2>
     <ul>
         {% for feature in features %}
-            <li>{{ feature.name }}</li>
+            <li>
+                {{ feature.name }}
+                <a href="{{ path('edit-feature', { 'company_slug': companySlug, 'feature_id': feature.id } ) }}">Upravit</a>
+                <a href="{{ path('delete-feature', { 'company_slug': companySlug, 'feature_id': feature.id } ) }}">Smazat</a>
+            </li>
         {% endfor %}
     </ul>
 

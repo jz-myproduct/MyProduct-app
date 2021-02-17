@@ -309,6 +309,28 @@ class BackOfficeController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/admin/{company_slug}/feature/{feature_id}/smazat", name="delete-feature")
+     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
+     * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
+     * @param Company $company
+     * @param Feature $feature
+     * @return RedirectResponse
+     */
+    public function featureDelete(Company $company, Feature $feature)
+    {
+        $this->denyAccessUnlessGranted('edit', $feature);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $entityManager->remove($feature);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('feature-list',[
+            'slug' => $company->getSlug()
+        ]);
+    }
+
 
 
 
