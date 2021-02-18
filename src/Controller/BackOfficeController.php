@@ -28,7 +28,6 @@ class BackOfficeController extends AbstractController
     public function index(Company $company): Response
     {
         $this->denyAccessUnlessGranted('edit', $company);
-        dump($company);
 
         return $this->render('back_office/home.html.twig', [
             'companySlug' => $company->getSlug()
@@ -67,7 +66,9 @@ class BackOfficeController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         $feedback = new Feedback();
-        $form = $this->createForm(FeedbackType::class, $feedback);
+        $form = $this->createForm(FeedbackType::class, $feedback, [
+            'featureChoices' => $company->getFeatures()->toArray()
+        ]);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
@@ -116,7 +117,9 @@ class BackOfficeController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $form = $this->createForm(FeedbackType::class, $feedback);
+        $form = $this->createForm(FeedbackType::class, $feedback, [
+            'featureChoices' => $company->getFeatures()->toArray()
+        ]);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FeedbackRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,6 +48,16 @@ class Feedback
      * @ORM\Column(type="string", length=50)
      */
     private $status;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Feature::class, inversedBy="feedback")
+     */
+    private $features;
+
+    public function __construct()
+    {
+        $this->features = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -154,6 +166,30 @@ class Feedback
         }
 
         /* TODO tady by to asi chtělo spíše hodit exception */
+        return $this;
+    }
+
+    /**
+     * @return Collection|Feature[]
+     */
+    public function getFeatures(): Collection
+    {
+        return $this->features;
+    }
+
+    public function addFeature(Feature $feature): self
+    {
+        if (!$this->features->contains($feature)) {
+            $this->features[] = $feature;
+        }
+
+        return $this;
+    }
+
+    public function removeFeature(Feature $feature): self
+    {
+        $this->features->removeElement($feature);
+
         return $this;
     }
 }

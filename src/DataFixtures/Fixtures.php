@@ -43,29 +43,6 @@ class Fixtures extends Fixture
 
         $manager->persist($company);
 
-        /* Feedback */
-        foreach ($this->getFeedbackData() as $feedbackData)
-        {
-            $feedback = new Feedback();
-            $feedback->setCompany( $company );
-            $feedback->setDescription( $feedbackData[0] );
-            $feedback->setSource( $feedbackData[1] );
-            if($feedbackData[2] === 'active')
-            {
-                $feedback->setActiveStatus();
-            }
-            if($feedbackData[2] === 'new')
-            {
-                $feedback->setNewStatus();
-            }
-
-            $currentDateTime = new \DateTime();
-            $feedback->setCreatedAt( $currentDateTime );
-            $feedback->setUpdatedAt( $currentDateTime );
-
-            $manager->persist($feedback);
-        }
-
         /* Features States */
         foreach ( $this->getFeatureStatesData() as $stateData)
         {
@@ -78,15 +55,14 @@ class Fixtures extends Fixture
         }
 
         /* TODO vylepšit, abych nemusel 2x dělat flush */
-        /* Persist */
         $manager->flush();
 
-        /* Features */
-        foreach ( $this->getFeatureData() as $featureData)
+        /* Feedback, Feature */
+        foreach ($this->getFeedbackFeatureData() as $data)
         {
             $feature = new Feature();
-            $feature->setName( $featureData[0] );
-            $feature->setDescription( $featureData[1]);
+            $feature->setName( $data[3] );
+            $feature->setDescription( $data[4]);
             $feature->setCompany( $company );
             $feature->setCreatedAt( $currentDateTime );
             $feature->setUpdatedAt( $currentDateTime );
@@ -96,31 +72,43 @@ class Fixtures extends Fixture
             );
 
             $manager->persist($feature);
+
+            $feedback = new Feedback();
+            $feedback->setCompany( $company );
+            $feedback->setDescription( $data[0] );
+            $feedback->setSource( $data[1] );
+            if($data[2] === 'active')
+            {
+                $feedback->setActiveStatus();
+            }
+            if($data[2] === 'new')
+            {
+                $feedback->setNewStatus();
+            }
+
+            $currentDateTime = new \DateTime();
+            $feedback->setCreatedAt( $currentDateTime );
+            $feedback->setUpdatedAt( $currentDateTime );
+            $feedback->addFeature( $feature );
+
+            $manager->persist($feedback);
         }
 
         /* Persist */
         $manager->flush();
     }
 
-    private function getFeedbackData()
+
+    private function getFeedbackFeatureData()
     {
         return [
-            ['feedback1', 'respondent 1', 'new'],
-            ['feedback2', 'respondent 2', 'new'],
-            ['feedback3', 'respondent 3', 'active'],
-            ['feedback4', 'respondent 4', 'active']
+            ['feedback1', 'respondent 1', 'new', 'feature1', 'feature popis 1'],
+            ['feedback2', 'respondent 2', 'new', 'feature2', 'feature popis 2'],
+            ['feedback3', 'respondent 3', 'active', 'feature3', 'feature popis 3'],
+            ['feedback4', 'respondent 4', 'active', 'feature4', 'feature popis 4']
         ];
     }
 
-    private function getFeatureData()
-    {
-        return [
-            ['feature1', 'feature popis 1'],
-            ['feature2', 'feature popis 2'],
-            ['feature3', 'feature popis 3'],
-            ['feature4', 'feature popis 4'],
-        ];
-    }
 
     private function getFeatureStatesData()
     {
