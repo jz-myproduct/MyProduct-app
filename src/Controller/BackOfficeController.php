@@ -290,8 +290,6 @@ class BackOfficeController extends AbstractController
 
         $this->denyAccessUnlessGranted('edit', $feature);
 
-        dump($this->getDoctrine()->getRepository(Feedback::class)->getFeedbackCountForFeature($company, $feature));
-
         $entityManager = $this->getDoctrine()->getManager();
 
         $form = $this->createForm(FeatureFormType::class, $feature);
