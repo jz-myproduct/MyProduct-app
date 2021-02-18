@@ -6,7 +6,9 @@ use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\Feedback;
 use App\Form\FeatureFormType;
+use App\Form\FeedbackFormType;
 use App\Form\FeedbackType;
+use App\Services\FeatureScoreService;
 use DateTime;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Security\Core\Security;
 
 class BackOfficeController extends AbstractController
 {
@@ -28,6 +31,7 @@ class BackOfficeController extends AbstractController
     public function index(Company $company): Response
     {
         $this->denyAccessUnlessGranted('edit', $company);
+
 
         return $this->render('back_office/home.html.twig', [
             'companySlug' => $company->getSlug()
@@ -66,7 +70,7 @@ class BackOfficeController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         $feedback = new Feedback();
-        $form = $this->createForm(FeedbackType::class, $feedback, [
+        $form = $this->createForm(FeedbackFormType::class, $feedback, [
             'featureChoices' => $company->getFeatures()->toArray()
         ]);
         $form->handleRequest($request);
@@ -117,7 +121,7 @@ class BackOfficeController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $form = $this->createForm(FeedbackType::class, $feedback, [
+        $form = $this->createForm(FeedbackFormType::class, $feedback, [
             'featureChoices' => $company->getFeatures()->toArray()
         ]);
         $form->handleRequest($request);
@@ -285,6 +289,8 @@ class BackOfficeController extends AbstractController
     {
 
         $this->denyAccessUnlessGranted('edit', $feature);
+
+        dump($this->getDoctrine()->getRepository(Feedback::class)->getFeedbackCountForFeature($company, $feature));
 
         $entityManager = $this->getDoctrine()->getManager();
 

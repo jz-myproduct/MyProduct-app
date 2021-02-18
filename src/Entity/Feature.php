@@ -58,6 +58,11 @@ class Feature
      */
     private $feedback;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $score;
+
     public function __construct()
     {
         $this->feedback = new ArrayCollection();
@@ -163,6 +168,18 @@ class Feature
         if ($this->feedback->removeElement($feedback)) {
             $feedback->removeFeature($this);
         }
+
+        return $this;
+    }
+
+    public function getScore(): ?int
+    {
+        return $this->score;
+    }
+
+    public function setScore(int $score): self
+    {
+        $this->score = $score;
 
         return $this;
     }
