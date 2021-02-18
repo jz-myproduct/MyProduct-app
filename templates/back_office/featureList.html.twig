@@ -17,6 +17,7 @@
                 <a href="{{ path('feature-detail', { 'company_slug': companySlug, 'feature_id': feature.id } ) }}">{{ feature.name }}</a>
                 <a href="{{ path('edit-feature', { 'company_slug': companySlug, 'feature_id': feature.id } ) }}">Upravit</a>
                 <a href="{{ path('delete-feature', { 'company_slug': companySlug, 'feature_id': feature.id } ) }}">Smazat</a>
+                <p>{{ feature.state.name }}</p>
             </li>
         {% endfor %}
     </ul>
