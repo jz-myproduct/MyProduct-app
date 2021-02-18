@@ -28,9 +28,6 @@ class BackOfficeController extends AbstractController
     public function index(Company $company): Response
     {
         $this->denyAccessUnlessGranted('edit', $company);
-        dump($company);
-
-        dump($company->getFeatures()->toArray());
 
         return $this->render('back_office/home.html.twig', [
             'companySlug' => $company->getSlug()
