@@ -238,10 +238,16 @@ class BackOfficeController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
 
             $feature = new Feature();
-            $feature->setName( $form->get('name')->getData() );
-            $feature->setDescription( $form->get('description')->getData() );
+            $feature->setName(
+                $form->get('name')->getData()
+            );
+            $feature->setDescription(
+                $form->get('description')->getData()
+            );
             $feature->setCompany( $company );
-            $feature->setState( $form->get('state')->getData() );
+            $feature->setState(
+                $form->get('state')->getData()
+            );
 
             $currentDateTime = new \DateTime();
             $feature->setCreatedAt( $currentDateTime );
