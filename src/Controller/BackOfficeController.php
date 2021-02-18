@@ -241,6 +241,7 @@ class BackOfficeController extends AbstractController
             $feature->setName( $form->get('name')->getData() );
             $feature->setDescription( $form->get('description')->getData() );
             $feature->setCompany( $company );
+            $feature->setState( $form->get('state')->getData() );
 
             $currentDateTime = new \DateTime();
             $feature->setCreatedAt( $currentDateTime );
@@ -290,6 +291,9 @@ class BackOfficeController extends AbstractController
                $form->get('description')->getData()
            );
            $feature->setUpdatedAt( new \DateTime() );
+           $feature->setState(
+               $form->get('state')->getData()
+           );
 
            $entityManager->flush();
 
