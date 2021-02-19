@@ -42,7 +42,7 @@ class FeatureScoreService
         {
             $feature->setScore(
                 $this->entityManager->getRepository(Feedback::class)
-                    ->getFeedbackCountForFeature($company, $feature)
+                    ->getFeedbackCountForFeature($feature)
             );
         }
         $this->entityManager->flush();

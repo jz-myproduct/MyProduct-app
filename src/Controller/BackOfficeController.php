@@ -275,6 +275,7 @@ class BackOfficeController extends AbstractController
             $feature->setState(
                 $form->get('state')->getData()
             );
+            $feature->setScore(0);
 
             $currentDateTime = new \DateTime();
             $feature->setCreatedAt( $currentDateTime );
@@ -388,9 +389,13 @@ class BackOfficeController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $feature);
 
+        $feedback = $this->getDoctrine()->getRepository(Feedback::class)
+            ->getFeatureFeedback($feature);
+
         return $this->render('back_office/featureDetail.html.twig',[
             'feature' => $feature,
-            'companySlug' => $company->getSlug()
+            'companySlug' => $company->getSlug(),
+            'feedbackList' => $feedback
         ]);
     }
 

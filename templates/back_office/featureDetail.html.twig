@@ -11,9 +11,16 @@
         </div>
     {% endif %}
     <ul>
+        <li>score: {{ feature.score }}</li>
         <li>name: {{ feature.name }}</li>
         <li>description: {{ feature.description  }}</li>
         <li>created_at: {{ feature.createdAt|date('Y-m-d h:m:s') }}</li>
         <li>updated_at: {{ feature.updatedAt|date('Y-m-d h:m:s') }}</li>
+    </ul>
+    <h2>Feedbacks</h2>
+    <ul>
+        {% for feedback in feedbackList %}
+            <li><a href="{{ path('feedback-detail', {'company_slug': companySlug, 'feedback_id': feedback.id} ) }}">{{ feedback.description }}</a></li>
+        {% endfor %}
     </ul>
 {% endblock %}
