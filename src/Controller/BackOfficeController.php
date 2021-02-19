@@ -6,6 +6,7 @@ use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\Feedback;
 use App\Form\FeatureFormType;
+use App\Form\FeedbackFeatureDetailFormType;
 use App\Form\FeedbackFormType;
 use App\Form\FeedbackType;
 use App\Services\FeatureScoreService;
@@ -383,11 +384,48 @@ class BackOfficeController extends AbstractController
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @param Company $company
      * @param Feature $feature
+     * @param Request $request
      * @return Response
+     * @throws Exception
      */
-    public function featureDetail(Company $company, Feature $feature)
+    public function featureDetail(Company $company, Feature $feature, Request $request)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $feedback = new Feedback();
+        $form = $this->createForm(FeedbackFeatureDetailFormType::class, $feedback);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+
+            $feedback->setDescription(
+                $form->get('description')->getData()
+            );
+            $feedback->setSource(
+                $form->get('source')->getData()
+            );
+            $feedback->setCompany( $company );
+            $feedback->setActiveStatus();
+
+            $currentDateTime = new DateTime();
+            $feedback->setCreatedAt( $currentDateTime );
+            $feedback->setUpdatedAt( $currentDateTime );
+            $feedback->addFeature( $feature );
+
+            $feature->setScoreUpByOne();
+
+            $entityManager->persist($feedback);
+            $entityManager->flush();
+
+            $this->dispatchFeedbackUpdatedEvent();
+
+            return $this->redirectToRoute('feature-detail',[
+                'company_slug' => $company->getSlug(),
+                'feature_id' => $feature->getId()
+            ]);
+
+        }
 
         $feedback = $this->getDoctrine()->getRepository(Feedback::class)
             ->getFeatureFeedback($feature);
@@ -395,7 +433,8 @@ class BackOfficeController extends AbstractController
         return $this->render('back_office/featureDetail.html.twig',[
             'feature' => $feature,
             'companySlug' => $company->getSlug(),
-            'feedbackList' => $feedback
+            'feedbackList' => $feedback,
+            'form' => $form->createView()
         ]);
     }
 
