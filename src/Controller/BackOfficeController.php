@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -44,8 +45,6 @@ class BackOfficeController extends AbstractController
     public function index(Company $company): Response
     {
         $this->denyAccessUnlessGranted('edit', $company);
-
-
 
         return $this->render('back_office/home.html.twig', [
             'companySlug' => $company->getSlug()
@@ -276,7 +275,7 @@ class BackOfficeController extends AbstractController
             $feature->setState(
                 $form->get('state')->getData()
             );
-            $feature->setScore(0);
+            $feature->setInitialScore();
 
             $currentDateTime = new \DateTime();
             $feature->setCreatedAt( $currentDateTime );
@@ -400,6 +399,57 @@ class BackOfficeController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/admin/{company_slug}/smazat-propojeni/{feedback_id}/{feature_id}", name="delete-ff-relation")
+     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
+     * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
+     * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
+     * @param Company $company
+     * @param Feedback $feedback
+     * @param Feature $feature
+     * @param Request $request
+     * @return Response
+     */
+    public function deleteFeedbackFeatureRelation(Company $company, Feedback $feedback, Feature $feature, Request $request)
+    {
+
+        $this->denyAccessUnlessGranted('edit', $feature);
+        $this->denyAccessUnlessGranted('edit', $feedback);
+
+        if(!in_array($feature, $feedback->getFeature()->toArray()) ){
+            throw new NotFoundHttpException();
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $feedback->removeFeature($feature);
+        $feature->setScoreDownByOne();
+
+        $entityManager->flush();
+
+
+        /* tohle je strašně dlouhé, pak by chtělo nějak zlepšit */
+        if($request->query->get('p') === 'feature'){
+
+            return $this->redirectToRoute('feature-detail',[
+                'feature_id' => $feature->getId(),
+                'company_slug' => $company->getSlug(),
+            ]);
+
+        }
+        if($request->query->get('p') === 'feedback'){
+
+            return $this->redirectToRoute('feedback-detail',[
+                'feedback_id' => $feedback->getId(),
+                'company_slug' => $company->getSlug(),
+            ]);
+        }
+
+        return $this->redirectToRoute('home', [
+            'slug' => $company->getSlug()
+        ]);
+
+    }
+
     private function dispatchFeedbackUpdatedEvent()
     {
 
@@ -409,6 +459,7 @@ class BackOfficeController extends AbstractController
        );
 
     }
+
 
 
 

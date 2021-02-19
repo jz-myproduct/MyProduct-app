@@ -147,4 +147,31 @@ class Feature
 
         return $this;
     }
+
+    public function setInitialScore(): self
+    {
+        $this->score = 0;
+
+        return $this;
+    }
+
+    public function setScoreDownByOne(): self
+    {
+        if($this->score === 0){
+            return $this;
+        }
+
+        $this->score -= 1;
+
+        return $this;
+    }
+
+    public function setScoreUpByOne(): self
+    {
+        $this->score += 1;
+
+        return $this;
+    }
+
+
 }
