@@ -21,7 +21,7 @@ class FeedbackRepository extends ServiceEntityRepository
         parent::__construct($registry, Feedback::class);
     }
 
-    public function getFeedbackCountForFeature(Company $company, Feature $feature)
+    public function getFeedbackCountForFeature(Feature $feature)
     {
         $count = $this->createQueryBuilder('fe')
                     ->select('count(fe)')
@@ -32,6 +32,17 @@ class FeedbackRepository extends ServiceEntityRepository
                     ->getSingleScalarResult();
 
         return (int)$count;
+    }
+
+    public function getFeatureFeedback(Feature $feature)
+    {
+        return $this->createQueryBuilder('fe')
+                ->select('fe')
+                ->innerJoin('fe.feature', 'fea')
+                ->where('fea.id = :feature_id')
+                ->setParameter('feature_id',$feature->getId())
+                ->getQuery()
+                ->getResult();
     }
 
     // /**
