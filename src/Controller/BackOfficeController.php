@@ -198,6 +198,9 @@ class BackOfficeController extends AbstractController
         $entityManager->remove($feedback);
         $entityManager->flush();
 
+        $event = new FeedbackUpdatedEvent();
+        $this->dispatcher->dispatch($event, 'feedback.updated.event');
+
         return $this->redirectToRoute('feedback-list',[
             'slug' => $company->getSlug()
         ]);
