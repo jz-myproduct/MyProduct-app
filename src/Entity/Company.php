@@ -73,10 +73,16 @@ class Company implements UserInterface
      */
     private $features;
 
+    /**
+     * @ORM\OneToMany(targetEntity=FeatureTag::class, mappedBy="company")
+     */
+    private $featureTags;
+
     public function __construct()
     {
         $this->feedback = new ArrayCollection();
         $this->features = new ArrayCollection();
+        $this->featureTags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -266,6 +272,36 @@ class Company implements UserInterface
             // set the owning side to null (unless already changed)
             if ($feature->getCompany() === $this) {
                 $feature->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FeatureTag[]
+     */
+    public function getFeatureTags(): Collection
+    {
+        return $this->featureTags;
+    }
+
+    public function addFeatureTag(FeatureTag $featureTag): self
+    {
+        if (!$this->featureTags->contains($featureTag)) {
+            $this->featureTags[] = $featureTag;
+            $featureTag->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFeatureTag(FeatureTag $featureTag): self
+    {
+        if ($this->featureTags->removeElement($featureTag)) {
+            // set the owning side to null (unless already changed)
+            if ($featureTag->getCompany() === $this) {
+                $featureTag->setCompany(null);
             }
         }
 

@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\FeatureState;
+use App\Entity\FeatureTag;
 use App\Entity\Feedback;
 use App\Services\SlugService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -42,6 +43,20 @@ class Fixtures extends Fixture
         $company->setRoles( $company->getRoles() );
 
         $manager->persist($company);
+
+        /* Feature tags */
+        foreach ( $this->getFeatureTagsData() as $tagData)
+        {
+            $tag = new FeatureTag();
+            $tag->setName($tagData);
+            $tag->setSlug(
+                $this->slugService->createGeneralSlug($tagData)
+            );
+            $tag->setCompany($company);
+
+            $manager->persist($tag);
+
+        }
 
         /* Features States */
         foreach ( $this->getFeatureStatesData() as $stateData)
@@ -118,6 +133,16 @@ class Fixtures extends Fixture
           ['Upcoming', 2],
           ['In-progress', 3],
           ['Done', 4]
+        ];
+    }
+
+    private function getFeatureTagsData()
+    {
+        return [
+            'Tag1',
+            'Tag2',
+            'Tag3',
+            'Tag4'
         ];
     }
 }
