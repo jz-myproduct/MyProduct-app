@@ -106,8 +106,7 @@ class BackOfficeController extends AbstractController
             $entityManager->persist($feedback);
             $entityManager->flush();
 
-            $event = new FeedbackUpdatedEvent();
-            $this->dispatcher->dispatch($event, 'feedback.updated.event');
+            $this->dispatchFeedbackUpdatedEvent();
 
             return $this->redirectToRoute('feedback-list',[
                 'slug' => $company->getSlug()
@@ -154,8 +153,7 @@ class BackOfficeController extends AbstractController
 
             $entityManager->flush();
 
-            $event = new FeedbackUpdatedEvent();
-            $this->dispatcher->dispatch($event, 'feedback.updated.event');
+            $this->dispatchFeedbackUpdatedEvent();
 
             $this->addFlash('success', 'Feedback updated');
         }
@@ -197,6 +195,8 @@ class BackOfficeController extends AbstractController
 
         $entityManager->remove($feedback);
         $entityManager->flush();
+
+        $this->dispatchFeedbackUpdatedEvent();
 
         return $this->redirectToRoute('feedback-list',[
             'slug' => $company->getSlug()
@@ -309,7 +309,6 @@ class BackOfficeController extends AbstractController
     {
 
         $this->denyAccessUnlessGranted('edit', $feature);
-        dump( $this->getDoctrine()->getRepository(Feedback::class)->getFeedbackCountForFeature($company, $feature));
 
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -393,6 +392,16 @@ class BackOfficeController extends AbstractController
             'feature' => $feature,
             'companySlug' => $company->getSlug()
         ]);
+    }
+
+    private function dispatchFeedbackUpdatedEvent()
+    {
+
+       return $this->dispatcher->dispatch(
+           new FeedbackUpdatedEvent(),
+           'feedback.updated.event'
+       );
+
     }
 
 
