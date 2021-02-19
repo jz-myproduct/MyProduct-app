@@ -20,7 +20,10 @@
     <h2>Feedbacks</h2>
     <ul>
         {% for feedback in feedbackList %}
-            <li><a href="{{ path('feedback-detail', {'company_slug': companySlug, 'feedback_id': feedback.id} ) }}">{{ feedback.description }}</a></li>
+            <li>
+                <a href="{{ path('feedback-detail', {'company_slug': companySlug, 'feedback_id': feedback.id} ) }}">{{ feedback.description }}</a>
+                <a href="{{ path('delete-ff-relation', {'company_slug': companySlug, 'feedback_id': feedback.id, 'feature_id': feature.id, 'p':'feature' } ) }}">Smazat</a>
+            </li>
         {% endfor %}
     </ul>
 {% endblock %}

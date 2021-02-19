@@ -20,7 +20,10 @@
     <h2>Features</h2>
     <ul>
         {% for feature in features %}
-            <li><a href="{{ path('feature-detail', { 'company_slug': companySlug, 'feature_id': feature.id } ) }}">{{ feature.name }}</a></li>
+            <li>
+                <a href="{{ path('feature-detail', { 'company_slug': companySlug, 'feature_id': feature.id } ) }}">{{ feature.name }}</a>
+                <a href="{{ path('delete-ff-relation', {'company_slug': companySlug, 'feedback_id': feedback.id, 'feature_id': feature.id, 'p':'feedback' } ) }}">Smazat</a>
+            </li>
         {% endfor %}
     </ul>
 {% endblock %}

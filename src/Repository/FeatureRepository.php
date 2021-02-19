@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Feature;
+use App\Entity\Feedback;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -18,6 +19,7 @@ class FeatureRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Feature::class);
     }
+
 
     // /**
     //  * @return Feature[] Returns an array of Feature objects

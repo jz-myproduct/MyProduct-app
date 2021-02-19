@@ -37,13 +37,14 @@ class FeedbackRepository extends ServiceEntityRepository
     public function getFeatureFeedback(Feature $feature)
     {
         return $this->createQueryBuilder('fe')
-                ->select('fe')
-                ->innerJoin('fe.feature', 'fea')
-                ->where('fea.id = :feature_id')
-                ->setParameter('feature_id',$feature->getId())
-                ->getQuery()
-                ->getResult();
+            ->select('fe')
+            ->innerJoin('fe.feature', 'fea')
+            ->where('fea.id = :feature_id')
+            ->setParameter('feature_id',$feature->getId())
+            ->getQuery()
+            ->getResult();
     }
+
 
     // /**
     //  * @return Feedback[] Returns an array of Feedback objects
