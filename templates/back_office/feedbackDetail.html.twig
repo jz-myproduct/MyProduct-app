@@ -17,4 +17,10 @@
       <li>updated_at: {{ feedback.updatedAt|date('Y-m-d h:m:s') }}</li>
       <li>status: {{ feedback.status }}</li>
     </ul>
+    <h2>Features</h2>
+    <ul>
+        {% for feature in features %}
+            <li><a href="{{ path('feature-detail', { 'company_slug': companySlug, 'feature_id': feature.id } ) }}">{{ feature.name }}</a></li>
+        {% endfor %}
+    </ul>
 {% endblock %}
