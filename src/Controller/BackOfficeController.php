@@ -4,12 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Company;
 use App\Entity\Feature;
+use App\Entity\FeatureTag;
 use App\Entity\Feedback;
 use App\Form\FeatureFormType;
+use App\Form\FeatureTagFormType;
 use App\Form\FeedbackFeatureDetailFormType;
 use App\Form\FeedbackFormType;
 use App\Form\FeedbackType;
 use App\Services\FeatureScoreService;
+use App\Services\SlugService;
 use DateTime;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -59,13 +62,13 @@ class BackOfficeController extends AbstractController
     public function redirectToAdmin(): Response
     {
         $company = $this->getUser();
-        if(is_null($company)){
+        if (is_null($company)) {
             return $this->redirectToRoute('login');
         }
 
         $this->denyAccessUnlessGranted('edit', $company);
 
-        return $this->redirectToRoute('back-office-home',[
+        return $this->redirectToRoute('back-office-home', [
             'slug' => $company->getSlug()
         ]);
     }
@@ -89,26 +92,26 @@ class BackOfficeController extends AbstractController
         ]);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $feedback->setDescription(
                 $form->get('description')->getData()
             );
             $feedback->setSource(
                 $form->get('source')->getData()
             );
-            $feedback->setCompany( $company );
+            $feedback->setCompany($company);
             $feedback->setNewStatus();
 
             $currentDateTime = new DateTime();
-            $feedback->setCreatedAt( $currentDateTime );
-            $feedback->setUpdatedAt( $currentDateTime );
+            $feedback->setCreatedAt($currentDateTime);
+            $feedback->setUpdatedAt($currentDateTime);
 
             $entityManager->persist($feedback);
             $entityManager->flush();
 
             $this->dispatchFeedbackUpdatedEvent();
 
-            return $this->redirectToRoute('feedback-list',[
+            return $this->redirectToRoute('feedback-list', [
                 'slug' => $company->getSlug()
             ]);
 
@@ -142,14 +145,14 @@ class BackOfficeController extends AbstractController
         ]);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $feedback->setDescription(
                 $form->get('description')->getData()
             );
             $feedback->setSource(
                 $form->get('source')->getData()
             );
-            $feedback->setUpdatedAt( new DateTime() );
+            $feedback->setUpdatedAt(new DateTime());
 
             $entityManager->flush();
 
@@ -173,7 +176,7 @@ class BackOfficeController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        return $this->render('back_office/feedbackList.html.twig',[
+        return $this->render('back_office/feedbackList.html.twig', [
             'feedbacks' => $company->getFeedbacks(),
             'companySlug' => $company->getSlug()
         ]);
@@ -198,7 +201,7 @@ class BackOfficeController extends AbstractController
 
         $this->dispatchFeedbackUpdatedEvent();
 
-        return $this->redirectToRoute('feedback-list',[
+        return $this->redirectToRoute('feedback-list', [
             'slug' => $company->getSlug()
         ]);
     }
@@ -222,7 +225,7 @@ class BackOfficeController extends AbstractController
         $entityManager->flush();
 
 
-        return $this->redirectToRoute('feedback-list',[
+        return $this->redirectToRoute('feedback-list', [
             'slug' => $company->getSlug()
         ]);
     }
@@ -239,7 +242,7 @@ class BackOfficeController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $feedback);
 
-        return $this->render('back_office/feedbackDetail.html.twig',[
+        return $this->render('back_office/feedbackDetail.html.twig', [
             'feedback' => $feedback,
             'companySlug' => $company->getSlug(),
             'features' => $feedback->getFeature()
@@ -263,7 +266,7 @@ class BackOfficeController extends AbstractController
         $form = $this->createForm(FeatureFormType::class, $feature);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $feature = new Feature();
             $feature->setName(
@@ -272,20 +275,20 @@ class BackOfficeController extends AbstractController
             $feature->setDescription(
                 $form->get('description')->getData()
             );
-            $feature->setCompany( $company );
+            $feature->setCompany($company);
             $feature->setState(
                 $form->get('state')->getData()
             );
             $feature->setInitialScore();
 
             $currentDateTime = new \DateTime();
-            $feature->setCreatedAt( $currentDateTime );
-            $feature->setUpdatedAt( $currentDateTime );
+            $feature->setCreatedAt($currentDateTime);
+            $feature->setUpdatedAt($currentDateTime);
 
             $entityManager->persist($feature);
             $entityManager->flush();
 
-            return $this->redirectToRoute('feature-list',[
+            return $this->redirectToRoute('feature-list', [
                 'slug' => $company->getSlug()
             ]);
 
@@ -317,20 +320,20 @@ class BackOfficeController extends AbstractController
         $form = $this->createForm(FeatureFormType::class, $feature);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
-           $feature->setName(
-               $form->get('name')->getData()
-           );
-           $feature->setDescription(
-               $form->get('description')->getData()
-           );
-           $feature->setUpdatedAt( new \DateTime() );
-           $feature->setState(
-               $form->get('state')->getData()
-           );
+            $feature->setName(
+                $form->get('name')->getData()
+            );
+            $feature->setDescription(
+                $form->get('description')->getData()
+            );
+            $feature->setUpdatedAt(new \DateTime());
+            $feature->setState(
+                $form->get('state')->getData()
+            );
 
-           $entityManager->flush();
+            $entityManager->flush();
 
             $this->addFlash('success', 'Feature updated');
         }
@@ -350,7 +353,7 @@ class BackOfficeController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        return $this->render('back_office/featureList.html.twig',[
+        return $this->render('back_office/featureList.html.twig', [
             'features' => $company->getFeatures(),
             'companySlug' => $company->getSlug()
         ]);
@@ -373,7 +376,7 @@ class BackOfficeController extends AbstractController
         $entityManager->remove($feature);
         $entityManager->flush();
 
-        return $this->redirectToRoute('feature-list',[
+        return $this->redirectToRoute('feature-list', [
             'slug' => $company->getSlug()
         ]);
     }
@@ -397,7 +400,7 @@ class BackOfficeController extends AbstractController
         $form = $this->createForm(FeedbackFeatureDetailFormType::class, $feedback);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $feedback->setDescription(
                 $form->get('description')->getData()
@@ -405,13 +408,13 @@ class BackOfficeController extends AbstractController
             $feedback->setSource(
                 $form->get('source')->getData()
             );
-            $feedback->setCompany( $company );
+            $feedback->setCompany($company);
             $feedback->setActiveStatus();
 
             $currentDateTime = new DateTime();
-            $feedback->setCreatedAt( $currentDateTime );
-            $feedback->setUpdatedAt( $currentDateTime );
-            $feedback->addFeature( $feature );
+            $feedback->setCreatedAt($currentDateTime);
+            $feedback->setUpdatedAt($currentDateTime);
+            $feedback->addFeature($feature);
 
             $feature->setScoreUpByOne();
 
@@ -420,7 +423,7 @@ class BackOfficeController extends AbstractController
 
             $this->dispatchFeedbackUpdatedEvent();
 
-            return $this->redirectToRoute('feature-detail',[
+            return $this->redirectToRoute('feature-detail', [
                 'company_slug' => $company->getSlug(),
                 'feature_id' => $feature->getId()
             ]);
@@ -430,7 +433,7 @@ class BackOfficeController extends AbstractController
         $feedback = $this->getDoctrine()->getRepository(Feedback::class)
             ->getFeatureFeedback($feature);
 
-        return $this->render('back_office/featureDetail.html.twig',[
+        return $this->render('back_office/featureDetail.html.twig', [
             'feature' => $feature,
             'companySlug' => $company->getSlug(),
             'feedbackList' => $feedback,
@@ -455,7 +458,7 @@ class BackOfficeController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $feature);
         $this->denyAccessUnlessGranted('edit', $feedback);
 
-        if(!in_array($feature, $feedback->getFeature()->toArray()) ){
+        if (!in_array($feature, $feedback->getFeature()->toArray())) {
             throw new NotFoundHttpException();
         }
 
@@ -467,17 +470,17 @@ class BackOfficeController extends AbstractController
 
 
         /* tohle je strašně dlouhé, pak by chtělo nějak zlepšit */
-        if($request->query->get('p') === 'feature'){
+        if ($request->query->get('p') === 'feature') {
 
-            return $this->redirectToRoute('feature-detail',[
+            return $this->redirectToRoute('feature-detail', [
                 'feature_id' => $feature->getId(),
                 'company_slug' => $company->getSlug(),
             ]);
 
         }
-        if($request->query->get('p') === 'feedback'){
+        if ($request->query->get('p') === 'feedback') {
 
-            return $this->redirectToRoute('feedback-detail',[
+            return $this->redirectToRoute('feedback-detail', [
                 'feedback_id' => $feedback->getId(),
                 'company_slug' => $company->getSlug(),
             ]);
@@ -487,6 +490,119 @@ class BackOfficeController extends AbstractController
             'slug' => $company->getSlug()
         ]);
 
+    }
+
+    /**
+     * @Route("/admin/{slug}/tag/pridat", name="add-feature-tag")
+     * @param Company $company
+     * @param Request $request
+     * @param SlugService $slugService
+     * @return Response
+     */
+    public function addFeatureTag(Company $company, Request $request, SlugService $slugService)
+    {
+        $this->denyAccessUnlessGranted('edit', $company);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $tag = new FeatureTag();
+        $form = $this->createForm(FeatureTagFormType::class, $tag);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $name = $form->get('name')->getData();
+
+            $tag->setName($name);
+            $tag->setSlug($slugService->createGeneralSlug($name));
+            $tag->setCompany( $company );
+
+            $entityManager->persist($tag);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('feature-tag-list', [
+               'slug' => $company->getSlug()
+            ]);
+        }
+
+        return $this->render('back_office/addEditFeatureTag.html.twig', [
+            'companySlug' => $company->getSlug(),
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/{company_slug}/tag/{tag_id}/upravit", name="edit-feature-tag")
+     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
+     * @ParamConverter("tag", options={"mapping": {"tag_id": "id"}} )
+     * @param Company $company
+     * @param Request $request
+     * @param SlugService $slugService
+     * @param FeatureTag $tag
+     * @return Response
+     */
+    public function editFeatureTag(Company $company, Request $request, SlugService $slugService, FeatureTag $tag)
+    {
+        $this->denyAccessUnlessGranted('edit', $tag);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $form = $this->createForm(FeatureTagFormType::class, $tag);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $name = $form->get('name')->getData();
+
+            $tag->setName($name);
+            $tag->setSlug($slugService->createGeneralSlug($name));
+
+            $entityManager->persist($tag);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Tag updated');
+        }
+
+        return $this->render('back_office/addEditFeatureTag.html.twig', [
+            'companySlug' => $company->getSlug(),
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/{slug}/tags", name="feature-tag-list")
+     * @param Company $company
+     * @return Response
+     */
+    public function featureTagList(Company $company)
+    {
+        $this->denyAccessUnlessGranted('edit', $company);
+
+        return $this->render('back_office/featureTagsList.html.twig', [
+           'tags' => $company->getFeatureTags(),
+           'slug' => $company->getSlug()
+        ]);
+
+    }
+
+    /**
+     * @Route("/admin/{company_slug}/tag/{tag_id}/smazat", name="delete-feature-tag")
+     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
+     * @ParamConverter("tag", options={"mapping": {"tag_id": "id"}} )
+     * @param Company $company
+     * @param FeatureTag $tag
+     * @return RedirectResponse
+     */
+    public function deleteFeatureTag(Company $company, FeatureTag $tag)
+    {
+        $this->denyAccessUnlessGranted('edit', $tag);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $entityManager->remove($tag);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('feature-tag-list', [
+            'slug' => $company->getSlug()
+        ]);
     }
 
     private function dispatchFeedbackUpdatedEvent()
