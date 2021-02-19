@@ -241,7 +241,8 @@ class BackOfficeController extends AbstractController
 
         return $this->render('back_office/feedbackDetail.html.twig',[
             'feedback' => $feedback,
-            'companySlug' => $company->getSlug()
+            'companySlug' => $company->getSlug(),
+            'features' => $feedback->getFeature()
         ]);
     }
 
