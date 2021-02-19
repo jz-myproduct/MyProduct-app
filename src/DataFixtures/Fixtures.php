@@ -66,7 +66,7 @@ class Fixtures extends Fixture
             $feature->setCompany( $company );
             $feature->setCreatedAt( $currentDateTime );
             $feature->setUpdatedAt( $currentDateTime );
-            $feature->setScore(0);
+            $feature->setScore(1);
 
             $feature->setstate(
                 $manager->getRepository(FeatureState::class)->findInitialState()

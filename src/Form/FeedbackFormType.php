@@ -40,7 +40,7 @@ class FeedbackFormType extends AbstractType
 
         if($this->featuresChoices)
         {
-            $builder->add('features', EntityType::class, [
+            $builder->add('feature', EntityType::class, [
                 'class' => Feature::class,
                 'choices' => $this->featuresChoices,
                 'choice_value' => 'id',

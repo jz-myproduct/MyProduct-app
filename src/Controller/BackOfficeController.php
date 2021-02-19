@@ -19,9 +19,22 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Security\Core\Security;
+use App\Events\FeedbackUpdatedEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class BackOfficeController extends AbstractController
 {
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $dispatcher;
+
+    public function __construct(EventDispatcherInterface $dispatcher)
+    {
+        $this->dispatcher = $dispatcher;
+
+    }
 
     /**
      * @Route("/admin/{slug}", name="back-office-home")
@@ -31,6 +44,7 @@ class BackOfficeController extends AbstractController
     public function index(Company $company): Response
     {
         $this->denyAccessUnlessGranted('edit', $company);
+
 
 
         return $this->render('back_office/home.html.twig', [
@@ -92,6 +106,9 @@ class BackOfficeController extends AbstractController
             $entityManager->persist($feedback);
             $entityManager->flush();
 
+            $event = new FeedbackUpdatedEvent();
+            $this->dispatcher->dispatch($event, 'feedback.updated.event');
+
             return $this->redirectToRoute('feedback-list',[
                 'slug' => $company->getSlug()
             ]);
@@ -136,6 +153,9 @@ class BackOfficeController extends AbstractController
             $feedback->setUpdatedAt( new DateTime() );
 
             $entityManager->flush();
+
+            $event = new FeedbackUpdatedEvent();
+            $this->dispatcher->dispatch($event, 'feedback.updated.event');
 
             $this->addFlash('success', 'Feedback updated');
         }
@@ -289,6 +309,7 @@ class BackOfficeController extends AbstractController
     {
 
         $this->denyAccessUnlessGranted('edit', $feature);
+        dump( $this->getDoctrine()->getRepository(Feedback::class)->getFeedbackCountForFeature($company, $feature));
 
         $entityManager = $this->getDoctrine()->getManager();
 

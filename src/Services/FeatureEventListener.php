@@ -8,38 +8,51 @@ use App\Entity\Feedback;
 use App\Entity\Test;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Event\PostFlushEventArgs;
+use phpDocumentor\Reflection\Types\Null_;
 
 class FeatureEventListener
 {
     /**
      * @var FeatureScoreService
      */
+
+
     private $scoreService;
 
-    private $entityManager;
-
-    public function __construct(FeatureScoreService $scoreService, EntityManagerInterface $entityManager)
+    public function __construct(FeatureScoreService $scoreService)
     {
         $this->scoreService = $scoreService;
-        $this->entityManager = $entityManager;
     }
+
+    /*
+    public onFeedbackUpdatedEvent()
+    {
+    }
+
 
     public function postUpdate(LifecycleEventArgs $args)
     {
-        $entity = $args->getObject();
+        $this->object = $args->getObject();
+        return;
+    }
 
-        if (!$entity instanceof Feedback) {
+    public function postFlush(PostFlushEventArgs $args)
+    {
+        if(!$this->object instanceof Feedback){
             return;
         }
 
+        $this->scoreService->recalculateScoreForFeatures();
+        return;
+    }
+    */
 
-        /*
-        $test = new Test();
-        $test->setName('test');
-        $this->entityManager->persist($test);
-        $this->entityManager->flush(); */
-
-
+    public function onFeedbackUpdatedEvent()
+    {
         $this->scoreService->recalculateScoreForFeatures();
     }
+
+
 }

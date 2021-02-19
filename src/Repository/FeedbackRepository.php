@@ -25,7 +25,7 @@ class FeedbackRepository extends ServiceEntityRepository
     {
         $count = $this->createQueryBuilder('fe')
                     ->select('count(fe)')
-                    ->innerJoin('fe.features', 'fea')
+                    ->innerJoin('fe.feature', 'fea')
                     ->where('fea.id = :feature_id')
                     ->setParameter('feature_id',$feature->getId())
                     ->getQuery()

@@ -54,19 +54,10 @@ class Feature
     private $state;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Feedback::class, mappedBy="features")
-     */
-    private $feedback;
-
-    /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $score;
 
-    public function __construct()
-    {
-        $this->feedback = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -141,33 +132,6 @@ class Feature
     public function setState(?FeatureState $state): self
     {
         $this->state = $state;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Feedback[]
-     */
-    public function getFeedback(): Collection
-    {
-        return $this->feedback;
-    }
-
-    public function addFeedback(Feedback $feedback): self
-    {
-        if (!$this->feedback->contains($feedback)) {
-            $this->feedback[] = $feedback;
-            $feedback->addFeature($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFeedback(Feedback $feedback): self
-    {
-        if ($this->feedback->removeElement($feedback)) {
-            $feedback->removeFeature($this);
-        }
 
         return $this;
     }

@@ -32,4 +32,5 @@ services:
 
     App\Services\FeatureEventListener:
         tags:
-            - { name: doctrine.event_listener, event: postUpdate }
+            - { name: kernel.event_listener, event: feedback.updated.event }
+
