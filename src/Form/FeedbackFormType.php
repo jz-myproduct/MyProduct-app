@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FeedbackType extends AbstractType
+class FeedbackFormType extends AbstractType
 {
     /**
      * @var EntityManagerInterface
@@ -40,7 +40,7 @@ class FeedbackType extends AbstractType
 
         if($this->featuresChoices)
         {
-            $builder->add('features', EntityType::class, [
+            $builder->add('feature', EntityType::class, [
                 'class' => Feature::class,
                 'choices' => $this->featuresChoices,
                 'choice_value' => 'id',

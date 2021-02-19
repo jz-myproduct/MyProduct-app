@@ -49,6 +49,19 @@ class CompanyRepository extends ServiceEntityRepository implements PasswordUpgra
         return (int)$count;
     }
 
+    public function getCompanyByEmail(string $email)
+    {
+        $entityManager = $this->getEntityManager();
+
+        return $entityManager->createQuery(
+            'SELECT c
+                  FROM App\Entity\Company c
+                  WHERE c.email = :query'
+        )
+            ->setParameter('query', $email)
+            ->getOneOrNullResult();
+    }
+
 
     // /**
     //  * @return Company[] Returns an array of Company objects

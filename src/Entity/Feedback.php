@@ -50,14 +50,16 @@ class Feedback
     private $status;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Feature::class, inversedBy="feedback")
+     * @ORM\ManyToMany(targetEntity=Feature::class)
      */
-    private $features;
+    private $feature;
 
     public function __construct()
     {
-        $this->features = new ArrayCollection();
+        $this->feature = new ArrayCollection();
     }
+
+
 
     public function getId(): ?int
     {
@@ -172,15 +174,15 @@ class Feedback
     /**
      * @return Collection|Feature[]
      */
-    public function getFeatures(): Collection
+    public function getFeature(): Collection
     {
-        return $this->features;
+        return $this->feature;
     }
 
     public function addFeature(Feature $feature): self
     {
-        if (!$this->features->contains($feature)) {
-            $this->features[] = $feature;
+        if (!$this->feature->contains($feature)) {
+            $this->feature[] = $feature;
         }
 
         return $this;
@@ -188,8 +190,9 @@ class Feedback
 
     public function removeFeature(Feature $feature): self
     {
-        $this->features->removeElement($feature);
+        $this->feature->removeElement($feature);
 
         return $this;
     }
+
 }

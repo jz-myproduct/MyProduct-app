@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\Company;
-use App\Form\RegisterCompanyType;
+use App\Form\RegisterCompanyFormType;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class FrontOfficeController extends AbstractController
@@ -49,7 +49,7 @@ class FrontOfficeController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         $company = new Company();
-        $form = $this->createForm(RegisterCompanyType::class, $company);
+        $form = $this->createForm(RegisterCompanyFormType::class, $company);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())

@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class RegisterCompanyType extends AbstractType
+class RegisterCompanyFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
