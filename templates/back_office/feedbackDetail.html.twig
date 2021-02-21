@@ -29,7 +29,9 @@
     <h2>Features to add</h2>
     <ul>
     {% for unrelatedFeature in unrelatedFeatures %}
-        <li><a href="{{ path('add-ff-relation', {'company_slug': companySlug, 'feedback_id':feedback.id, 'feature_id':unrelatedFeature.id } ) }}">{{ unrelatedFeature.name }} [přidat]</a></li>
+        <li>
+           <a href="{{ path('add-ff-relation', {'company_slug': companySlug, 'feedback_id':feedback.id, 'feature_id':unrelatedFeature.id } ) }}">{{ unrelatedFeature.name }} [přidat]</a>
+        </li>
     {% endfor %}
     </ul>
 {% endblock %}
