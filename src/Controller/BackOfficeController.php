@@ -140,7 +140,7 @@ class BackOfficeController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         $form = $this->createForm(FeedbackFormType::class, $feedback, [
-            'featureChoices' => $company->getFeatures()->toArray()
+            'featureChoices' => $company->getFeatures()
         ]);
         $form->handleRequest($request);
 
