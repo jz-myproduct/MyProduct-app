@@ -12,6 +12,9 @@
             <a href="{{ path('add-feature', {slug: companySlug}) }}">Přidat feature</a>
         </div>
         <h2>Portal</h2>
+        {% if portal.display %}
+            Portal naleznete <a href="{{ path('front-office-portal', {'slug':portal.slug}) }}">zde</a>
+        {% endif %}
         {{ form(form) }}
     {% endif %}
 {% endblock %}
