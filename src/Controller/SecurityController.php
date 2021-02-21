@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Company;
+use App\Entity\Portal;
 use App\Form\RegisterCompanyFormType;
 use App\Services\SlugService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +19,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class SecurityController extends AbstractController
 {
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $manager;
+
+    public function __construct(EntityManagerInterface $manager)
+    {
+        $this->manager = $manager;
+    }
 
     /**
      * @Route("/zaregistrovat", name="register")
@@ -37,21 +49,21 @@ class SecurityController extends AbstractController
             ]);
         }
 
-        $entityManager = $this->getDoctrine()->getManager();
-
         $company = new Company();
         $form = $this->createForm(RegisterCompanyFormType::class, $company);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
         {
+            /* COMPANY */
             $password = $passwordEncoder->encodePassword($company, $form->get('password')->getData());
+            $name = $form->get('name')->getData();
 
             $company->setPassword( $password );
             $company->setEmail( $form->get('email')->getData() );
-            $company->setName( $form->get('name')->getData() );
+            $company->setName($name);
             $company->setSlug(
-                $slugService->createCompanySlug($form->get('name')->getData())
+                $slugService->createCompanySlug($name)
             );
 
             $currentDateTime = new \DateTime();
@@ -59,8 +71,22 @@ class SecurityController extends AbstractController
             $company->setUpdatedAt($currentDateTime);
             $company->setRoles( $company->getRoles() );
 
-            $entityManager->persist($company);
-            $entityManager->flush();
+            $this->manager->persist($company);
+
+            /* PORTAL */
+            $portal = new Portal();
+            $portal->setName($name);
+            $portal->setSlug(
+                $slugService->createPortalSlug($name)
+            );
+            $portal->setDisplay(false);
+            $portal->setCreatedAt($currentDateTime);
+            $portal->setUpdatedAt($currentDateTime);
+
+            $company->setPortal($portal);
+
+            $this->manager->persist($portal);
+            $this->manager->flush();
 
             $this->loginAfterRegistration($company, $password);
 
