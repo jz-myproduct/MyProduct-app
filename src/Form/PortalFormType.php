@@ -17,7 +17,8 @@ class PortalFormType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('display', CheckboxType::class, [
-                'label' => 'Zobrazit'
+                'label' => 'Zobrazit',
+                'required' => false
             ])
             ->add('save', SubmitType::class, ['label' => 'Uložit'])
 
