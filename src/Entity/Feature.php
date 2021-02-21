@@ -58,6 +58,16 @@ class Feature
      */
     private $score;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=FeatureTag::class)
+     */
+    private $tags;
+
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -173,5 +183,28 @@ class Feature
         return $this;
     }
 
+    /**
+     * @return Collection|FeatureTag[]
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(FeatureTag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+
+        return $this;
+    }
+
+    public function removeTag(FeatureTag $tag): self
+    {
+        $this->tags->removeElement($tag);
+
+        return $this;
+    }
 
 }
