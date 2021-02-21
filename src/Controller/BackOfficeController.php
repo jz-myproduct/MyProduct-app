@@ -241,10 +241,14 @@ class BackOfficeController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $feedback);
 
+        $unrelatedFeatures = $this->getDoctrine()->getRepository(Feedback::class)
+            ->getUnUsedFeaturesForFeedback($feedback, $company);
+
         return $this->render('back_office/feedbackDetail.html.twig', [
             'feedback' => $feedback,
             'companySlug' => $company->getSlug(),
-            'features' => $feedback->getFeature()
+            'relatedFeatures' => $feedback->getFeature(),
+            'unrelatedFeatures' => $unrelatedFeatures
         ]);
     }
 
@@ -446,6 +450,43 @@ class BackOfficeController extends AbstractController
             'feedbackList' => $feedback,
             'form' => $form->createView(),
             'tags' => $feature->getTags()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/{company_slug}/pridat-propojeni/{feedback_id}/{feature_id}", name="add-ff-relation")
+     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
+     * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
+     * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
+     * @param Company $company
+     * @param Feedback $feedback
+     * @param Feature $feature
+     * @return RedirectResponse
+     */
+    public function addFeedbackFeatureRelation(Company $company, Feedback $feedback, Feature $feature)
+    {
+        $this->denyAccessUnlessGranted('edit', $feature);
+        $this->denyAccessUnlessGranted('edit', $feedback);
+
+        if (in_array($feature, $feedback->getFeature()->toArray())) {
+
+            // pokud náhodou už feature k feedbacku přidaná je, jen redirectu na detail
+            return $this->redirectToRoute('feedback-detail',[
+                'company_slug' => $company->getSlug(),
+                'feedback_id' => $feedback->getId()
+            ]);
+
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $feedback->addFeature( $feature );
+        $feature->setScoreUpByOne();
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('feedback-detail',[
+           'company_slug' => $company->getSlug(),
+           'feedback_id' => $feedback->getId()
         ]);
     }
 
