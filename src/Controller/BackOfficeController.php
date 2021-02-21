@@ -61,15 +61,11 @@ class BackOfficeController extends AbstractController
      */
     public function redirectToAdmin(): Response
     {
-        if(! $this->getUser() ){
+        if(! $this->isGranted('ROLE_USER') ){
             return $this->redirectToRoute('login');
         }
         $company = $this->getDoctrine()->getRepository(Company::class)->getCompanyByEmail(
             $this->getUser()->getUsername());
-
-        if (!$company) {
-            return $this->redirectToRoute('login');
-        }
 
         return $this->redirectToRoute('back-office-home', [
             'slug' => $company->getSlug()
