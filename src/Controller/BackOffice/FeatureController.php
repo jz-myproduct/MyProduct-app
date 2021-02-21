@@ -92,7 +92,7 @@ class FeatureController extends AbstractController
 
         }
 
-        return $this->render('back_office/addEditFeature.html.twig', [
+        return $this->render('backoffice/addEditFeature.html.twig', [
             'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
@@ -136,7 +136,7 @@ class FeatureController extends AbstractController
             $this->addFlash('success', 'Feature updated');
         }
 
-        return $this->render('back_office/addEditFeature.html.twig', [
+        return $this->render('backoffice/addEditFeature.html.twig', [
             'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
@@ -151,7 +151,7 @@ class FeatureController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        return $this->render('back_office/featureList.html.twig', [
+        return $this->render('backoffice/featureList.html.twig', [
             'features' => $company->getFeatures(),
             'companySlug' => $company->getSlug()
         ]);
@@ -228,7 +228,7 @@ class FeatureController extends AbstractController
         $feedback = $this->getDoctrine()->getRepository(Feedback::class)
             ->getFeatureFeedback($feature);
 
-        return $this->render('back_office/featureDetail.html.twig', [
+        return $this->render('backoffice/featureDetail.html.twig', [
             'feature' => $feature,
             'companySlug' => $company->getSlug(),
             'feedbackList' => $feedback,
