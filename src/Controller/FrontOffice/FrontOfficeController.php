@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\FrontOffice;
 
 use App\Entity\FeatureState;
 use App\Services\SlugService;
