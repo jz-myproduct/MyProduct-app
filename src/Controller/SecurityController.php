@@ -96,7 +96,7 @@ class SecurityController extends AbstractController
         }
 
 
-        return $this->render('front-office/registration.html.twig', [
+        return $this->render('frontoffice/registration.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -118,7 +118,7 @@ class SecurityController extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('front-office/login.html.twig', [
+        return $this->render('frontoffice/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error
         ]);

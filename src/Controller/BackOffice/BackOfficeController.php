@@ -34,7 +34,7 @@ class BackOfficeController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        return $this->render('back_office/home.html.twig', [
+        return $this->render('backoffice/home.html.twig', [
             'companySlug' => $company->getSlug()
         ]);
     }

@@ -24,6 +24,6 @@ class FrontOfficeController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('front-office/home.html.twig');
+        return $this->render('frontoffice/home.html.twig');
     }
 }

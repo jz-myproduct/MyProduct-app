@@ -75,7 +75,7 @@ class FeedbackController extends AbstractController
 
         }
 
-        return $this->render('back_office/addEditFeedback.html.twig', [
+        return $this->render('backoffice/addEditFeedback.html.twig', [
             'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
@@ -117,7 +117,7 @@ class FeedbackController extends AbstractController
             $this->addFlash('success', 'Feedback updated');
         }
 
-        return $this->render('back_office/addEditFeedback.html.twig', [
+        return $this->render('backoffice/addEditFeedback.html.twig', [
             'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
@@ -132,7 +132,7 @@ class FeedbackController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        return $this->render('back_office/feedbackList.html.twig', [
+        return $this->render('backoffice/feedbackList.html.twig', [
             'feedbacks' => $company->getFeedbacks(),
             'companySlug' => $company->getSlug()
         ]);
@@ -196,7 +196,7 @@ class FeedbackController extends AbstractController
         $unrelatedFeatures = $this->getDoctrine()->getRepository(Feedback::class)
             ->getUnUsedFeaturesForFeedback($feedback, $company);
 
-        return $this->render('back_office/feedbackDetail.html.twig', [
+        return $this->render('backoffice/feedbackDetail.html.twig', [
             'feedback' => $feedback,
             'companySlug' => $company->getSlug(),
             'relatedFeatures' => $feedback->getFeature(),
