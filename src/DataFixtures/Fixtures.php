@@ -44,20 +44,6 @@ class Fixtures extends Fixture
 
         $manager->persist($company);
 
-        /* Feature tags */
-        foreach ( $this->getFeatureTagsData() as $tagData)
-        {
-            $tag = new FeatureTag();
-            $tag->setName($tagData);
-            $tag->setSlug(
-                $this->slugService->createGeneralSlug($tagData)
-            );
-            $tag->setCompany($company);
-
-            $manager->persist($tag);
-
-        }
-
         /* Features States */
         foreach ( $this->getFeatureStatesData() as $stateData)
         {
@@ -75,7 +61,17 @@ class Fixtures extends Fixture
         /* Feedback, Feature */
         foreach ($this->getFeedbackFeatureData() as $data)
         {
+            $tag = new FeatureTag();
+            $tag->setName($data[5]);
+            $tag->setSlug(
+                $this->slugService->createGeneralSlug($data[5])
+            );
+            $tag->setCompany($company);
+
+            $manager->persist($tag);
+
             $feature = new Feature();
+            $feature->addTag($tag);
             $feature->setName( $data[3] );
             $feature->setDescription( $data[4]);
             $feature->setCompany( $company );
@@ -118,10 +114,10 @@ class Fixtures extends Fixture
     private function getFeedbackFeatureData()
     {
         return [
-            ['feedback1', 'respondent 1', 'new', 'feature1', 'feature popis 1'],
-            ['feedback2', 'respondent 2', 'new', 'feature2', 'feature popis 2'],
-            ['feedback3', 'respondent 3', 'active', 'feature3', 'feature popis 3'],
-            ['feedback4', 'respondent 4', 'active', 'feature4', 'feature popis 4']
+            ['feedback1', 'respondent 1', 'new', 'feature1', 'feature popis 1', 'Tag1'],
+            ['feedback2', 'respondent 2', 'new', 'feature2', 'feature popis 2', 'Tag2'],
+            ['feedback3', 'respondent 3', 'active', 'feature3', 'feature popis 3', 'Tag3'],
+            ['feedback4', 'respondent 4', 'active', 'feature4', 'feature popis 4', 'Tag4']
         ];
     }
 
@@ -136,13 +132,4 @@ class Fixtures extends Fixture
         ];
     }
 
-    private function getFeatureTagsData()
-    {
-        return [
-            'Tag1',
-            'Tag2',
-            'Tag3',
-            'Tag4'
-        ];
-    }
 }

@@ -32,7 +32,6 @@ class FeedbackFormType extends AbstractType
     {
 
         $this->featuresChoices = $options['featureChoices'];
-        dump($this->featuresChoices = $options['featureChoices']);
 
         $builder
             ->add('description', TextareaType::class)

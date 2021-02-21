@@ -61,12 +61,11 @@ class BackOfficeController extends AbstractController
      */
     public function redirectToAdmin(): Response
     {
-        $company = $this->getUser();
-        if (is_null($company)) {
+        if(! $this->isGranted('ROLE_USER') ){
             return $this->redirectToRoute('login');
         }
-
-        $this->denyAccessUnlessGranted('edit', $company);
+        $company = $this->getDoctrine()->getRepository(Company::class)->getCompanyByEmail(
+            $this->getUser()->getUsername());
 
         return $this->redirectToRoute('back-office-home', [
             'slug' => $company->getSlug()
@@ -88,7 +87,7 @@ class BackOfficeController extends AbstractController
 
         $feedback = new Feedback();
         $form = $this->createForm(FeedbackFormType::class, $feedback, [
-            'featureChoices' => $company->getFeatures()->toArray()
+            'featureChoices' => $company->getFeatures()
         ]);
         $form->handleRequest($request);
 
@@ -141,7 +140,7 @@ class BackOfficeController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         $form = $this->createForm(FeedbackFormType::class, $feedback, [
-            'featureChoices' => $company->getFeatures()->toArray()
+            'featureChoices' => $company->getFeatures()
         ]);
         $form->handleRequest($request);
 
@@ -263,7 +262,9 @@ class BackOfficeController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         $feature = new Feature();
-        $form = $this->createForm(FeatureFormType::class, $feature);
+        $form = $this->createForm(FeatureFormType::class, $feature, [
+            'tags'=> $company->getFeatureTags()
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -280,6 +281,10 @@ class BackOfficeController extends AbstractController
                 $form->get('state')->getData()
             );
             $feature->setInitialScore();
+
+            foreach ($form->get('tags')->getData() as $tag){
+                $feature->addTag($tag);
+            }
 
             $currentDateTime = new \DateTime();
             $feature->setCreatedAt($currentDateTime);
@@ -317,7 +322,9 @@ class BackOfficeController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $form = $this->createForm(FeatureFormType::class, $feature);
+        $form = $this->createForm(FeatureFormType::class, $feature, [
+            'tags'=> $company->getFeatureTags()
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -425,7 +432,7 @@ class BackOfficeController extends AbstractController
 
             return $this->redirectToRoute('feature-detail', [
                 'company_slug' => $company->getSlug(),
-                'feature_id' => $feature->getId()
+                'feature_id' => $feature->getId(),
             ]);
 
         }
@@ -437,7 +444,8 @@ class BackOfficeController extends AbstractController
             'feature' => $feature,
             'companySlug' => $company->getSlug(),
             'feedbackList' => $feedback,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'tags' => $feature->getTags()
         ]);
     }
 
