@@ -7,6 +7,7 @@ use App\Entity\Feature;
 use App\Entity\FeatureState;
 use App\Entity\FeatureTag;
 use App\Entity\Feedback;
+use App\Entity\Portal;
 use App\Services\SlugService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -43,6 +44,17 @@ class Fixtures extends Fixture
         $company->setRoles( $company->getRoles() );
 
         $manager->persist($company);
+
+        /* Portal */
+        $portal = new Portal();
+        $portal->setDisplay(false);
+        $portal->setName('Honzova firma');
+        $portal->setSlug('Honzova firma');
+        $portal->setCompany($company);
+        $portal->setCreatedAt($currentDateTime);
+        $portal->setUpdatedAt($currentDateTime);
+
+        $manager->persist($portal);
 
         /* Features States */
         foreach ( $this->getFeatureStatesData() as $stateData)

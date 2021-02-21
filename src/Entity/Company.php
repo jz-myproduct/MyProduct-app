@@ -78,6 +78,11 @@ class Company implements UserInterface
      */
     private $featureTags;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Portal::class, inversedBy="company", cascade={"persist", "remove"})
+     */
+    private $portal;
+
     public function __construct()
     {
         $this->feedback = new ArrayCollection();
@@ -304,6 +309,18 @@ class Company implements UserInterface
                 $featureTag->setCompany(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPortal(): ?Portal
+    {
+        return $this->portal;
+    }
+
+    public function setPortal(?Portal $portal): self
+    {
+        $this->portal = $portal;
 
         return $this;
     }
