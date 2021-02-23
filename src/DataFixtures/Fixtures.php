@@ -63,7 +63,7 @@ class Fixtures extends Fixture
         {
             $featureState = new FeatureState();
             $featureState->setName( $stateData[0] );
-            $featureState->setSlug( $this->slugService->createGeneralSlug($stateData[0]) );
+            $featureState->setSlug( $this->slugService->createCommonSlug($stateData[0]) );
             $featureState->setPosition($stateData[1] );
 
             $manager->persist($featureState);
@@ -78,7 +78,7 @@ class Fixtures extends Fixture
             $tag = new FeatureTag();
             $tag->setName($data[5]);
             $tag->setSlug(
-                $this->slugService->createGeneralSlug($data[5])
+                $this->slugService->createCommonSlug($data[5])
             );
             $tag->setCompany($company);
 

@@ -63,6 +63,11 @@ class Feature
      */
     private $tags;
 
+    /**
+     * @ORM\OneToOne(targetEntity=PortalFeature::class, mappedBy="feature", cascade={"persist", "remove"})
+     */
+    private $portalFeature;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -203,6 +208,28 @@ class Feature
     public function removeTag(FeatureTag $tag): self
     {
         $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
+    public function getPortalFeature(): ?PortalFeature
+    {
+        return $this->portalFeature;
+    }
+
+    public function setPortalFeature(?PortalFeature $portalFeature): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($portalFeature === null && $this->portalFeature !== null) {
+            $this->portalFeature->setFeature(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($portalFeature !== null && $portalFeature->getFeature() !== $this) {
+            $portalFeature->setFeature($this);
+        }
+
+        $this->portalFeature = $portalFeature;
 
         return $this;
     }

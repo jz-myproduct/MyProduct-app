@@ -5,9 +5,12 @@ namespace App\Controller\BackOffice;
 use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\Feedback;
+use App\Entity\PortalFeature;
 use App\Events\FeedbackUpdatedEvent;
 use App\Form\FeatureFormType;
 use App\Form\FeedbackFeatureDetailFormType;
+use App\Form\PortalFeatureFormType;
+use App\Services\SlugService;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,11 +38,16 @@ class FeatureController extends AbstractController
      * @var EntityManager
      */
     private $manager;
+    /**
+     * @var SlugService
+     */
+    private $slugService;
 
-    public function __construct(EventDispatcherInterface $dispatcher, EntityManagerInterface $manager)
+    public function __construct(EventDispatcherInterface $dispatcher, EntityManagerInterface $manager, SlugService $slugService)
     {
         $this->dispatcher = $dispatcher;
         $this->manager = $manager;
+        $this->slugService = $slugService;
     }
 
 
@@ -180,7 +188,7 @@ class FeatureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feature/{feature_id}", name="feature-detail")
+     * @Route("/admin/{company_slug}/feature/{feature_id}/detail", name="feature-detail")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @param Company $company
@@ -188,7 +196,7 @@ class FeatureController extends AbstractController
      * @param Request $request
      * @return Response
      * @throws Exception
-     */
+*/
     public function detail(Company $company, Feature $feature, Request $request)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
@@ -234,6 +242,56 @@ class FeatureController extends AbstractController
             'feedbackList' => $feedback,
             'form' => $form->createView(),
             'tags' => $feature->getTags()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/{company_slug}/feature/{feature_id}/portal", name="feature-portal")
+     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
+     * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
+     * @param Company $company
+     * @param Feature $feature
+     * @param Request $request
+     * @return Response
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function portal(Company $company, Feature $feature, Request $request)
+    {
+        $this->denyAccessUnlessGranted('edit', $feature);
+
+        $portalFeature = $feature->getPortalFeature() ?? new PortalFeature();
+
+        $form = $this->createForm(PortalFeatureFormType::class, $portalFeature);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $name = $form->get('name')->getData();
+            $currentDateTime = new \DateTime();
+
+            $portalFeature->setName($name);
+            $portalFeature->setSlug(
+                $this->slugService->createCommonSlug($name)
+            );
+            $portalFeature->setDescription(
+                $form->get('description')->getData()
+            );
+            $portalFeature->setDisplay(
+                $form->get('display')->getData()
+            );
+            $portalFeature->setCreatedAt($currentDateTime);
+            $portalFeature->setUpdatedAt($currentDateTime);
+            $portalFeature->setFeature($feature);
+
+            $this->manager->persist($portalFeature);
+            $this->manager->flush();
+
+            $this->addFlash('success', 'Portal feature updated');
+        }
+
+        return $this->render('backoffice/featurePortal.html.twig',[
+            'form' => $form->createView()
         ]);
     }
 }

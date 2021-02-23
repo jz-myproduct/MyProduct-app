@@ -19,7 +19,7 @@ class SlugService
         $this->entityManager = $entityManager;
     }
 
-    public function createGeneralSlug(String $value): String
+    public function createCommonSlug(String $value): String
     {
         return $this->prepareSlug($value);
     }
