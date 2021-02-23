@@ -8,6 +8,7 @@ use App\Entity\FeatureState;
 use App\Entity\FeatureTag;
 use App\Entity\Feedback;
 use App\Entity\Portal;
+use App\Entity\PortalFeatureState;
 use App\Services\SlugService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -68,6 +69,20 @@ class Fixtures extends Fixture
 
             $manager->persist($featureState);
         }
+
+        /* Portal features states */
+        foreach ( $this->getPortalFeaturesData() as $portalFeatureStateData)
+        {
+            $portalFeatureState = new PortalFeatureState();
+            $portalFeatureState->setName($portalFeatureStateData[0]);
+            $portalFeatureState->setSlug(
+                $this->slugService->createCommonSlug($portalFeatureStateData[0])
+            );
+            $portalFeatureState->setPosition($portalFeatureStateData[1]);
+
+            $manager->persist($portalFeatureState);
+        }
+
 
         /* TODO vylepšit, abych nemusel 2x dělat flush */
         $manager->flush();
@@ -143,6 +158,15 @@ class Fixtures extends Fixture
           ['Upcoming', 2],
           ['In-progress', 3],
           ['Done', 4]
+        ];
+    }
+
+    private function getPortalFeaturesData()
+    {
+        return [
+          ['Nápady', 1],
+          ['Ve vývoji', 2],
+          ['Hotovo', 3]
         ];
     }
 
