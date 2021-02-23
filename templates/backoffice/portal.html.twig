@@ -12,9 +12,16 @@
             <a href="{{ path('add-feature', {slug: companySlug}) }}">Přidat feature</a>
         </div>
         <h2>Portal</h2>
-        {% if portal.display %}
-            Portal naleznete <a href="{{ path('front-office-portal', {'slug':portal.slug}) }}">zde</a>
-        {% endif %}
         {{ form(form) }}
+        {% if portal.display %}
+            <h3>Portal běží</h3>
+            Portal naleznete <a href="{{ path('front-office-portal', {'slug':portal.slug}) }}">zde</a>
+            <h4>Features k zobrazení</h4>
+            <ul>
+                {% for portalFeature in portalFeatures %}
+                    <li><a href="{{ path('feature-portal', {'company_slug':companySlug, 'feature_id':portalFeature.feature.id}) }}">{{ portalFeature.name }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     {% endif %}
 {% endblock %}

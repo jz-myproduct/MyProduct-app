@@ -6,6 +6,7 @@ namespace App\Controller\FrontOffice;
 
 use App\Entity\Company;
 use App\Entity\Portal;
+use App\Entity\PortalFeature;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,8 +39,12 @@ class PortalController extends AbstractController
             throw new NotFoundHttpException();
         }
 
+        $portalFeatures = $this->manager->getRepository(PortalFeature::class)
+            ->findFeaturesForPortal($portal->getCompany());
+
         return $this->render('frontoffice/portal.html.twig', [
-            'portalName' => $portal->getName()
+            'portalName' => $portal->getName(),
+            'portalFeatures' => $portalFeatures
         ]);
     }
 }
