@@ -38,7 +38,7 @@ class FeatureTagController extends AbstractController
             $name = $form->get('name')->getData();
 
             $tag->setName($name);
-            $tag->setSlug($slugService->createGeneralSlug($name));
+            $tag->setSlug($slugService->createCommonSlug($name));
             $tag->setCompany( $company );
 
             $entityManager->persist($tag);
@@ -78,7 +78,7 @@ class FeatureTagController extends AbstractController
             $name = $form->get('name')->getData();
 
             $tag->setName($name);
-            $tag->setSlug($slugService->createGeneralSlug($name));
+            $tag->setSlug($slugService->createCommonSlug($name));
 
             $entityManager->persist($tag);
             $entityManager->flush();
