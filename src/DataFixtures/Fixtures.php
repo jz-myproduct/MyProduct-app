@@ -49,7 +49,9 @@ class Fixtures extends Fixture
         $portal = new Portal();
         $portal->setDisplay(false);
         $portal->setName('Honzova firma');
-        $portal->setSlug('Honzova firma');
+        $portal->setSlug(
+            $this->slugService->createInitialPortalSlug('Honzova firma')
+        );
         $portal->setCompany($company);
         $portal->setCreatedAt($currentDateTime);
         $portal->setUpdatedAt($currentDateTime);

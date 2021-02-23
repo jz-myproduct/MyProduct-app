@@ -2,8 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Company;
 use App\Entity\Portal;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,16 +22,32 @@ class PortalRepository extends ServiceEntityRepository
         parent::__construct($registry, Portal::class);
     }
 
-    public function getSimilarSlugsCount(String $slug): int
+    public function getSimilarSlugsCountForExistingCompany(String $slug, Portal $portal)
     {
-        $count = $this->createQueryBuilder('c')
-            ->select('count(c.id)')
-            ->where('c.slug LIKE :slug')
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "SELECT count(id)
+                FROM portal
+                WHERE slug LIKE ? AND id != ?";
+
+        // TODO vylepšit exception
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$slug . '%', $portal->getId()]);
+
+        return (int)$stmt->fetchOne();
+    }
+
+    public function getSimilarSlugsCountForNewPortal(String $slug)
+    {
+        $count = $this->createQueryBuilder('p')
+            ->select('count(p.id)')
+            ->where('p.slug LIKE :slug')
             ->setParameter('slug', $slug.'%')
             ->getQuery()
             ->getSingleScalarResult();
 
         return (int)$count;
+
     }
 
     // /**
