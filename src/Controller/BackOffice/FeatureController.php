@@ -286,6 +286,8 @@ class FeatureController extends AbstractController
 
             $this->manager->persist($portalFeature);
             $this->manager->flush();
+
+            $this->addFlash('success', 'Portal feature updated');
         }
 
         return $this->render('backoffice/featurePortal.html.twig',[
