@@ -52,6 +52,12 @@ class PortalFeature
      */
     private $slug;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=PortalFeatureState::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $state;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -137,6 +143,18 @@ class PortalFeature
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getState(): ?PortalFeatureState
+    {
+        return $this->state;
+    }
+
+    public function setState(?PortalFeatureState $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }
