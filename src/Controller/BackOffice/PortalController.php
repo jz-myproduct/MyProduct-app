@@ -5,6 +5,7 @@ namespace App\Controller\BackOffice;
 
 use App\Entity\Company;
 use App\Entity\Portal;
+use App\Entity\PortalFeature;
 use App\Form\PortalFormType;
 use App\Services\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -44,8 +45,12 @@ class PortalController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $company);
 
         $portal = $company->getPortal();
+        $portalFeatures = $this->manager->getRepository(PortalFeature::class)
+            ->findFeaturesForPortal($company);
+
         $form = $this->createForm(PortalFormType::class, $portal);
         $form->handleRequest($request);
+
 
         if($form->isSubmitted() && $form->isValid())
         {
@@ -64,7 +69,8 @@ class PortalController extends AbstractController
         return $this->render('backoffice/portal.html.twig', [
            'companySlug' => $company->getSlug(),
            'form' => $form->createView(),
-           'portal' => $portal
+           'portal' => $portal,
+           'portalFeatures' => $portalFeatures
         ]);
     }
 

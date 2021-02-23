@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Company;
 use App\Entity\PortalFeature;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -18,6 +20,41 @@ class PortalFeatureRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, PortalFeature::class);
     }
+
+    public function findFeaturesForPortal(Company $company)
+    {
+
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.feature', 'f')
+            ->where('f.company = :company')
+            ->andWhere('p.display = 1')
+            ->setParameter('company', $company)
+            ->getQuery()
+            ->getResult();
+
+        /*
+        $entityManger = $this->getEntityManager();
+
+        $sql = 'SELECT p.id, f.id
+                FROM portal_feature p
+                JOIN feature f 
+                ON p.feature_id = f.id';
+
+        $rms = new ResultSetMappingBuilder( $entityManger );
+        $rms->addRootEntityFromClassMetadata('App\Entity\PortalFeature', 'p');
+        $rms->addJoinedEntityFromClassMetadata('App\Entit');
+
+
+        return $entityManger
+            ->createNativeQuery($sql, $rms)
+            ->getResult();
+        */
+    }
+
+
+
+
+
 
     // /**
     //  * @return PortalFeature[] Returns an array of PortalFeature objects
