@@ -44,10 +44,8 @@ class PortalFeatureFormType extends AbstractType
             ->add('display', CheckboxType::class, [
                 'label' => 'Zobrazit na portále',
                 'required' => false
-            ]);
-        $builder->add('save', SubmitType::class, ['label' => 'Register'])
-
-        ;
+            ])
+            ->add('save', SubmitType::class, ['label' => 'Register']);
     }
 
     public function configureOptions(OptionsResolver $resolver)
