@@ -77,12 +77,11 @@ class SecurityController extends AbstractController
             $portal = new Portal();
             $portal->setName($name);
             $portal->setSlug(
-                $slugService->createPortalSlug($name)
+                $slugService->createInitialPortalSlug($name)
             );
             $portal->setDisplay(false);
             $portal->setCreatedAt($currentDateTime);
             $portal->setUpdatedAt($currentDateTime);
-
             $company->setPortal($portal);
 
             $this->manager->persist($portal);

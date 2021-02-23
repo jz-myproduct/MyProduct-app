@@ -4,6 +4,7 @@
 namespace App\Controller\BackOffice;
 
 use App\Entity\Company;
+use App\Entity\Portal;
 use App\Form\PortalFormType;
 use App\Services\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -51,7 +52,7 @@ class PortalController extends AbstractController
             $name = $form->get('name')->getData();
             $portal->setName($name);
             $portal->setSlug(
-                $this->slugService->createCompanySlug($name)
+                $this->slugService->createPortalSlug($name, $portal)
             );
             $portal->setDisplay(
                 $form->get('display')->getData()

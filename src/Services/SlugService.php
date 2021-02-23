@@ -26,19 +26,30 @@ class SlugService
 
     public function createCompanySlug(String $value)
     {
-        return $this->handleUniqueSlug($value, Company::class);
+        $slug = $this->prepareSlug($value);
+
+        $count = $this->entityManager->getRepository(Company::class)
+            ->getSimilarSlugsCount($slug);
+
+        return $this->handleCount($slug, $count);
     }
 
-    public function createPortalSlug(String $value)
-    {
-        return $this->handleUniqueSlug($value, Portal::class);
-    }
-
-    private function handleUniqueSlug(String $value, String $class)
+    public function createInitialPortalSlug(String $value)
     {
         $slug = $this->prepareSlug($value);
 
-        $count = $this->entityManager->getRepository($class)->getSimilarSlugsCount($slug);
+        $count = $this->entityManager->getRepository(Portal::class)
+            ->getSimilarSlugsCountForNewPortal($slug);
+
+        return $this->handleCount($slug, $count);
+    }
+
+    public function createPortalSlug(String $value, Portal $portal)
+    {
+        $slug = $this->prepareSlug($value);
+
+        $count = $this->entityManager->getRepository(Portal::class)
+            ->getSimilarSlugsCountForExistingCompany($slug, $portal);
 
         return $this->handleCount($slug, $count);
     }
