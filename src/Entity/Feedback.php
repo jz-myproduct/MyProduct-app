@@ -45,11 +45,6 @@ class Feedback
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $status;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Feature::class)
      */
     private $feature;
@@ -59,11 +54,15 @@ class Feedback
      */
     private $fromPortal;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isNew;
+
     public function __construct()
     {
         $this->feature = new ArrayCollection();
     }
-
 
 
     public function getId(): ?int
@@ -134,48 +133,6 @@ class Feedback
         return $this;
     }
 
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function getStatuses(): array
-    {
-        return ['new', 'active'];
-    }
-
-    public function setNewStatus(): self
-    {
-        $this->status = 'new';
-
-        return $this;
-    }
-
-    public function setActiveStatus(): self
-    {
-        $this->status = 'active';
-
-        return $this;
-    }
-
-    public function switchStatus(): self
-    {
-        if($this->getStatus() === 'new')
-        {
-            $this->setActiveStatus();
-            return $this;
-        }
-
-        if($this->getStatus() === 'active')
-        {
-            $this->setNewStatus();
-            return $this;
-        }
-
-        /* TODO tady by to asi chtělo spíše hodit exception */
-        return $this;
-    }
-
     /**
      * @return Collection|Feature[]
      */
@@ -208,6 +165,37 @@ class Feedback
     public function setFromPortal(bool $fromPortal): self
     {
         $this->fromPortal = $fromPortal;
+
+        return $this;
+    }
+
+    public function getIsNew(): ?bool
+    {
+        return $this->isNew;
+    }
+
+    public function setIsNew(bool $isNew): self
+    {
+        $this->isNew = $isNew;
+
+        return $this;
+    }
+
+    public function switchIsNew()
+    {
+        if($this->isNew)
+        {
+            $this->setIsNew(false);
+
+            return $this;
+        }
+
+        if(!$this->isNew)
+        {
+            $this->setIsNew(true);
+
+            return $this;
+        }
 
         return $this;
     }
