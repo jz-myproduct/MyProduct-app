@@ -114,7 +114,7 @@ class PortalController extends AbstractController
      */
     public function featureDetail(Portal $portal, PortalFeature $portalFeature)
     {
-        if(! $this->checkAccess($portal, $portalFeature) ){
+        if(! $this->featureIsAllowedToDisplay($portal, $portalFeature) ){
             throw new NotFoundHttpException();
         }
 
@@ -166,6 +166,7 @@ class PortalController extends AbstractController
                 $portalFeature->getFeature()
             );
             $portalFeature->getFeature()->setScoreUpByOne();
+            $portalFeature->setFeedbackCountUpByOne();
 
             $this->manager->persist($feedback);
             $this->manager->flush();
