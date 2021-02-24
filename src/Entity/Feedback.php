@@ -54,6 +54,11 @@ class Feedback
      */
     private $feature;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $fromPortal;
+
     public function __construct()
     {
         $this->feature = new ArrayCollection();
@@ -191,6 +196,18 @@ class Feedback
     public function removeFeature(Feature $feature): self
     {
         $this->feature->removeElement($feature);
+
+        return $this;
+    }
+
+    public function getFromPortal(): ?bool
+    {
+        return $this->fromPortal;
+    }
+
+    public function setFromPortal(bool $fromPortal): self
+    {
+        $this->fromPortal = $fromPortal;
 
         return $this;
     }
