@@ -5,11 +5,15 @@ namespace App\Controller\FrontOffice;
 
 
 use App\Entity\Company;
+use App\Entity\Feedback;
 use App\Entity\Portal;
 use App\Entity\PortalFeature;
+use App\Form\FeedbackFormType;
+use App\Form\PortalGeneralFeedbackFormType;
 use App\Services\PortalFeatureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -46,8 +50,56 @@ class PortalController extends AbstractController
         }
 
         return $this->render('frontoffice/portal.html.twig', [
-            'portalName' => $portal->getName(),
+            'portal' => $portal,
             'featuresByState' => $this->portalFeatureService->getArray($portal->getCompany())
+        ]);
+    }
+
+    /**
+     * @Route("/portal/{slug}/pridat-feedback", name="front-office-portal-add-feedback")
+     * @param Portal $portal
+     * @param Request $request
+     * @return RedirectResponse|Response
+     * @throws \Exception
+     */
+    public function addFeedback(Portal $portal, Request $request)
+    {
+        if (!$portal->getDisplay()) {
+            throw new NotFoundHttpException();
+        }
+
+        $feedback = new Feedback();
+        $form = $this->createForm(PortalGeneralFeedbackFormType::class, $feedback);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $feedback->setDescription(
+                $form->get('description')->getData()
+            );
+            $feedback->setSource(
+                $form->get('source')->getData()
+            );
+            $feedback->setCompany(
+                $portal->getCompany()
+            );
+            $feedback->setIsNew(true);
+
+            $currentDateTime = new \DateTime();
+            $feedback->setCreatedAt($currentDateTime);
+            $feedback->setUpdatedAt($currentDateTime);
+            $feedback->setFromPortal(true);
+
+            $this->manager->persist($feedback);
+            $this->manager->flush();
+
+            return $this->redirectToRoute('front-office-portal', [
+                'slug' => $portal->getSlug()
+            ]);
+        }
+
+        return $this->render('frontoffice/portalAddGeneralFeedback.html.twig', [
+            'portalName' => $portal->getName(),
+            'form' => $form->createView()
         ]);
     }
 }

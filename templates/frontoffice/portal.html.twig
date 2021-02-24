@@ -3,7 +3,8 @@
     {{ 'register_action'|trans }}
 {% endblock %}
 {% block body %}
-    <h1>Portál firmy: {{ portalName }}</h1>
+    <h1>Portál firmy: {{ portal.name }}</h1>
+    <a href="{{ path('front-office-portal-add-feedback', {'slug':portal.slug}) }}">Přidat feedback</a>
     <h2>Features</h2>
     {% for stateWithFeatures in featuresByState %}
         <strong>{{ stateWithFeatures.state }}</strong><br />
