@@ -117,6 +117,7 @@ class Fixtures extends Fixture
             $feedback->setCompany( $company );
             $feedback->setDescription( $data[0] );
             $feedback->setSource( $data[1] );
+            $feedback->setFromPortal(false);
             if($data[2] === 'active')
             {
                 $feedback->setActiveStatus();

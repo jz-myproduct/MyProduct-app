@@ -63,6 +63,7 @@ class FeedbackController extends AbstractController
             $currentDateTime = new \DateTime();
             $feedback->setCreatedAt($currentDateTime);
             $feedback->setUpdatedAt($currentDateTime);
+            $feedback->setFromPortal(false);
 
             $this->manager->persist($feedback);
             $this->manager->flush();
