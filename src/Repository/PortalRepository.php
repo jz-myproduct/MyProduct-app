@@ -47,8 +47,9 @@ class PortalRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
 
         return (int)$count;
-
     }
+
+
 
     // /**
     //  * @return Portal[] Returns an array of Portal objects

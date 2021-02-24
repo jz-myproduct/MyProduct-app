@@ -5,7 +5,10 @@
 {% block body %}
     <h1>Portál firmy: {{ portalName }}</h1>
     <h2>Features</h2>
-    {%  for feature in portalFeatures %}
-        {{ feature.name }}
+    {% for stateWithFeatures in featuresByState %}
+        <strong>{{ stateWithFeatures.state }}</strong><br />
+        {% for feature in stateWithFeatures.features %}
+            {{ feature.name }}<br/>
+        {% endfor %}
     {% endfor %}
 {% endblock %}

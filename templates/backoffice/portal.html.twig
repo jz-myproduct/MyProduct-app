@@ -17,11 +17,14 @@
             <h3>Portal běží</h3>
             Portal naleznete <a href="{{ path('front-office-portal', {'slug':portal.slug}) }}">zde</a>
             <h4>Features k zobrazení</h4>
-            <ul>
-                {% for portalFeature in portalFeatures %}
-                    <li><a href="{{ path('feature-portal', {'company_slug':companySlug, 'feature_id':portalFeature.feature.id}) }}">{{ portalFeature.name }}</a></li>
+
+                {% for stateWithFeatures in featuresByState %}
+                    <strong>{{ stateWithFeatures.state }}</strong><br />
+                    {% for feature in stateWithFeatures.features %}
+                        {{ feature.name }}<br/>
+                    {% endfor %}
                 {% endfor %}
-            </ul>
+
         {% endif %}
     {% endif %}
 {% endblock %}

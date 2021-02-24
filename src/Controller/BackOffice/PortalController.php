@@ -6,7 +6,9 @@ namespace App\Controller\BackOffice;
 use App\Entity\Company;
 use App\Entity\Portal;
 use App\Entity\PortalFeature;
+use App\Entity\PortalFeatureState;
 use App\Form\PortalFormType;
+use App\Services\PortalFeatureService;
 use App\Services\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,11 +29,19 @@ class PortalController extends AbstractController
      * @var SlugService
      */
     private $slugService;
+    /**
+     * @var PortalFeatureService
+     */
+    private $portalFeatureService;
 
-    public function __construct(EntityManagerInterface $manager, SlugService $slugService)
+    public function __construct(
+        EntityManagerInterface $manager,
+        SlugService $slugService,
+        PortalFeatureService $portalFeatureService)
     {
         $this->manager = $manager;
         $this->slugService = $slugService;
+        $this->portalFeatureService = $portalFeatureService;
     }
 
     /**
@@ -45,8 +55,6 @@ class PortalController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $company);
 
         $portal = $company->getPortal();
-        $portalFeatures = $this->manager->getRepository(PortalFeature::class)
-            ->findFeaturesForPortal($company);
 
         $form = $this->createForm(PortalFormType::class, $portal);
         $form->handleRequest($request);
@@ -70,7 +78,7 @@ class PortalController extends AbstractController
            'companySlug' => $company->getSlug(),
            'form' => $form->createView(),
            'portal' => $portal,
-           'portalFeatures' => $portalFeatures
+           'featuresByState' => $this->portalFeatureService->getArray($company)
         ]);
     }
 
