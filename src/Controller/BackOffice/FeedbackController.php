@@ -58,7 +58,7 @@ class FeedbackController extends AbstractController
                 $form->get('source')->getData()
             );
             $feedback->setCompany($company);
-            $feedback->setNewStatus();
+            $feedback->setIsNew(true);
 
             $currentDateTime = new \DateTime();
             $feedback->setCreatedAt($currentDateTime);
@@ -173,7 +173,7 @@ class FeedbackController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $feedback);
 
-        $feedback->switchStatus();
+        $feedback->switchIsNew();
 
         $this->manager->flush();
 

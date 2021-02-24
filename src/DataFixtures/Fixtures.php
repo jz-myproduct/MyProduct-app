@@ -120,11 +120,11 @@ class Fixtures extends Fixture
             $feedback->setFromPortal(false);
             if($data[2] === 'active')
             {
-                $feedback->setActiveStatus();
+                $feedback->setIsNew(false);
             }
             if($data[2] === 'new')
             {
-                $feedback->setNewStatus();
+                $feedback->setIsNew(true);
             }
 
             $currentDateTime = new \DateTime();
