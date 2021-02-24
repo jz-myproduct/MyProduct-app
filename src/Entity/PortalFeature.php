@@ -58,6 +58,11 @@ class PortalFeature
      */
     private $state;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $feedbackCount;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -158,4 +163,31 @@ class PortalFeature
 
         return $this;
     }
+
+    public function getFeedbackCount(): ?int
+    {
+        return $this->feedbackCount;
+    }
+
+    public function setFeedbackCount(int $feedbackCount): self
+    {
+        $this->feedbackCount = $feedbackCount;
+
+        return $this;
+    }
+
+    public function setFeedbackCountUpByOne()
+    {
+        $this->feedbackCount += 1;
+
+        return $this;
+    }
+
+    public function setFeedbackCountDownByOne()
+    {
+        $this->feedbackCount -= 1;
+
+        return $this;
+    }
+
 }

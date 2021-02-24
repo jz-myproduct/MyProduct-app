@@ -261,6 +261,9 @@ class FeatureController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $feature);
 
         $portalFeature = $feature->getPortalFeature() ?? new PortalFeature();
+        $currentFeedbackCount = $feature->getPortalFeature() ?
+             $feature->getPortalFeature()->getFeedbackCount()
+           : 0;
 
         $form = $this->createForm(PortalFeatureFormType::class, $portalFeature);
         $form->handleRequest($request);
@@ -270,6 +273,10 @@ class FeatureController extends AbstractController
             $name = $form->get('name')->getData();
             $currentDateTime = new \DateTime();
 
+            if($currentFeedbackCount === 0)
+            {
+                $portalFeature->setFeedbackCount(0);
+            }
             $portalFeature->setName($name);
             $portalFeature->setSlug(
                 $this->slugService->createCommonSlug($name)
@@ -283,6 +290,7 @@ class FeatureController extends AbstractController
             $portalFeature->setCreatedAt($currentDateTime);
             $portalFeature->setUpdatedAt($currentDateTime);
             $portalFeature->setFeature($feature);
+
 
             $this->manager->persist($portalFeature);
             $this->manager->flush();
