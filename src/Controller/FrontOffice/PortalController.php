@@ -5,6 +5,7 @@ namespace App\Controller\FrontOffice;
 
 
 use App\Entity\Company;
+use App\Entity\Feature;
 use App\Entity\Feedback;
 use App\Entity\Portal;
 use App\Entity\PortalFeature;
@@ -62,7 +63,7 @@ class PortalController extends AbstractController
      * @return RedirectResponse|Response
      * @throws \Exception
      */
-    public function addFeedback(Portal $portal, Request $request)
+    public function addGeneralFeedback(Portal $portal, Request $request)
     {
         if (!$portal->getDisplay()) {
             throw new NotFoundHttpException();
@@ -102,4 +103,77 @@ class PortalController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("/portal/{portal_slug}/feature/{feature_id}/pridat-feedback", name="front-office-portal-add-feature-feedback")
+     * @ParamConverter("portal", options={"mapping": {"portal_slug": "slug"}})
+     * @ParamConverter("portalFeature", options={"mapping": {"feature_id": "id"}})
+     * @param Portal $portal
+     * @param PortalFeature $portalFeature
+     * @param Request $request
+     * @return Response
+     * @throws \Exception
+     */
+    public function addFeatureFeedback(Portal $portal, PortalFeature $portalFeature, Request $request)
+    {
+        if(! $portal->getDisplay())
+        {
+            throw new NotFoundHttpException();
+        }
+
+        if(! $portalFeature->getDisplay())
+        {
+            throw new NotFoundHttpException();
+        }
+
+        if($portalFeature->getFeature()->getCompany() !== $portal->getCompany())
+        {
+            throw new NotFoundHttpException();
+        }
+
+        $feedback = new Feedback();
+        $form = $this->createForm(PortalGeneralFeedbackFormType::class, $feedback);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $feedback->setDescription(
+                $form->get('description')->getData()
+            );
+            $feedback->setSource(
+                $form->get('source')->getData()
+            );
+            $feedback->setCompany(
+                $portal->getCompany()
+            );
+            $feedback->setIsNew(true);
+
+            $currentDateTime = new \DateTime();
+            $feedback->setCreatedAt($currentDateTime);
+            $feedback->setUpdatedAt($currentDateTime);
+            $feedback->setFromPortal(true);
+
+            $feedback->addFeature(
+                $portalFeature->getFeature()
+            );
+            $portalFeature->getFeature()->setScoreUpByOne();
+
+            $this->manager->persist($feedback);
+            $this->manager->flush();
+
+            return $this->redirectToRoute('front-office-portal', [
+                'slug' => $portal->getSlug(),
+            ]);
+        }
+
+
+        return $this->render('frontoffice/portalAddFeatureFeedback.html.twig', [
+            'form' => $form->createView(),
+            'portalName' => $portal->getName(),
+            'featureName' => $portalFeature->getName()
+        ]);
+
+
+    }
+
+
 }
