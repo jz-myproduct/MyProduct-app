@@ -31,7 +31,6 @@ class PortalFeatureFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->states = $options['states'];
 
         $builder
             ->add('name', TextType::class)

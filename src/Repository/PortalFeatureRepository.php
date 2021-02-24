@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Company;
 use App\Entity\PortalFeature;
+use App\Entity\PortalFeatureState;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -31,24 +32,21 @@ class PortalFeatureRepository extends ServiceEntityRepository
             ->setParameter('company', $company)
             ->getQuery()
             ->getResult();
+    }
 
-        /*
-        $entityManger = $this->getEntityManager();
+    public function findFeaturesForPortalByState(Company $company, PortalFeatureState $state)
+    {
 
-        $sql = 'SELECT p.id, f.id
-                FROM portal_feature p
-                JOIN feature f 
-                ON p.feature_id = f.id';
-
-        $rms = new ResultSetMappingBuilder( $entityManger );
-        $rms->addRootEntityFromClassMetadata('App\Entity\PortalFeature', 'p');
-        $rms->addJoinedEntityFromClassMetadata('App\Entit');
-
-
-        return $entityManger
-            ->createNativeQuery($sql, $rms)
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.feature', 'f')
+            ->where('f.company = :company')
+            ->andWhere('p.display = 1')
+            ->andWhere('p.state = :state')
+            ->setParameter('company', $company)
+            ->setParameter('state', $state)
+            ->getQuery()
             ->getResult();
-        */
+
     }
 
 
