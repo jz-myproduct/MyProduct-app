@@ -105,6 +105,26 @@ class PortalController extends AbstractController
     }
 
     /**
+     * @Route("/portal/{portal_slug}/feature/{feature_id}", name="front-office-portal-feature-detail")
+     * @ParamConverter("portal", options={"mapping": {"portal_slug": "slug"}})
+     * @ParamConverter("portalFeature", options={"mapping": {"feature_id": "id"}})
+     * @param Portal $portal
+     * @param PortalFeature $portalFeature
+     * @return Response
+     */
+    public function featureDetail(Portal $portal, PortalFeature $portalFeature)
+    {
+        if(! $this->checkAccess($portal, $portalFeature) ){
+            throw new NotFoundHttpException();
+        }
+
+        return $this->render('frontoffice/portalFeatureDetail.html.twig', [
+           'portalName' => $portal->getName(),
+           'feature' => $portalFeature
+        ]);
+    }
+
+    /**
      * @Route("/portal/{portal_slug}/feature/{feature_id}/pridat-feedback", name="front-office-portal-add-feature-feedback")
      * @ParamConverter("portal", options={"mapping": {"portal_slug": "slug"}})
      * @ParamConverter("portalFeature", options={"mapping": {"feature_id": "id"}})
@@ -116,18 +136,8 @@ class PortalController extends AbstractController
      */
     public function addFeatureFeedback(Portal $portal, PortalFeature $portalFeature, Request $request)
     {
-        if(! $portal->getDisplay())
-        {
-            throw new NotFoundHttpException();
-        }
 
-        if(! $portalFeature->getDisplay())
-        {
-            throw new NotFoundHttpException();
-        }
-
-        if($portalFeature->getFeature()->getCompany() !== $portal->getCompany())
-        {
+        if(! $this->featureIsAllowedToDisplay($portal, $portalFeature) ){
             throw new NotFoundHttpException();
         }
 
@@ -171,8 +181,26 @@ class PortalController extends AbstractController
             'portalName' => $portal->getName(),
             'featureName' => $portalFeature->getName()
         ]);
+    }
 
+    private function featureIsAllowedToDisplay(Portal $portal, PortalFeature $portalFeature)
+    {
+        if(! $portal->getDisplay())
+        {
+            return false;
+        }
 
+        if(! $portalFeature->getDisplay())
+        {
+            return false;
+        }
+
+        if($portalFeature->getFeature()->getCompany() !== $portal->getCompany())
+        {
+            return false;
+        }
+
+        return true;
     }
 
 
