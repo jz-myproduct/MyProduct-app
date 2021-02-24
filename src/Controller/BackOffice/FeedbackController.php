@@ -5,8 +5,13 @@ namespace App\Controller\BackOffice;
 use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\Feedback;
-use App\Events\FeedbackUpdatedEvent;
 use App\Form\FeedbackFormType;
+use App\Handler\Feedback\Add;
+use App\Handler\Feedback\AddRelation;
+use App\Handler\Feedback\Delete;
+use App\Handler\Feedback\DeleteRelation;
+use App\Handler\Feedback\Edit;
+use App\Handler\Feedback\SwitchStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -37,43 +42,25 @@ class FeedbackController extends AbstractController
      * @Route("/admin/{slug}/feedback/pridat", name="add-feedback")
      * @param Company $company
      * @param Request $request
+     * @param Add $handler
      * @return Response
-     * @throws \Exception
      */
-    public function add(Company $company, Request $request): Response
+    public function add(Company $company, Request $request, Add $handler): Response
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        $feedback = new Feedback();
-        $form = $this->createForm(FeedbackFormType::class, $feedback, [
+        $form = $this->createForm(FeedbackFormType::class, $feedback = new Feedback(), [
             'featureChoices' => $company->getFeatures()
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $feedback->setDescription(
-                $form->get('description')->getData()
-            );
-            $feedback->setSource(
-                $form->get('source')->getData()
-            );
-            $feedback->setCompany($company);
-            $feedback->setIsNew(true);
 
-            $currentDateTime = new \DateTime();
-            $feedback->setCreatedAt($currentDateTime);
-            $feedback->setUpdatedAt($currentDateTime);
-            $feedback->setFromPortal(false);
-
-            $this->manager->persist($feedback);
-            $this->manager->flush();
-
-            $this->dispatchFeedbackUpdatedEvent();
+            $handler->handle($feedback, $company);
 
             return $this->redirectToRoute('feedback-list', [
                 'slug' => $company->getSlug()
             ]);
-
         }
 
         return $this->render('backoffice/addEditFeedback.html.twig', [
@@ -90,10 +77,10 @@ class FeedbackController extends AbstractController
      * @param Company $company
      * @param Feedback $feedback
      * @param Request $request
+     * @param Edit $handler
      * @return Response
-     * @throws \Exception
      */
-    public function edit(Company $company, Feedback $feedback, Request $request)
+    public function edit(Company $company, Feedback $feedback, Request $request, Edit $handler)
     {
         $this->denyAccessUnlessGranted('edit', $feedback);
 
@@ -103,17 +90,8 @@ class FeedbackController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $feedback->setDescription(
-                $form->get('description')->getData()
-            );
-            $feedback->setSource(
-                $form->get('source')->getData()
-            );
-            $feedback->setUpdatedAt(new \DateTime());
 
-            $this->manager->flush();
-
-            $this->dispatchFeedbackUpdatedEvent();
+            $handler->handle($feedback);
 
             $this->addFlash('success', 'Feedback updated');
         }
@@ -145,16 +123,14 @@ class FeedbackController extends AbstractController
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
      * @param Feedback $feedback
+     * @param Delete $handler
      * @return RedirectResponse
      */
-    public function delete(Company $company, Feedback $feedback)
+    public function delete(Company $company, Feedback $feedback, Delete $handler)
     {
         $this->denyAccessUnlessGranted('edit', $feedback);
 
-        $this->manager->remove($feedback);
-        $this->manager->flush();
-
-        $this->dispatchFeedbackUpdatedEvent();
+        $handler->delete($feedback);
 
         return $this->redirectToRoute('feedback-list', [
             'slug' => $company->getSlug()
@@ -167,15 +143,14 @@ class FeedbackController extends AbstractController
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
      * @param Feedback $feedback
+     * @param SwitchStatus $handler
      * @return RedirectResponse
      */
-    public function switchStatus(Company $company, Feedback $feedback)
+    public function switchStatus(Company $company, Feedback $feedback, SwitchStatus $handler)
     {
         $this->denyAccessUnlessGranted('edit', $feedback);
 
-        $feedback->switchIsNew();
-
-        $this->manager->flush();
+        $handler->handle($feedback);
 
         return $this->redirectToRoute('feedback-list', [
             'slug' => $company->getSlug()
@@ -214,16 +189,21 @@ class FeedbackController extends AbstractController
      * @param Company $company
      * @param Feedback $feedback
      * @param Feature $feature
+     * @param AddRelation $handler
      * @return RedirectResponse
      */
-    public function addFeedbackFeatureRelation(Company $company, Feedback $feedback, Feature $feature)
+    public function addFeedbackFeatureRelation(
+        Company $company,
+        Feedback $feedback,
+        Feature $feature,
+        AddRelation $handler)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
         $this->denyAccessUnlessGranted('edit', $feedback);
 
+        // feedback already connected to feature
         if (in_array($feature, $feedback->getFeature()->toArray())) {
 
-            // pokud náhodou už feature k feedbacku přidaná je, jen redirectu na detail
             return $this->redirectToRoute('feedback-detail',[
                 'company_slug' => $company->getSlug(),
                 'feedback_id' => $feedback->getId()
@@ -231,10 +211,7 @@ class FeedbackController extends AbstractController
 
         }
 
-        $feedback->addFeature( $feature );
-        $feature->setScoreUpByOne();
-
-        $this->manager->flush();
+        $handler->handle($feedback, $feature);
 
         return $this->redirectToRoute('feedback-detail',[
             'company_slug' => $company->getSlug(),
@@ -251,9 +228,15 @@ class FeedbackController extends AbstractController
      * @param Feedback $feedback
      * @param Feature $feature
      * @param Request $request
+     * @param DeleteRelation $handler
      * @return Response
      */
-    public function deleteFeedbackFeatureRelation(Company $company, Feedback $feedback, Feature $feature, Request $request)
+    public function deleteFeedbackFeatureRelation(
+        Company $company,
+        Feedback $feedback,
+        Feature $feature,
+        Request $request,
+        DeleteRelation $handler)
     {
 
         $this->denyAccessUnlessGranted('edit', $feature);
@@ -263,12 +246,9 @@ class FeedbackController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $feedback->removeFeature($feature);
-        $feature->setScoreDownByOne();
+        $handler->handle($feedback, $feature);
 
-        $this->manager->flush();
-
-        /* tohle je strašně dlouhé, pak by chtělo nějak zlepšit - až budu mít handlery */
+        // TODO refactor
         if ($request->query->get('p') === 'feature') {
 
             return $this->redirectToRoute('feature-detail', [
@@ -288,15 +268,6 @@ class FeedbackController extends AbstractController
         return $this->redirectToRoute('home', [
             'slug' => $company->getSlug()
         ]);
-
-    }
-
-    private function dispatchFeedbackUpdatedEvent()
-    {
-        return $this->dispatcher->dispatch(
-            new FeedbackUpdatedEvent(),
-            'feedback.updated.event'
-        );
 
     }
 }
