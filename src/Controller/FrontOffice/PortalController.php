@@ -11,6 +11,8 @@ use App\Entity\Portal;
 use App\Entity\PortalFeature;
 use App\Form\FeedbackFormType;
 use App\Form\PortalGeneralFeedbackFormType;
+use App\Handler\Feedback\AddFeatureFeedbackOnPortal;
+use App\Handler\Feedback\AddGeneralOnPortal;
 use App\Services\PortalFeatureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -60,38 +62,21 @@ class PortalController extends AbstractController
      * @Route("/portal/{slug}/pridat-feedback", name="front-office-portal-add-feedback")
      * @param Portal $portal
      * @param Request $request
+     * @param AddGeneralOnPortal $handler
      * @return RedirectResponse|Response
-     * @throws \Exception
      */
-    public function addGeneralFeedback(Portal $portal, Request $request)
+    public function addGeneralFeedback(Portal $portal, Request $request, AddGeneralOnPortal $handler)
     {
         if (!$portal->getDisplay()) {
             throw new NotFoundHttpException();
         }
 
-        $feedback = new Feedback();
-        $form = $this->createForm(PortalGeneralFeedbackFormType::class, $feedback);
+        $form = $this->createForm(PortalGeneralFeedbackFormType::class, $feedback = new Feedback());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $feedback->setDescription(
-                $form->get('description')->getData()
-            );
-            $feedback->setSource(
-                $form->get('source')->getData()
-            );
-            $feedback->setCompany(
-                $portal->getCompany()
-            );
-            $feedback->setIsNew(true);
 
-            $currentDateTime = new \DateTime();
-            $feedback->setCreatedAt($currentDateTime);
-            $feedback->setUpdatedAt($currentDateTime);
-            $feedback->setFromPortal(true);
-
-            $this->manager->persist($feedback);
-            $this->manager->flush();
+            $handler->handle($feedback, $portal->getCompany());
 
             return $this->redirectToRoute('front-office-portal', [
                 'slug' => $portal->getSlug()
@@ -131,45 +116,26 @@ class PortalController extends AbstractController
      * @param Portal $portal
      * @param PortalFeature $portalFeature
      * @param Request $request
+     * @param AddFeatureFeedbackOnPortal $handler
      * @return Response
-     * @throws \Exception
      */
-    public function addFeatureFeedback(Portal $portal, PortalFeature $portalFeature, Request $request)
+    public function addFeatureFeedback(
+        Portal $portal,
+        PortalFeature $portalFeature,
+        Request $request,
+        AddFeatureFeedbackOnPortal $handler)
     {
 
         if(! $this->featureIsAllowedToDisplay($portal, $portalFeature) ){
             throw new NotFoundHttpException();
         }
 
-        $feedback = new Feedback();
-        $form = $this->createForm(PortalGeneralFeedbackFormType::class, $feedback);
+        $form = $this->createForm(PortalGeneralFeedbackFormType::class, $feedback = new Feedback());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $feedback->setDescription(
-                $form->get('description')->getData()
-            );
-            $feedback->setSource(
-                $form->get('source')->getData()
-            );
-            $feedback->setCompany(
-                $portal->getCompany()
-            );
-            $feedback->setIsNew(true);
 
-            $currentDateTime = new \DateTime();
-            $feedback->setCreatedAt($currentDateTime);
-            $feedback->setUpdatedAt($currentDateTime);
-            $feedback->setFromPortal(true);
-
-            $feedback->addFeature(
-                $portalFeature->getFeature()
-            );
-            $portalFeature->getFeature()->setScoreUpByOne();
-            $portalFeature->setFeedbackCountUpByOne();
-
-            $this->manager->persist($feedback);
-            $this->manager->flush();
+            $handler->handle($feedback, $portalFeature, $portal->getCompany());
 
             return $this->redirectToRoute('front-office-portal', [
                 'slug' => $portal->getSlug(),
@@ -184,6 +150,7 @@ class PortalController extends AbstractController
         ]);
     }
 
+    // TODO refactor
     private function featureIsAllowedToDisplay(Portal $portal, PortalFeature $portalFeature)
     {
         if(! $portal->getDisplay())
@@ -203,6 +170,4 @@ class PortalController extends AbstractController
 
         return true;
     }
-
-
 }
