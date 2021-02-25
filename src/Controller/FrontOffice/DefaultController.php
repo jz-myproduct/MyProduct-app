@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-class FrontOfficeController extends AbstractController
+class DefaultController extends AbstractController
 {
     /* TEMPORARY */
     /**
