@@ -4,12 +4,10 @@
 namespace App\Controller\FrontOffice;
 
 
-use App\Entity\Company;
-use App\Entity\Feature;
+
 use App\Entity\Feedback;
 use App\Entity\Portal;
 use App\Entity\PortalFeature;
-use App\Form\FeedbackFormType;
 use App\Form\PortalGeneralFeedbackFormType;
 use App\Handler\Feedback\AddFeatureFeedbackOnPortal;
 use App\Handler\Feedback\AddGeneralOnPortal;
@@ -27,17 +25,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class PortalController extends AbstractController
 {
     /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-    /**
      * @var PortalFeatureService
      */
     private $portalFeatureService;
 
-    public function __construct(EntityManagerInterface $manager, PortalFeatureService $portalFeatureService)
+    public function __construct(PortalFeatureService $portalFeatureService)
     {
-        $this->manager = $manager;
         $this->portalFeatureService = $portalFeatureService;
     }
 
