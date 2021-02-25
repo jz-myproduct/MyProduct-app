@@ -13,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class BackOfficeController extends AbstractController
+class DefaultController extends AbstractController
 {
 
     /**

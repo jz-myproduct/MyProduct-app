@@ -4,7 +4,6 @@
 namespace App\Controller\FrontOffice;
 
 
-
 use App\Entity\Feedback;
 use App\Entity\Portal;
 use App\Entity\PortalFeature;
@@ -52,37 +51,6 @@ class PortalController extends AbstractController
     }
 
     /**
-     * @Route("/portal/{slug}/pridat-feedback", name="front-office-portal-add-feedback")
-     * @param Portal $portal
-     * @param Request $request
-     * @param AddGeneralOnPortal $handler
-     * @return RedirectResponse|Response
-     */
-    public function addGeneralFeedback(Portal $portal, Request $request, AddGeneralOnPortal $handler)
-    {
-        if (!$portal->getDisplay()) {
-            throw new NotFoundHttpException();
-        }
-
-        $form = $this->createForm(PortalGeneralFeedbackFormType::class, $feedback = new Feedback());
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $handler->handle($feedback, $portal->getCompany());
-
-            return $this->redirectToRoute('front-office-portal', [
-                'slug' => $portal->getSlug()
-            ]);
-        }
-
-        return $this->render('frontoffice/portalAddGeneralFeedback.html.twig', [
-            'portalName' => $portal->getName(),
-            'form' => $form->createView()
-        ]);
-    }
-
-    /**
      * @Route("/portal/{portal_slug}/feature/{feature_id}", name="front-office-portal-feature-detail")
      * @ParamConverter("portal", options={"mapping": {"portal_slug": "slug"}})
      * @ParamConverter("portalFeature", options={"mapping": {"feature_id": "id"}})
@@ -92,7 +60,8 @@ class PortalController extends AbstractController
      */
     public function featureDetail(Portal $portal, PortalFeature $portalFeature)
     {
-        if(! $this->featureIsAllowedToDisplay($portal, $portalFeature) ){
+        if(! $this->portalFeatureService
+            ->isAllowToBeDisplayed($portalFeature, $portal)){
             throw new NotFoundHttpException();
         }
 
@@ -100,67 +69,5 @@ class PortalController extends AbstractController
            'portalName' => $portal->getName(),
            'feature' => $portalFeature
         ]);
-    }
-
-    /**
-     * @Route("/portal/{portal_slug}/feature/{feature_id}/pridat-feedback", name="front-office-portal-add-feature-feedback")
-     * @ParamConverter("portal", options={"mapping": {"portal_slug": "slug"}})
-     * @ParamConverter("portalFeature", options={"mapping": {"feature_id": "id"}})
-     * @param Portal $portal
-     * @param PortalFeature $portalFeature
-     * @param Request $request
-     * @param AddFeatureFeedbackOnPortal $handler
-     * @return Response
-     */
-    public function addFeatureFeedback(
-        Portal $portal,
-        PortalFeature $portalFeature,
-        Request $request,
-        AddFeatureFeedbackOnPortal $handler)
-    {
-
-        if(! $this->featureIsAllowedToDisplay($portal, $portalFeature) ){
-            throw new NotFoundHttpException();
-        }
-
-        $form = $this->createForm(PortalGeneralFeedbackFormType::class, $feedback = new Feedback());
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $handler->handle($feedback, $portalFeature, $portal->getCompany());
-
-            return $this->redirectToRoute('front-office-portal', [
-                'slug' => $portal->getSlug(),
-            ]);
-        }
-
-
-        return $this->render('frontoffice/portalAddFeatureFeedback.html.twig', [
-            'form' => $form->createView(),
-            'portalName' => $portal->getName(),
-            'featureName' => $portalFeature->getName()
-        ]);
-    }
-
-    // TODO refactor
-    private function featureIsAllowedToDisplay(Portal $portal, PortalFeature $portalFeature)
-    {
-        if(! $portal->getDisplay())
-        {
-            return false;
-        }
-
-        if(! $portalFeature->getDisplay())
-        {
-            return false;
-        }
-
-        if($portalFeature->getFeature()->getCompany() !== $portal->getCompany())
-        {
-            return false;
-        }
-
-        return true;
     }
 }
