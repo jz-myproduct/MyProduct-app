@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Company;
 use App\Entity\Portal;
 use App\Form\RegisterCompanyFormType;
+use App\Handler\Company\Add;
+use App\Security\LoginFormAuthenticator;
 use App\Services\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,6 +18,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 class SecurityController extends AbstractController
 {
@@ -24,24 +27,40 @@ class SecurityController extends AbstractController
      * @var EntityManagerInterface
      */
     private $manager;
+    /**
+     * @var SlugService
+     */
+    private $slugService;
+    /**
+     * @var GuardAuthenticatorHandler
+     */
+    private $guardHandler;
+    /**
+     * @var LoginFormAuthenticator
+     */
+    private $loginFormAuthenticator;
 
-    public function __construct(EntityManagerInterface $manager)
+
+    public function __construct(
+        EntityManagerInterface $manager,
+        SlugService $slugService,
+        GuardAuthenticatorHandler $guardHandler,
+        LoginFormAuthenticator $loginFormAuthenticator)
     {
         $this->manager = $manager;
+        $this->slugService = $slugService;
+        $this->guardHandler = $guardHandler;
+        $this->loginFormAuthenticator = $loginFormAuthenticator;
     }
 
     /**
      * @Route("/zaregistrovat", name="register")
      * @param Request $request
-     * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param SlugService $slugService
+     * @param Add $handler
      * @return Response
-     * @throws \Exception
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder,
-                             SlugService $slugService): Response
+    public function register(Request $request, Add $handler): Response
     {
-
         if ($this->isGranted('ROLE_USER'))
         {
             return $this->redirectToRoute('back-office-home',[
@@ -49,51 +68,20 @@ class SecurityController extends AbstractController
             ]);
         }
 
-        $company = new Company();
-        $form = $this->createForm(RegisterCompanyFormType::class, $company);
+        $form = $this->createForm(RegisterCompanyFormType::class, $company = new Company());
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
         {
-            /* COMPANY */
-            $password = $passwordEncoder->encodePassword($company, $form->get('password')->getData());
-            $name = $form->get('name')->getData();
+            $company = $handler->handle($company);
 
-            $company->setPassword( $password );
-            $company->setEmail( $form->get('email')->getData() );
-            $company->setName($name);
-            $company->setSlug(
-                $slugService->createCompanySlug($name)
+            return $this->guardHandler->authenticateUserAndHandleSuccess(
+                   $company,
+                   $request,
+                   $this->loginFormAuthenticator,
+                    'main' // firewall name in security.yaml
             );
-
-            $currentDateTime = new \DateTime();
-            $company->setCreatedAt($currentDateTime);
-            $company->setUpdatedAt($currentDateTime);
-            $company->setRoles( $company->getRoles() );
-
-            $this->manager->persist($company);
-
-            /* PORTAL */
-            $portal = new Portal();
-            $portal->setName($name);
-            $portal->setSlug(
-                $slugService->createInitialPortalSlug($name)
-            );
-            $portal->setDisplay(false);
-            $portal->setCreatedAt($currentDateTime);
-            $portal->setUpdatedAt($currentDateTime);
-            $company->setPortal($portal);
-
-            $this->manager->persist($portal);
-            $this->manager->flush();
-
-            $this->loginAfterRegistration($company, $password);
-
-            return $this->redirectToRoute('back-office-home',[
-                'slug' => $company->getSlug()
-            ]);
         }
-
 
         return $this->render('frontoffice/registration.html.twig', [
             'form' => $form->createView()
@@ -114,26 +102,10 @@ class SecurityController extends AbstractController
             ]);
         }
 
-        $error = $authenticationUtils->getLastAuthenticationError();
-        $lastUsername = $authenticationUtils->getLastUsername();
-
         return $this->render('frontoffice/login.html.twig', [
-            'last_username' => $lastUsername,
-            'error' => $error
+            'last_username' => $authenticationUtils->getLastUsername(),
+            'error' => $authenticationUtils->getLastAuthenticationError()
         ]);
-    }
-
-    private function loginAfterRegistration(Company $company, $password)
-    {
-        $token = new UsernamePasswordToken(
-            $company,
-            $password,
-            'main',
-            $company->getRoles()
-        );
-
-        $this->get('security.token_storage')->setToken($token);
-        $this->get('session')->set('_security_main',serialize($token));
     }
 
     /**
@@ -145,11 +117,9 @@ class SecurityController extends AbstractController
         if(! $this->isGranted('ROLE_USER') ){
             return $this->redirectToRoute('login');
         }
-        $company = $this->getDoctrine()->getRepository(Company::class)->getCompanyByEmail(
-            $this->getUser()->getUsername());
 
         return $this->redirectToRoute('back-office-home', [
-            'slug' => $company->getSlug()
+            'slug' => $this->getUser()->getSlug()
         ]);
     }
 
