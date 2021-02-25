@@ -10,6 +10,10 @@ use App\Events\FeedbackUpdatedEvent;
 use App\Form\FeatureFormType;
 use App\Form\FeedbackFeatureDetailFormType;
 use App\Form\PortalFeatureFormType;
+use App\Handler\Feature\Add;
+use App\Handler\Feature\Delete;
+use App\Handler\Feature\Edit;
+use App\Handler\Feedback\AddOnFeatureDetail;
 use App\Services\SlugService;
 use DateTime;
 use Doctrine\ORM\EntityManager;
@@ -29,25 +33,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class FeatureController extends AbstractController
 {
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
+    
     /**
      * @var EntityManager
      */
     private $manager;
-    /**
-     * @var SlugService
-     */
-    private $slugService;
 
-    public function __construct(EventDispatcherInterface $dispatcher, EntityManagerInterface $manager, SlugService $slugService)
+    public function __construct(EntityManagerInterface $manager)
     {
-        $this->dispatcher = $dispatcher;
         $this->manager = $manager;
-        $this->slugService = $slugService;
     }
 
 
@@ -55,10 +49,10 @@ class FeatureController extends AbstractController
      * @Route("/admin/{slug}/feature/pridat", name="add-feature")
      * @param Company $company
      * @param Request $request
+     * @param Add $handler
      * @return Response
-     * @throws Exception
      */
-    public function add(Company $company, Request $request): Response
+    public function add(Company $company, Request $request, Add $handler): Response
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
@@ -70,34 +64,11 @@ class FeatureController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $feature = new Feature();
-            $feature->setName(
-                $form->get('name')->getData()
-            );
-            $feature->setDescription(
-                $form->get('description')->getData()
-            );
-            $feature->setCompany($company);
-            $feature->setState(
-                $form->get('state')->getData()
-            );
-            $feature->setInitialScore();
-
-            foreach ($form->get('tags')->getData() as $tag){
-                $feature->addTag($tag);
-            }
-
-            $currentDateTime = new DateTime();
-            $feature->setCreatedAt($currentDateTime);
-            $feature->setUpdatedAt($currentDateTime);
-
-            $this->manager->persist($feature);
-            $this->manager->flush();
+            $handler->handle($feature, $company);
 
             return $this->redirectToRoute('feature-list', [
                 'slug' => $company->getSlug()
             ]);
-
         }
 
         return $this->render('backoffice/addEditFeature.html.twig', [
@@ -113,10 +84,10 @@ class FeatureController extends AbstractController
      * @param Company $company
      * @param Feature $feature
      * @param Request $request
+     * @param Edit $handler
      * @return Response
-     * @throws Exception
      */
-    public function edit(Company $company, Feature $feature, Request $request)
+    public function edit(Company $company, Feature $feature, Request $request, Edit $handler)
     {
 
         $this->denyAccessUnlessGranted('edit', $feature);
@@ -128,18 +99,7 @@ class FeatureController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $feature->setName(
-                $form->get('name')->getData()
-            );
-            $feature->setDescription(
-                $form->get('description')->getData()
-            );
-            $feature->setUpdatedAt(new DateTime());
-            $feature->setState(
-                $form->get('state')->getData()
-            );
-
-            $this->manager->flush();
+            $handler->handle($feature);
 
             $this->addFlash('success', 'Feature updated');
         }
@@ -171,16 +131,14 @@ class FeatureController extends AbstractController
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @param Company $company
      * @param Feature $feature
+     * @param Delete $handler
      * @return RedirectResponse
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
-    public function delete(Company $company, Feature $feature)
+    public function delete(Company $company, Feature $feature, Delete $handler)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
 
-        $this->manager->remove($feature);
-        $this->manager->flush();
+        $handler->handle($feature);
 
         return $this->redirectToRoute('feature-list', [
             'slug' => $company->getSlug()
@@ -194,10 +152,10 @@ class FeatureController extends AbstractController
      * @param Company $company
      * @param Feature $feature
      * @param Request $request
+     * @param AddOnFeatureDetail $handler
      * @return Response
-     * @throws Exception
-*/
-    public function detail(Company $company, Feature $feature, Request $request)
+     */
+    public function detail(Company $company, Feature $feature, Request $request, AddOnFeatureDetail $handler)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
 
@@ -207,30 +165,12 @@ class FeatureController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $feedback->setDescription(
-                $form->get('description')->getData()
-            );
-            $feedback->setSource(
-                $form->get('source')->getData()
-            );
-            $feedback->setCompany($company);
-            $feedback->setActiveStatus();
-
-            $currentDateTime = new DateTime();
-            $feedback->setCreatedAt($currentDateTime);
-            $feedback->setUpdatedAt($currentDateTime);
-            $feedback->addFeature($feature);
-
-            $feature->setScoreUpByOne();
-
-            $this->manager->persist($feedback);
-            $this->manager->flush();
+            $handler->handle($feedback, $company, $feature);
 
             return $this->redirectToRoute('feature-detail', [
                 'company_slug' => $company->getSlug(),
                 'feature_id' => $feature->getId(),
             ]);
-
         }
 
         $feedback = $this->getDoctrine()->getRepository(Feedback::class)
@@ -252,48 +192,32 @@ class FeatureController extends AbstractController
      * @param Company $company
      * @param Feature $feature
      * @param Request $request
+     * @param \App\Handler\PortalFeature\Add $addHandler
+     * @param \App\Handler\PortalFeature\Edit $editHandler
      * @return Response
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
-    public function portal(Company $company, Feature $feature, Request $request)
+    public function portal(
+        Company $company,
+        Feature $feature,
+        Request $request,
+        \App\Handler\PortalFeature\Add $addHandler,
+        \App\Handler\PortalFeature\Edit $editHandler)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
 
         $portalFeature = $feature->getPortalFeature() ?? new PortalFeature();
-        $currentFeedbackCount = $feature->getPortalFeature() ?
-             $feature->getPortalFeature()->getFeedbackCount()
-           : 0;
 
         $form = $this->createForm(PortalFeatureFormType::class, $portalFeature);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
         {
-            $name = $form->get('name')->getData();
-            $currentDateTime = new \DateTime();
-
-            if($currentFeedbackCount === 0)
-            {
-                $portalFeature->setFeedbackCount(0);
+            // portal feature already exists
+            if( $feature->getPortalFeature() ){
+                $editHandler->handle($portalFeature);
+            } else {
+                $addHandler->handle($portalFeature, $feature);
             }
-            $portalFeature->setName($name);
-            $portalFeature->setSlug(
-                $this->slugService->createCommonSlug($name)
-            );
-            $portalFeature->setDescription(
-                $form->get('description')->getData()
-            );
-            $portalFeature->setDisplay(
-                $form->get('display')->getData()
-            );
-            $portalFeature->setCreatedAt($currentDateTime);
-            $portalFeature->setUpdatedAt($currentDateTime);
-            $portalFeature->setFeature($feature);
-
-
-            $this->manager->persist($portalFeature);
-            $this->manager->flush();
 
             $this->addFlash('success', 'Portal feature updated');
         }
