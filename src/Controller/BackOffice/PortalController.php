@@ -8,6 +8,7 @@ use App\Entity\Portal;
 use App\Entity\PortalFeature;
 use App\Entity\PortalFeatureState;
 use App\Form\PortalFormType;
+use App\Handler\Portal\Edit;
 use App\Services\PortalFeatureService;
 use App\Services\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -48,9 +49,10 @@ class PortalController extends AbstractController
      * @Route("/admin/{slug}/portal", name="backoffice-portal")
      * @param Company $company
      * @param Request $request
+     * @param Edit $handler
      * @return Response
      */
-    public function edit(Company $company, Request $request)
+    public function edit(Company $company, Request $request, Edit $handler)
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
@@ -58,20 +60,10 @@ class PortalController extends AbstractController
 
         $form = $this->createForm(PortalFormType::class, $portal);
         $form->handleRequest($request);
-
-
+        
         if($form->isSubmitted() && $form->isValid())
         {
-            $name = $form->get('name')->getData();
-            $portal->setName($name);
-            $portal->setSlug(
-                $this->slugService->createPortalSlug($name, $portal)
-            );
-            $portal->setDisplay(
-                $form->get('display')->getData()
-            );
-
-            $this->manager->flush();
+            $handler->handle($portal);
         }
 
         return $this->render('backoffice/portal.html.twig', [

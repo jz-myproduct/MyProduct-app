@@ -44,9 +44,11 @@ class SlugService
         return $this->handleCount($slug, $count);
     }
 
-    public function createPortalSlug(String $value, Portal $portal)
+    public function createPortalSlug(Portal $portal)
     {
-        $slug = $this->prepareSlug($value);
+        $slug = $this->prepareSlug(
+            $portal->getName()
+        );
 
         $count = $this->entityManager->getRepository(Portal::class)
             ->getSimilarSlugsCountForExistingCompany($slug, $portal);
