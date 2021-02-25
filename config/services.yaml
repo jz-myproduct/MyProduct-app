@@ -33,4 +33,3 @@ services:
     App\Services\FeatureEventListener:
         tags:
             - { name: kernel.event_listener, event: feedback.updated.event }
-

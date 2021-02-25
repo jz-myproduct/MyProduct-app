@@ -24,9 +24,13 @@ security:
                 username_parameter: 'email'
                 password_parameter: 'password'
                 csrf_token_generator: security.csrf.token_manager
+                default_target_path: after-login-route
             logout:
                 path: logout
                 target: home
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
