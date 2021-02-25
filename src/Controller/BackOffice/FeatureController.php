@@ -56,8 +56,7 @@ class FeatureController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        $feature = new Feature();
-        $form = $this->createForm(FeatureFormType::class, $feature, [
+        $form = $this->createForm(FeatureFormType::class, $feature = new Feature(), [
             'tags'=> $company->getFeatureTags()
         ]);
         $form->handleRequest($request);
@@ -159,8 +158,7 @@ class FeatureController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $feature);
 
-        $feedback = new Feedback();
-        $form = $this->createForm(FeedbackFeatureDetailFormType::class, $feedback);
+        $form = $this->createForm(FeedbackFeatureDetailFormType::class, $feedback = new Feedback());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
