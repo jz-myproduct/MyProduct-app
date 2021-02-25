@@ -5,6 +5,9 @@ namespace App\Controller\BackOffice;
 use App\Entity\Company;
 use App\Entity\FeatureTag;
 use App\Form\FeatureTagFormType;
+use App\Handler\FeatureTag\Add;
+use App\Handler\FeatureTag\Delete;
+use App\Handler\FeatureTag\Edit;
 use App\Services\SlugService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -21,28 +24,19 @@ class FeatureTagController extends AbstractController
      * @Route("/admin/{slug}/tag/pridat", name="add-feature-tag")
      * @param Company $company
      * @param Request $request
-     * @param SlugService $slugService
+     * @param Add $handler
      * @return Response
      */
-    public function add(Company $company, Request $request, SlugService $slugService)
+    public function add(Company $company, Request $request, Add $handler)
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $tag = new FeatureTag();
-        $form = $this->createForm(FeatureTagFormType::class, $tag);
+        $form = $this->createForm(FeatureTagFormType::class,  $tag = new FeatureTag());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $name = $form->get('name')->getData();
 
-            $tag->setName($name);
-            $tag->setSlug($slugService->createCommonSlug($name));
-            $tag->setCompany( $company );
-
-            $entityManager->persist($tag);
-            $entityManager->flush();
+            $handler->handle($tag, $company);
 
             return $this->redirectToRoute('feature-tag-list', [
                 'slug' => $company->getSlug()
@@ -61,27 +55,20 @@ class FeatureTagController extends AbstractController
      * @ParamConverter("tag", options={"mapping": {"tag_id": "id"}} )
      * @param Company $company
      * @param Request $request
-     * @param SlugService $slugService
      * @param FeatureTag $tag
+     * @param Edit $handler
      * @return Response
      */
-    public function edit(Company $company, Request $request, SlugService $slugService, FeatureTag $tag)
+    public function edit(Company $company, Request $request, FeatureTag $tag, Edit $handler)
     {
         $this->denyAccessUnlessGranted('edit', $tag);
-
-        $entityManager = $this->getDoctrine()->getManager();
 
         $form = $this->createForm(FeatureTagFormType::class, $tag);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $name = $form->get('name')->getData();
 
-            $tag->setName($name);
-            $tag->setSlug($slugService->createCommonSlug($name));
-
-            $entityManager->persist($tag);
-            $entityManager->flush();
+            $handler->handle($tag);
 
             $this->addFlash('success', 'Tag updated');
         }
@@ -114,16 +101,14 @@ class FeatureTagController extends AbstractController
      * @ParamConverter("tag", options={"mapping": {"tag_id": "id"}} )
      * @param Company $company
      * @param FeatureTag $tag
+     * @param Delete $handler
      * @return RedirectResponse
      */
-    public function delete(Company $company, FeatureTag $tag)
+    public function delete(Company $company, FeatureTag $tag, Delete $handler)
     {
         $this->denyAccessUnlessGranted('edit', $tag);
 
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $entityManager->remove($tag);
-        $entityManager->flush();
+        $handler->handle($tag);
 
         return $this->redirectToRoute('feature-tag-list', [
             'slug' => $company->getSlug()
