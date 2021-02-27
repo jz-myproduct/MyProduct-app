@@ -66,7 +66,7 @@ class PortalController extends AbstractController
             $handler->handle($portal);
         }
 
-        return $this->render('back_office/detail.html.twig', [
+        return $this->render('back_office/portal/detail.html.twig', [
            'companySlug' => $company->getSlug(),
            'form' => $form->createView(),
            'portal' => $portal,

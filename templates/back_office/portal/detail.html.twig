@@ -1,30 +1,19 @@
 {% extends "back_office/base.html.twig" %}
-{% block title %}
-    {{ 'register_action'|trans }}
-{% endblock %}
+
 {% block content %}
-    {{ 'home_title'|trans }}
-    {% if app.user %}
-        <div class="mb-3">
-            Administrace<br />
-            You are logged in as {{ app.user.username }}, <a href="{{ path('logout') }}">Logout</a>
-            <a href="{{ path('add-feedback', {slug: companySlug}) }}">Přidat feedback</a>
-            <a href="{{ path('add-feature', {slug: companySlug}) }}">Přidat feature</a>
-        </div>
-        <h2>Portal</h2>
-        {{ form(form) }}
-        {% if portal.display %}
-            <h3>Portal běží</h3>
-            Portal naleznete <a href="{{ path('front-office-portal', {'slug':portal.slug}) }}">zde</a>
-            <h4>Features k zobrazení</h4>
+    <h1 class="h3">Portal</h1>
+    {{ form(form) }}
+    {% if portal.display %}
+        <h3>Portal běží</h3>
+        Portal naleznete <a href="{{ path('front-office-portal', {'slug':portal.slug}) }}">zde</a>
+        <h4>Features k zobrazení</h4>
 
-                {% for stateWithFeatures in featuresByState %}
-                    <strong>{{ stateWithFeatures.state }}</strong><br />
-                    {% for feature in stateWithFeatures.features %}
-                        {{ feature.name }}<br/>
-                    {% endfor %}
+            {% for stateWithFeatures in featuresByState %}
+                <strong>{{ stateWithFeatures.state }}</strong><br />
+                {% for feature in stateWithFeatures.features %}
+                    {{ feature.name }}<br/>
                 {% endfor %}
+            {% endfor %}
 
-        {% endif %}
     {% endif %}
 {% endblock %}
