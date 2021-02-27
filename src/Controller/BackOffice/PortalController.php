@@ -46,13 +46,13 @@ class PortalController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{slug}/portal", name="backoffice-portal")
+     * @Route("/admin/{slug}/portal", name="bo_portal_detail")
      * @param Company $company
      * @param Request $request
      * @param Edit $handler
      * @return Response
      */
-    public function edit(Company $company, Request $request, Edit $handler)
+    public function detail(Company $company, Request $request, Edit $handler)
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
@@ -66,7 +66,7 @@ class PortalController extends AbstractController
             $handler->handle($portal);
         }
 
-        return $this->render('backoffice/portal.html.twig', [
+        return $this->render('back_office/detail.html.twig', [
            'companySlug' => $company->getSlug(),
            'form' => $form->createView(),
            'portal' => $portal,

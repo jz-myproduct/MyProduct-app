@@ -8,30 +8,35 @@ use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\PortalFeature;
 use App\Form\PortalFeatureFormType;
+use App\Handler\PortalFeature\Add;
+use App\Handler\PortalFeature\Edit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class PortalFeatureController extends AbstractController
 {
 
     /**
-     * @Route("/admin/{company_slug}/feature/{feature_id}/portal", name="feature-portal")
+     * @Route("/admin/{company_slug}/feature/{feature_id}/portal", name="bo_portal_feature_detail")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @param Company $company
      * @param Feature $feature
      * @param Request $request
-     * @param \App\Handler\PortalFeature\Add $addHandler
-     * @param \App\Handler\PortalFeature\Edit $editHandler
+     * @param Add $addHandler
+     * @param Edit $editHandler
      * @return Response
      */
-    public function portal(
+    public function detail(
         Company $company,
         Feature $feature,
         Request $request,
-        \App\Handler\PortalFeature\Add $addHandler,
-        \App\Handler\PortalFeature\Edit $editHandler)
+        Add $addHandler,
+        Edit $editHandler)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
 
@@ -52,7 +57,7 @@ class PortalFeatureController extends AbstractController
             $this->addFlash('success', 'Portal feature updated');
         }
 
-        return $this->render('backoffice/featurePortal.html.twig',[
+        return $this->render('back_office/detail.twig',[
             'form' => $form->createView()
         ]);
     }

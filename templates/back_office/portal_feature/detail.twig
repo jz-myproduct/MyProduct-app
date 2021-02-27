@@ -1,15 +1,15 @@
-{% extends "base.html.twig" %}
+{% extends "back_office/base.html.twig" %}
 {% block title %}
     {{ 'register_action'|trans }}
 {% endblock %}
-{% block body %}
+{% block content %}
     {{ 'home_title'|trans }}
     {% if app.user %}
         <div class="mb-3">
             Administrace<br />
             You are logged in as {{ app.user.username }}, <a href="{{ path('logout') }}">Logout</a>
-            <a href="{{ path('add-feedback', {slug: companySlug}) }}">Přidat feedback</a>
-            <a href="{{ path('add-feature', {slug: companySlug}) }}">Přidat feature</a>
         </div>
     {% endif %}
+    <h3>Tady bude nastavení portálu</h3>
+    {{ form(form) }}
 {% endblock %}

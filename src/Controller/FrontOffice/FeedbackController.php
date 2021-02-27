@@ -16,12 +16,15 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class FeedbackController extends AbstractController
 {
 
     /**
-     * @Route("/portal/{slug}/pridat-feedback", name="front-office-portal-add-feedback")
+     * @Route("/portal/{slug}/pridat-feedback", name="fo_portal_general_feedback_add")
      * @param Portal $portal
      * @param Request $request
      * @param AddGeneralOnPortal $handler
@@ -45,14 +48,14 @@ class FeedbackController extends AbstractController
             ]);
         }
 
-        return $this->render('frontoffice/portalAddGeneralFeedback.html.twig', [
+        return $this->render('front_office/add_general.twig', [
             'portalName' => $portal->getName(),
             'form' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/portal/{portal_slug}/feature/{feature_id}/pridat-feedback", name="front-office-portal-add-feature-feedback")
+     * @Route("/portal/{portal_slug}/feature/{feature_id}/pridat-feedback", name="front_office_portal_add-feature_feedback")
      * @ParamConverter("portal", options={"mapping": {"portal_slug": "slug"}})
      * @ParamConverter("portalFeature", options={"mapping": {"feature_id": "id"}})
      * @param Portal $portal
@@ -87,7 +90,7 @@ class FeedbackController extends AbstractController
         }
 
 
-        return $this->render('frontoffice/portalAddFeatureFeedback.html.twig', [
+        return $this->render('front_office/add_feature.html.twig', [
             'form' => $form->createView(),
             'portalName' => $portal->getName(),
             'featureName' => $portalFeature->getName()

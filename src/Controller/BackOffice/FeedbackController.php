@@ -39,7 +39,7 @@ class FeedbackController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{slug}/feedback/pridat", name="add-feedback")
+     * @Route("/admin/{slug}/feedback/pridat", name="bo_feedback_add")
      * @param Company $company
      * @param Request $request
      * @param Add $handler
@@ -63,7 +63,7 @@ class FeedbackController extends AbstractController
             ]);
         }
 
-        return $this->render('backoffice/addEditFeedback.html.twig', [
+        return $this->render('back_office/add_edit.html.twig', [
             'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
@@ -71,7 +71,7 @@ class FeedbackController extends AbstractController
 
 
     /**
-     * @Route("/admin/{company_slug}/feedback/{feedback_id}/upravit", name="edit-feedback")
+     * @Route("/admin/{company_slug}/feedback/{feedback_id}/upravit", name="bo_feedback_edit")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
@@ -93,17 +93,17 @@ class FeedbackController extends AbstractController
 
             $handler->handle($feedback);
 
-            $this->addFlash('success', 'Feedback updated');
+            $this->addFlash('success', 'feedback updated');
         }
 
-        return $this->render('backoffice/addEditFeedback.html.twig', [
+        return $this->render('back_office/add_edit.html.twig', [
             'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/admin/{slug}/feedbacks", name="feedback-list")
+     * @Route("/admin/{slug}/feedbacks", name="bo_feedback_list")
      * @param Company $company
      * @return Response
      */
@@ -111,14 +111,14 @@ class FeedbackController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        return $this->render('backoffice/feedbackList.html.twig', [
+        return $this->render('back_office/feedback/list.twig', [
             'feedbacks' => $company->getFeedbacks(),
             'companySlug' => $company->getSlug()
         ]);
     }
 
     /**
-     * @Route("/admin/{company_slug}/feedback/{feedback_id}/smazat", name="delete-feedback")
+     * @Route("/admin/{company_slug}/feedback/{feedback_id}/smazat", name="bo_feedback_delete")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
@@ -138,7 +138,7 @@ class FeedbackController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feedback/{feedback_id}/zmenit-status", name="change-status-feedback")
+     * @Route("/admin/{company_slug}/feedback/{feedback_id}/zmenit-status", name="bo_feedback_change-status")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
@@ -158,7 +158,7 @@ class FeedbackController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feedback/{feedback_id}", name="feedback-detail")
+     * @Route("/admin/{company_slug}/feedback/{feedback_id}", name="bo_feedback_detail")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
@@ -172,7 +172,7 @@ class FeedbackController extends AbstractController
         $unrelatedFeatures = $this->getDoctrine()->getRepository(Feedback::class)
             ->getUnUsedFeaturesForFeedback($feedback, $company);
 
-        return $this->render('backoffice/feedbackDetail.html.twig', [
+        return $this->render('back_office/detail.twig', [
             'feedback' => $feedback,
             'companySlug' => $company->getSlug(),
             'relatedFeatures' => $feedback->getFeature(),
@@ -182,7 +182,7 @@ class FeedbackController extends AbstractController
 
 
     /**
-     * @Route("/admin/{company_slug}/pridat-propojeni/{feedback_id}/{feature_id}", name="add-ff-relation")
+     * @Route("/admin/{company_slug}/pridat-propojeni/{feedback_id}/{feature_id}", name="bo_feedback_relation-add")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
@@ -220,7 +220,7 @@ class FeedbackController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/smazat-propojeni/{feedback_id}/{feature_id}", name="delete-ff-relation")
+     * @Route("/admin/{company_slug}/smazat-propojeni/{feedback_id}/{feature_id}", name="bo_feedback_relation_delete")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})

@@ -1,0 +1,45 @@
+{% extends "base.html.twig" %}
+
+{% block base_title %}
+    {% block title %}{% endblock %}
+{% endblock %}
+
+{% block body %}
+    <div class="bg-primary">
+        <nav class="navbar navbar-expand-lg navbar-light container">
+            <a class="navbar-brand text-light font-weight-bold" href="#">Product tool</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                {% if not app.user %}
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link text-light" href="{{ path('fo_login') }}">Přihlásit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="{{ path('fo_register') }}">Registrovat</a>
+                    </li>
+                </ul>
+                {% endif %}
+                {% if app.user %}
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link text-light" href="{{ path('bo_home', {'slug':app.user.slug}) }}">{{ app.user.name }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="{{ path('fo_logout') }}">Odhlásit</a>
+                        </li>
+                    </ul>
+                {% endif %}
+            </div>
+        </nav>
+    </div>
+
+    <main class="container mt-4">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted">Product tool &copy; 2021 Jan Zabloudil</span>
+        </div>
+    </footer>
+{% endblock %}

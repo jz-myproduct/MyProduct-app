@@ -1,16 +1,9 @@
-{% extends "base.html.twig" %}
-{% block title %}
-    {{ 'register_action'|trans }}
-{% endblock %}
-{% block body %}
-    {{ 'home_title'|trans }}
-    {% if app.user %}
-        <div class="mb-3">
-            Administrace<br />
-            You are logged in as {{ app.user.username }}, <a href="{{ path('logout') }}">Logout</a>
-        </div>
-    {% endif %}
-    <h2>Feedbacks</h2>
+{% extends "back_office/base.html.twig" %}
+
+{% block content %}
+
+
+    <h1 class="h3">Feedbacks</h1>
     <ul>
     {% for feedback in feedbacks %}
         <li>

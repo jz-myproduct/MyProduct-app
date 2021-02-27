@@ -20,10 +20,10 @@ class DefaultController extends AbstractController
 {
     /* TEMPORARY */
     /**
-     * @Route("/", name="home")
+     * @Route("/", name="fo_home")
      */
     public function index(): Response
     {
-        return $this->render('frontoffice/home.html.twig');
+        return $this->render('front_office/home.html.twig');
     }
 }

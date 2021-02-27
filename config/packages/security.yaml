@@ -19,15 +19,15 @@ security:
             lazy: true
             provider: app_user_provider
             form_login:
-                login_path: login
-                check_path: login
+                login_path: fo_login
+                check_path: fo_login
                 username_parameter: 'email'
                 password_parameter: 'password'
                 csrf_token_generator: security.csrf.token_manager
-                default_target_path: after-login-route
+                default_target_path: fo_after_login
             logout:
-                path: logout
-                target: home
+                path: fo_logout
+                target: fo_home
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator

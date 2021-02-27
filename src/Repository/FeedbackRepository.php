@@ -71,7 +71,7 @@ class FeedbackRepository extends ServiceEntityRepository
 
 
     // /**
-    //  * @return Feedback[] Returns an array of Feedback objects
+    //  * @return feedback[] Returns an array of feedback objects
     //  */
     /*
     public function findByExampleField($value)
@@ -88,7 +88,7 @@ class FeedbackRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Feedback
+    public function findOneBySomeField($value): ?feedback
     {
         return $this->createQueryBuilder('f')
             ->andWhere('f.exampleField = :val')

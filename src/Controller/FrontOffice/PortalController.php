@@ -34,7 +34,7 @@ class PortalController extends AbstractController
     }
 
     /**
-     * @Route("/portal/{slug}", name="front-office-portal")
+     * @Route("/portal/{slug}", name="fo-portal")
      * @param Portal $portal
      * @return Response|NotFoundHttpException
      */
@@ -44,14 +44,14 @@ class PortalController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        return $this->render('frontoffice/portal.html.twig', [
+        return $this->render('front_office/detail.html.twig', [
             'portal' => $portal,
             'featuresByState' => $this->portalFeatureService->getArray($portal->getCompany())
         ]);
     }
 
     /**
-     * @Route("/portal/{portal_slug}/feature/{feature_id}", name="front-office-portal-feature-detail")
+     * @Route("/portal/{portal_slug}/feature/{feature_id}", name="fo_portal_feature")
      * @ParamConverter("portal", options={"mapping": {"portal_slug": "slug"}})
      * @ParamConverter("portalFeature", options={"mapping": {"feature_id": "id"}})
      * @param Portal $portal
@@ -65,7 +65,7 @@ class PortalController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        return $this->render('frontoffice/portalFeatureDetail.html.twig', [
+        return $this->render('front_office/detail.twig', [
            'portalName' => $portal->getName(),
            'feature' => $portalFeature
         ]);

@@ -86,7 +86,7 @@ class Fixtures extends Fixture
         /* TODO vylepšit, abych nemusel 2x dělat flush */
         $manager->flush();
 
-        /* Feedback, Feature */
+        /* feedback, Feature */
         foreach ($this->getFeedbackFeatureData() as $data)
         {
             $tag = new FeatureTag();
