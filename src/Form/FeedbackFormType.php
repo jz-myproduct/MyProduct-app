@@ -45,7 +45,8 @@ class FeedbackFormType extends AbstractType
                 'choice_value' => 'id',
                 'choice_label' => 'name',
                 'expanded' => true,
-                'multiple' => true
+                'multiple' => true,
+                'label' => 'Features'
             ]);
         }
 

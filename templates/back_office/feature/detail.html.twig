@@ -1,26 +1,40 @@
 {% extends "back_office/base.html.twig" %}
 
 {% block content %}
-
-    <ul>
-        <li>score: {{ feature.score }}</li>
-        <li>name: {{ feature.name }}</li>
-        <li>description: {{ feature.description  }}</li>
-        <li>created_at: {{ feature.createdAt|date('Y-m-d h:m:s') }}</li>
-        <li>updated_at: {{ feature.updatedAt|date('Y-m-d h:m:s') }}</li>
-    </ul>
-    <h2>Tags</h2>
-    <ul>
+    <h1 class="h3 text-center">{{ feature.name }}</h1>
+    <p class="text-center">
         {% for tag in tags %}
-            <li>{{ tag.name }}</li>
+            <span class="badge badge-info">{{ tag.name }}</span>
         {% endfor %}
+    </p>
+    <p class="text-center text-secondary">Přidáno {{ feature.createdAt|date('Y.m h:m') }}</p>
+    <p class="text-right">
+        <a href="" class="btn btn-outline-primary">Upravit</a>
+        <a href="" class="btn btn-outline-danger">Smazat</a>
+    </p>
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link active" href="#">Popis</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Feedbacks</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Portal</a>
+        </li>
     </ul>
+    <p class="font-weight-bold">Prioritizační skóre</p>
+    <p>
+        <span class="badge badge-warning" style="font-size:16px">{{ feature.score }}</span>
+    </p>
+    <p class="font-weight-bold">Popis</p>
+    <p>{{ feature.description }}</p>
     <h2>Feedbacks</h2>
     <ul>
         {% for feedback in feedbackList %}
             <li>
-                <a href="{{ path('feedback-detail', {'company_slug': companySlug, 'feedback_id': feedback.id} ) }}">{{ feedback.description }}</a>
-                <a href="{{ path('delete-ff-relation', {'company_slug': companySlug, 'feedback_id': feedback.id, 'feature_id': feature.id, 'p':'feature' } ) }}">Smazat</a>
+                <a href="{{ path('bo_feedback_detail', {'company_slug': companySlug, 'feedback_id': feedback.id} ) }}">{{ feedback.description }}</a>
+                <a href="{{ path('bo_feedback_relation_delete', {'company_slug': companySlug, 'feedback_id': feedback.id, 'feature_id': feature.id, 'p':'feature' } ) }}">Smazat</a>
             </li>
         {% endfor %}
     </ul>

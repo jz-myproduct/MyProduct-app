@@ -65,7 +65,7 @@ class PortalController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        return $this->render('front_office/detail.twig', [
+        return $this->render('front_office/detail.html.twig', [
            'portalName' => $portal->getName(),
            'feature' => $portalFeature
         ]);

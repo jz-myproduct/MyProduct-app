@@ -57,7 +57,7 @@ class PortalFeatureController extends AbstractController
             $this->addFlash('success', 'Portal feature updated');
         }
 
-        return $this->render('back_office/detail.twig',[
+        return $this->render('back_office/detail.html.twig',[
             'form' => $form->createView()
         ]);
     }

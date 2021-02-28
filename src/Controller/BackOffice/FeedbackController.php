@@ -172,7 +172,7 @@ class FeedbackController extends AbstractController
         $unrelatedFeatures = $this->getDoctrine()->getRepository(Feedback::class)
             ->getUnUsedFeaturesForFeedback($feedback, $company);
 
-        return $this->render('back_office/feedback/detail.twig', [
+        return $this->render('back_office/feedback/detail.html.twig', [
             'feedback' => $feedback,
             'companySlug' => $company->getSlug(),
             'relatedFeatures' => $feedback->getFeature(),

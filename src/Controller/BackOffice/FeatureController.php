@@ -65,12 +65,12 @@ class FeatureController extends AbstractController
 
             $handler->handle($feature, $company);
 
-            return $this->redirectToRoute('feature-list', [
+            return $this->redirectToRoute('bo_feature_list', [
                 'slug' => $company->getSlug()
             ]);
         }
 
-        return $this->render('back_office/add_edit.html.twig', [
+        return $this->render('back_office/feature/add_edit.html.twig', [
             'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
@@ -103,7 +103,7 @@ class FeatureController extends AbstractController
             $this->addFlash('success', 'Feature updated');
         }
 
-        return $this->render('back_office/add_edit.html.twig', [
+        return $this->render('back_office/feature/add_edit.html.twig', [
             'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
@@ -139,7 +139,7 @@ class FeatureController extends AbstractController
 
         $handler->handle($feature);
 
-        return $this->redirectToRoute('feature-list', [
+        return $this->redirectToRoute('bo_feature_list', [
             'slug' => $company->getSlug()
         ]);
     }
@@ -165,7 +165,7 @@ class FeatureController extends AbstractController
 
             $handler->handle($feedback, $company, $feature);
 
-            return $this->redirectToRoute('feature-detail', [
+            return $this->redirectToRoute('bo_feature_detail', [
                 'company_slug' => $company->getSlug(),
                 'feature_id' => $feature->getId(),
             ]);
@@ -174,7 +174,7 @@ class FeatureController extends AbstractController
         $feedback = $this->getDoctrine()->getRepository(Feedback::class)
             ->getFeatureFeedback($feature);
 
-        return $this->render('back_office/detail.html.twig', [
+        return $this->render('back_office/feature/detail.html.twig', [
             'feature' => $feature,
             'companySlug' => $company->getSlug(),
             'feedbackList' => $feedback,
