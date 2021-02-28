@@ -251,7 +251,7 @@ class FeedbackController extends AbstractController
         // TODO refactor
         if ($request->query->get('p') === 'feature') {
 
-            return $this->redirectToRoute('feature-detail', [
+            return $this->redirectToRoute('bo_feature_feedback', [
                 'feature_id' => $feature->getId(),
                 'company_slug' => $company->getSlug(),
             ]);

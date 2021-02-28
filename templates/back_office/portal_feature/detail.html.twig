@@ -17,19 +17,15 @@
     </p>
     <ul class="nav nav-tabs mb-4">
         <li class="nav-item">
-            <a class="nav-link active" href="{{ path('bo_feature_detail', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Popis</a>
+            <a class="nav-link" href="{{ path('bo_feature_detail', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Popis</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{ path('bo_feature_feedback', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Feedbacks <span class="badge badge-secondary">{{ feedback|length }}</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ path('bo_feature_portal', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Portal</a>
+            <a class="nav-link active" href="{{ path('bo_feature_portal', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Portal</a>
         </li>
     </ul>
-    <p class="font-weight-bold">Prioritizační skóre</p>
-    <p>
-        <span class="badge badge-warning" style="font-size:16px">{{ feature.score }}</span>
-    </p>
-    <p class="font-weight-bold">Popis</p>
-    <p>{{ feature.description }}</p>
+
+    {{ form(form) }}
 {% endblock %}

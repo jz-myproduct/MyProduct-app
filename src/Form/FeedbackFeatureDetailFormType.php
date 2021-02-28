@@ -14,8 +14,8 @@ class FeedbackFeatureDetailFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('description', TextareaType::class)
-            ->add('source', TextareaType::class, array('required' => false))
+            ->add('description', TextareaType::class, ['label' => 'Popis'])
+            ->add('source', TextareaType::class, ['required' => false, 'label' => 'Zdroj'])
             ->add('save', SubmitType::class, ['label' => 'Přidat']);
         ;
     }

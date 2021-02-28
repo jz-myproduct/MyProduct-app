@@ -6,6 +6,7 @@ namespace App\Controller\BackOffice;
 
 use App\Entity\Company;
 use App\Entity\Feature;
+use App\Entity\Feedback;
 use App\Entity\PortalFeature;
 use App\Form\PortalFeatureFormType;
 use App\Handler\PortalFeature\Add;
@@ -21,7 +22,7 @@ class PortalFeatureController extends AbstractController
 {
 
     /**
-     * @Route("/admin/{company_slug}/feature/{feature_id}/portal", name="bo_portal_feature_detail")
+     * @Route("/admin/{company_slug}/feature/{feature_id}/portal", name="bo_feature_portal")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @param Company $company
@@ -57,8 +58,14 @@ class PortalFeatureController extends AbstractController
             $this->addFlash('success', 'Portal feature updated');
         }
 
-        return $this->render('back_office/detail.html.twig',[
-            'form' => $form->createView()
+        // TODO needs refactor
+        $feedback = $this->getDoctrine()->getRepository(Feedback::class)
+            ->getFeatureFeedback($feature);
+
+        return $this->render('back_office/portal_feature/detail.html.twig',[
+            'form' => $form->createView(),
+            'feature' => $feature,
+            'feedback' => $feedback
         ]);
     }
 

@@ -14,23 +14,34 @@
     </p>
     <ul class="nav nav-tabs mb-4">
         <li class="nav-item">
-            <a class="nav-link" href="#">Popis</a>
+            <a class="nav-link" href="{{ path('bo_feature_detail', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Popis</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="#">Feedbacks</a>
+            <a class="nav-link active" href="{{ path('bo_feature_feedback', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Feedbacks <span class="badge badge-secondary">{{ feedbackList|length }}</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Portal</a>
+            <a class="nav-link" href="{{ path('bo_feature_portal', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Portal</a>
         </li>
     </ul>
-    <ul>
+    <table class="table">
         {% for feedback in feedbackList %}
-            <li>
-                <a href="{{ path('bo_feedback_detail', {'company_slug': companySlug, 'feedback_id': feedback.id} ) }}">{{ feedback.description }}</a>
-                <a href="{{ path('bo_feedback_relation_delete', {'company_slug': companySlug, 'feedback_id': feedback.id, 'feature_id': feature.id, 'p':'feature' } ) }}">Smazat</a>
-            </li>
+            <tr>
+                <td>
+                    <a href="{{ path('bo_feedback_detail', {'company_slug': companySlug, 'feedback_id': feedback.id} ) }}">
+                        {{ feedback.description }}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
+                            <path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z"/>
+                        </svg>
+                    </a>
+                </td>
+                <td>{{ feedback.source }}</td>
+                <td>{{ feedback.createdAt|date('Y.m h:m') }}</td>
+                <td>
+                    <a href="{{ path('bo_feedback_relation_delete', {'company_slug': companySlug, 'feedback_id': feedback.id, 'feature_id': feature.id, 'p':'feature' } ) }}">Smazat</a>
+                </td>
+            </tr>
         {% endfor %}
-    </ul>
+    </table>
     <h2 class="h4 mt-4 mb-4">Přidat nový feedback</h2>
     {{ form(form) }}
 {% endblock %}

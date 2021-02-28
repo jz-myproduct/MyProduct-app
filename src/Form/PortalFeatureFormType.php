@@ -33,18 +33,19 @@ class PortalFeatureFormType extends AbstractType
     {
 
         $builder
-            ->add('name', TextType::class)
-            ->add('description', TextareaType::class, array('required' => false))
+            ->add('name', TextType::class, ['label' => 'Jméno'])
+            ->add('description', TextareaType::class, ['required' => false, 'label' => 'Popis'])
             ->add('state', ChoiceType::class, [
                 'choices' => $this->manager->getRepository(PortalFeatureState::class)->findAll(),
                 'choice_value' => 'id',
-                'choice_label' => 'name'
+                'choice_label' => 'name',
+                'label' => 'Stav'
             ])
             ->add('display', CheckboxType::class, [
                 'label' => 'Zobrazit na portále',
                 'required' => false
             ])
-            ->add('save', SubmitType::class, ['label' => 'Register']);
+            ->add('save', SubmitType::class, ['label' => 'Uložit']);
     }
 
     public function configureOptions(OptionsResolver $resolver)
