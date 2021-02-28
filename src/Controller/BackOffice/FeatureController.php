@@ -171,15 +171,47 @@ class FeatureController extends AbstractController
             ]);
         }
 
+        // TODO tohle je zbytečné, jen získat počet
         $feedback = $this->getDoctrine()->getRepository(Feedback::class)
             ->getFeatureFeedback($feature);
 
         return $this->render('back_office/feature/detail.html.twig', [
             'feature' => $feature,
+            'feedback' => $feedback,
+            'companySlug' => $company->getSlug()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/{company_slug}/feature/{feature_id}/feedback", name="bo_feature_feedback")
+     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
+     * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
+     */
+    public function feedback(Company $company, Feature $feature, Request $request, AddOnFeatureDetail $handler)
+    {
+        $this->denyAccessUnlessGranted('edit', $feature);
+
+        $form = $this->createForm(FeedbackFeatureDetailFormType::class, $feedback = new Feedback());
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $handler->handle($feedback, $company, $feature);
+
+            return $this->redirectToRoute('bo_feature_detail', [
+                'company_slug' => $company->getSlug(),
+                'feature_id' => $feature->getId(),
+            ]);
+        }
+
+        $feedback = $this->getDoctrine()->getRepository(Feedback::class)
+            ->getFeatureFeedback($feature);
+
+        return $this->render('back_office/feature/feedback.html.twig', [
+            'feature' => $feature,
             'companySlug' => $company->getSlug(),
             'feedbackList' => $feedback,
             'form' => $form->createView(),
-            'tags' => $feature->getTags()
         ]);
     }
 }

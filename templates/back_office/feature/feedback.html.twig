@@ -1,10 +1,7 @@
 {% extends "back_office/base.html.twig" %}
 
 {% block content %}
-    <h1 class="h3 text-center">
-        <span class="badge {{ feature.state.name|lower }}">{{ feature.state.name }}</span>
-        {{ feature.name }}
-    </h1>
+    <h1 class="h3 text-center">{{ feature.name }}</h1>
     <p class="text-center">
         {% for tag in feature.tags %}
             <span class="badge badge-info">{{ tag.name }}</span>
@@ -17,19 +14,23 @@
     </p>
     <ul class="nav nav-tabs mb-4">
         <li class="nav-item">
-            <a class="nav-link active" href="#">Popis</a>
+            <a class="nav-link" href="#">Popis</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Feedbacks <span class="badge badge-secondary">{{ feedback|length }}</span></a>
+            <a class="nav-link active" href="#">Feedbacks</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">Portal</a>
         </li>
     </ul>
-    <p class="font-weight-bold">Prioritizační skóre</p>
-    <p>
-        <span class="badge badge-warning" style="font-size:16px">{{ feature.score }}</span>
-    </p>
-    <p class="font-weight-bold">Popis</p>
-    <p>{{ feature.description }}</p>
+    <ul>
+        {% for feedback in feedbackList %}
+            <li>
+                <a href="{{ path('bo_feedback_detail', {'company_slug': companySlug, 'feedback_id': feedback.id} ) }}">{{ feedback.description }}</a>
+                <a href="{{ path('bo_feedback_relation_delete', {'company_slug': companySlug, 'feedback_id': feedback.id, 'feature_id': feature.id, 'p':'feature' } ) }}">Smazat</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <h2 class="h4 mt-4 mb-4">Přidat nový feedback</h2>
+    {{ form(form) }}
 {% endblock %}
