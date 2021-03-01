@@ -1,31 +1,9 @@
 {% extends "back_office/base.html.twig" %}
 
 {% block content %}
-    <h1 class="h3 text-center">
-        <span class="badge {{ feature.state.name|lower }}">{{ feature.state.name }}</span>
-        {{ feature.name }}
-    </h1>
-    <p class="text-center">
-        {% for tag in feature.tags %}
-            <span class="badge badge-info">{{ tag.name }}</span>
-        {% endfor %}
-    </p>
-    <p class="text-center text-secondary">Přidáno {{ feature.createdAt|date('Y.m h:m') }}</p>
-    <p class="text-right">
-        <a href="{{ path('bo_feature_edit', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}" class="btn btn-outline-primary">Upravit</a>
-        <a href="{{ path('bo_feature_delete', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}" class="btn btn-outline-danger">Smazat</a>
-    </p>
-    <ul class="nav nav-tabs mb-4">
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('bo_feature_detail', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Popis</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('bo_feature_feedback', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Feedbacks <span class="badge badge-secondary">{{ feedback|length }}</span></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" href="{{ path('bo_feature_portal', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Portal</a>
-        </li>
-    </ul>
+    {% include('back_office/components/feature_header.html.twig') %}
+    
+    {%  include('back_office/components/feature_tabs.html.twig') %}
 
     {{ form(form) }}
 {% endblock %}

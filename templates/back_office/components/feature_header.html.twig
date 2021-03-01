@@ -1,0 +1,14 @@
+<h1 class="h3 text-center">
+    <span class="badge {{ feature.state.name|lower }}">{{ feature.state.name }}</span>
+    {{ feature.name }}
+</h1>
+<p class="text-center">
+    {% for tag in feature.tags %}
+        <span class="badge badge-info">{{ tag.name }}</span>
+    {% endfor %}
+</p>
+<p class="text-center text-secondary">Přidáno {{ feature.createdAt|date('Y.m h:m') }}</p>
+<p class="text-right">
+    <a href="{{ path('bo_feature_edit', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}" class="btn btn-outline-primary">Upravit</a>
+    <a href="{{ path('bo_feature_delete', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}" class="btn btn-outline-danger">Smazat</a>
+</p>

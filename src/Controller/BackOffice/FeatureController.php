@@ -183,7 +183,7 @@ class FeatureController extends AbstractController
 
         return $this->render('back_office/feature/detail.html.twig', [
             'feature' => $feature,
-            'feedback' => $feedback,
+            'feedbacks' => $feedback,
             'companySlug' => $company->getSlug()
         ]);
     }
@@ -216,7 +216,7 @@ class FeatureController extends AbstractController
         return $this->render('back_office/feature/feedback.html.twig', [
             'feature' => $feature,
             'companySlug' => $company->getSlug(),
-            'feedbackList' => $feedback,
+            'feedbacks' => $feedback,
             'form' => $form->createView(),
         ]);
     }

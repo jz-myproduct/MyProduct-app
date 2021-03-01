@@ -1,0 +1,14 @@
+<ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+        <a class="nav-link {% if app.request.get('_route') == 'bo_feature_detail' %}active{% endif %}"
+           href="{{ path('bo_feature_detail', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Popis</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if app.request.get('_route') == 'bo_feature_feedback' %}active{% endif %}"
+           href="{{ path('bo_feature_feedback', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Feedbacks <span class="badge badge-secondary">{{ feedbacks|length }}</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if app.request.get('_route') == 'bo_feature_portal' %}active{% endif %}"
+           href="{{ path('bo_feature_portal', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Portal</a>
+    </li>
+</ul>
