@@ -42,7 +42,7 @@ class Fixtures extends Fixture
         );
         $company->setCreatedAt($currentDateTime);
         $company->setUpdatedAt($currentDateTime);
-        $company->setRoles( $company->getRoles() );
+        $company->setRoles( [Company::ROLE_USER] );
 
         $manager->persist($company);
 
