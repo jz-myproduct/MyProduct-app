@@ -1,15 +1,19 @@
-{% extends "../base.html.twig" %}
-{% block title %}
-    {{ 'register_action'|trans }}
-{% endblock %}
-{% block body %}
-    <h1>Portál firmy: {{ portal.name }}</h1>
-    <a href="{{ path('front-office-portal-add-feedback', {'slug':portal.slug}) }}">Přidat feedback</a>
-    <h2>Features</h2>
+{% extends "front_office/portal/base.html.twig" %}
+
+{% block content %}
+
     {% for stateWithFeatures in featuresByState %}
-        <strong>{{ stateWithFeatures.state }}</strong><br />
+        <p class="font-weight-bold text-center border-bottom border-success py-2">{{ stateWithFeatures.state }}</p>
+        <div class="d-flex flex-nowrap">
         {% for feature in stateWithFeatures.features %}
-            {{ feature.name }}<br/>
+            <div class="border border-secondary p-3 m-1 rounded">
+                <strong>
+                    <a href="{{ path('fo_portal_feature_detail', {'portal_slug':portal.slug, 'feature_id':feature.id}) }}">{{ feature.name }}</a>
+                    <span class="badge badge-warning">{{ feature.feedbackCount }}</span>
+                </strong><br />
+                {{ feature.description }}
+            </div>
         {% endfor %}
+        </div>
     {% endfor %}
 {% endblock %}

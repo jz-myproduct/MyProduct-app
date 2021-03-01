@@ -8,7 +8,7 @@
     {% if portal.display %}
     <div class="mt-5">
         <div class="alert alert-info" role="alert">
-            Portal naleznete <a href="{{ path('fo_portal', {'slug':portal.slug}) }}">zde</a>.
+            Portal naleznete <a href="{{ path('fo_portal_detail', {'slug':portal.slug}) }}">zde</a>.
         </div>
         {% for stateWithFeatures in featuresByState %}
             <p class="font-weight-bold text-center border-bottom border-info py-2">{{ stateWithFeatures.state }}</p>

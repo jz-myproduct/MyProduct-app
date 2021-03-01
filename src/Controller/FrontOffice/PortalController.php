@@ -7,7 +7,7 @@ namespace App\Controller\FrontOffice;
 use App\Entity\Feedback;
 use App\Entity\Portal;
 use App\Entity\PortalFeature;
-use App\Form\PortalGeneralFeedbackFormType;
+use App\Form\PortalFeedbackFormType;
 use App\Handler\Feedback\AddFeatureFeedbackOnPortal;
 use App\Handler\Feedback\AddGeneralOnPortal;
 use App\Services\PortalFeatureService;
@@ -34,40 +34,20 @@ class PortalController extends AbstractController
     }
 
     /**
-     * @Route("/portal/{slug}", name="fo_portal")
+     * @Route("/portal/{slug}", name="fo_portal_detail")
      * @param Portal $portal
      * @return Response|NotFoundHttpException
      */
-    public function index(Portal $portal)
+    public function detail(Portal $portal)
     {
         if(! $portal->getDisplay()){
             throw new NotFoundHttpException();
         }
 
-        return $this->render('front_office/detail.html.twig', [
+        return $this->render('front_office/portal/detail.html.twig', [
             'portal' => $portal,
             'featuresByState' => $this->portalFeatureService->getArray($portal->getCompany())
         ]);
     }
 
-    /**
-     * @Route("/portal/{portal_slug}/feature/{feature_id}", name="fo_portal_feature")
-     * @ParamConverter("portal", options={"mapping": {"portal_slug": "slug"}})
-     * @ParamConverter("portalFeature", options={"mapping": {"feature_id": "id"}})
-     * @param Portal $portal
-     * @param PortalFeature $portalFeature
-     * @return Response
-     */
-    public function featureDetail(Portal $portal, PortalFeature $portalFeature)
-    {
-        if(! $this->portalFeatureService
-            ->isAllowToBeDisplayed($portalFeature, $portal)){
-            throw new NotFoundHttpException();
-        }
-
-        return $this->render('front_office/detail.html.twig', [
-           'portalName' => $portal->getName(),
-           'feature' => $portalFeature
-        ]);
-    }
 }
