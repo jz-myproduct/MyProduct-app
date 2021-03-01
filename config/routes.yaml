@@ -2,5 +2,5 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
-logout:
+fo_logout:
   path: /odhlasit

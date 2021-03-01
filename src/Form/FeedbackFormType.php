@@ -34,8 +34,8 @@ class FeedbackFormType extends AbstractType
         $this->featuresChoices = $options['featureChoices'];
 
         $builder
-            ->add('description', TextareaType::class)
-            ->add('source', TextareaType::class, array('required' => false));
+            ->add('description', TextareaType::class, ['label' => 'Popis'])
+            ->add('source', TextareaType::class, ['required' => false, 'label' => 'Zdroj']);
 
         if($this->featuresChoices)
         {
@@ -45,11 +45,12 @@ class FeedbackFormType extends AbstractType
                 'choice_value' => 'id',
                 'choice_label' => 'name',
                 'expanded' => true,
-                'multiple' => true
+                'multiple' => true,
+                'label' => 'Features'
             ]);
         }
 
-        $builder->add('save', SubmitType::class, ['label' => 'Create']);
+        $builder->add('save', SubmitType::class, ['label' => 'Uložit']);
 
     }
 

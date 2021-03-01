@@ -54,7 +54,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/zaregistrovat", name="register")
+     * @Route("/zaregistrovat", name="fo_register")
      * @param Request $request
      * @param Add $handler
      * @return Response
@@ -83,13 +83,13 @@ class SecurityController extends AbstractController
             );
         }
 
-        return $this->render('frontoffice/registration.html.twig', [
+        return $this->render('front_office/registration.html.twig', [
             'form' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/prihlasit", name="login")
+     * @Route("/prihlasit", name="fo_login")
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */
@@ -97,19 +97,19 @@ class SecurityController extends AbstractController
     {
         if ($this->isGranted('ROLE_USER'))
         {
-            return $this->redirectToRoute('back-office-home',[
+            return $this->redirectToRoute('bo_home',[
                 'slug' => $this->getUser()->getSlug()
             ]);
         }
 
-        return $this->render('frontoffice/login.html.twig', [
+        return $this->render('front_office/login.html.twig', [
             'last_username' => $authenticationUtils->getLastUsername(),
             'error' => $authenticationUtils->getLastAuthenticationError()
         ]);
     }
 
     /**
-     * @Route("/admin", name="after-login-route")
+     * @Route("/admin", name="fo_after_login")
      * @return Response
      */
     public function redirectToAdmin(): Response
@@ -118,7 +118,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('login');
         }
 
-        return $this->redirectToRoute('back-office-home', [
+        return $this->redirectToRoute('bo_home', [
             'slug' => $this->getUser()->getSlug()
         ]);
     }

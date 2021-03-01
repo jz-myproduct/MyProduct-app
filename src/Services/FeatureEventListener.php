@@ -40,7 +40,7 @@ class FeatureEventListener
 
     public function postFlush(PostFlushEventArgs $args)
     {
-        if(!$this->object instanceof Feedback){
+        if(!$this->object instanceof feedback){
             return;
         }
 

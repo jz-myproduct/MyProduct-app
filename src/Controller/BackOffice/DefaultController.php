@@ -27,7 +27,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{slug}", name="back-office-home")
+     * @Route("/admin/{slug}", name="bo_home")
      * @param Company $company
      * @return Response
      */
@@ -36,7 +36,7 @@ class DefaultController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $company);
 
 
-        return $this->render('backoffice/home.html.twig', [
+        return $this->render('back_office/home.html.twig', [
             'companySlug' => $company->getSlug()
         ]);
     }

@@ -33,12 +33,13 @@ class FeatureFormType extends AbstractType
         $this->tags = $options['tags'];
 
         $builder
-            ->add('name', TextType::class)
-            ->add('description', TextareaType::class, array('required' => false))
+            ->add('name', TextType::class, ['label' => 'Jméno'])
+            ->add('description', TextareaType::class, ['required' => false, 'label' => 'Popis'])
             ->add('state', ChoiceType::class, [
                'choices' => $this->entityManager->getRepository(FeatureState::class)->findAll(),
                'choice_value' => 'id',
-               'choice_label' => 'name'
+               'choice_label' => 'name',
+               'label' => 'Stav'
             ]);
 
         if($this->tags){
@@ -52,7 +53,7 @@ class FeatureFormType extends AbstractType
             ]);
         }
 
-        $builder->add('save', SubmitType::class, ['label' => 'Update']);
+        $builder->add('save', SubmitType::class, ['label' => 'Uložit']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

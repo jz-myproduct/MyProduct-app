@@ -15,9 +15,9 @@ class PortalFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
+            ->add('name', TextType::class, ['label' => 'Název'])
             ->add('display', CheckboxType::class, [
-                'label' => 'Zobrazit',
+                'label' => 'Aktivovat portál',
                 'required' => false
             ])
             ->add('save', SubmitType::class, ['label' => 'Uložit'])

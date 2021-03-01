@@ -46,7 +46,7 @@ class FeatureController extends AbstractController
 
 
     /**
-     * @Route("/admin/{slug}/feature/pridat", name="add-feature")
+     * @Route("/admin/{slug}/feature/pridat", name="bo_feature_add")
      * @param Company $company
      * @param Request $request
      * @param Add $handler
@@ -65,19 +65,19 @@ class FeatureController extends AbstractController
 
             $handler->handle($feature, $company);
 
-            return $this->redirectToRoute('feature-list', [
+            return $this->redirectToRoute('bo_feature_list', [
                 'slug' => $company->getSlug()
             ]);
         }
 
-        return $this->render('backoffice/addEditFeature.html.twig', [
+        return $this->render('back_office/feature/add_edit.html.twig', [
             'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/admin/{company_slug}/feature/{feature_id}/upravit", name="edit-feature")
+     * @Route("/admin/{company_slug}/feature/{feature_id}/upravit", name="bo_feature_edit")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @param Company $company
@@ -101,16 +101,21 @@ class FeatureController extends AbstractController
             $handler->handle($feature);
 
             $this->addFlash('success', 'Feature updated');
+
+            return $this->redirectToRoute('bo_feature_detail', [
+                'company_slug' => $company->getSlug(),
+                'feature_id' => $feature->getId()
+            ]);
         }
 
-        return $this->render('backoffice/addEditFeature.html.twig', [
+        return $this->render('back_office/feature/add_edit.html.twig', [
             'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/admin/{slug}/features", name="feature-list")
+     * @Route("/admin/{slug}/features", name="bo_feature_list")
      * @param Company $company
      * @return Response
      */
@@ -118,14 +123,14 @@ class FeatureController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        return $this->render('backoffice/featureList.html.twig', [
+        return $this->render('back_office/feature/list.html.twig', [
             'features' => $company->getFeatures(),
             'companySlug' => $company->getSlug()
         ]);
     }
 
     /**
-     * @Route("/admin/{company_slug}/feature/{feature_id}/smazat", name="delete-feature")
+     * @Route("/admin/{company_slug}/feature/{feature_id}/smazat", name="bo_feature_delete")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @param Company $company
@@ -139,13 +144,13 @@ class FeatureController extends AbstractController
 
         $handler->handle($feature);
 
-        return $this->redirectToRoute('feature-list', [
+        return $this->redirectToRoute('bo_feature_list', [
             'slug' => $company->getSlug()
         ]);
     }
 
     /**
-     * @Route("/admin/{company_slug}/feature/{feature_id}/detail", name="feature-detail")
+     * @Route("/admin/{company_slug}/feature/{feature_id}/detail", name="bo_feature_detail")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @param Company $company
@@ -165,7 +170,40 @@ class FeatureController extends AbstractController
 
             $handler->handle($feedback, $company, $feature);
 
-            return $this->redirectToRoute('feature-detail', [
+            return $this->redirectToRoute('bo_feature_detail', [
+                'company_slug' => $company->getSlug(),
+                'feature_id' => $feature->getId(),
+            ]);
+        }
+
+        // TODO tohle je zbytečné, jen získat počet
+        $feedback = $this->getDoctrine()->getRepository(Feedback::class)
+            ->getFeatureFeedback($feature);
+
+        return $this->render('back_office/feature/detail.html.twig', [
+            'feature' => $feature,
+            'feedback' => $feedback,
+            'companySlug' => $company->getSlug()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/{company_slug}/feature/{feature_id}/feedback", name="bo_feature_feedback")
+     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
+     * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
+     */
+    public function feedback(Company $company, Feature $feature, Request $request, AddOnFeatureDetail $handler)
+    {
+        $this->denyAccessUnlessGranted('edit', $feature);
+
+        $form = $this->createForm(FeedbackFeatureDetailFormType::class, $feedback = new Feedback());
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $handler->handle($feedback, $company, $feature);
+
+            return $this->redirectToRoute('bo_feature_feedback', [
                 'company_slug' => $company->getSlug(),
                 'feature_id' => $feature->getId(),
             ]);
@@ -174,12 +212,11 @@ class FeatureController extends AbstractController
         $feedback = $this->getDoctrine()->getRepository(Feedback::class)
             ->getFeatureFeedback($feature);
 
-        return $this->render('backoffice/featureDetail.html.twig', [
+        return $this->render('back_office/feature/feedback.html.twig', [
             'feature' => $feature,
             'companySlug' => $company->getSlug(),
             'feedbackList' => $feedback,
             'form' => $form->createView(),
-            'tags' => $feature->getTags()
         ]);
     }
 }

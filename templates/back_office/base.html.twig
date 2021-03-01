@@ -1,0 +1,54 @@
+{% extends "base.html.twig" %}
+
+{% block base_title %}
+    {% block title %}{% endblock %}
+{% endblock %}
+
+{% block body %}
+    <div class="bg-primary">
+        <nav class="navbar navbar-expand-lg navbar-light container">
+            <a class="navbar-brand text-light font-weight-bold" href="{{ path('bo_home', {'slug':app.user.slug}) }}">{{ app.user.name }}</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link text-light" href="{{ path('bo_feedback_list', {'slug':app.user.slug}) }}">Feedbacks</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="{{ path('bo_feature_list', {'slug':app.user.slug}) }}">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="{{ path('bo_portal_detail', {'slug':app.user.slug}) }}">Portal</a>
+                    </li>
+                </ul>
+                <span class="navbar-text">
+                  <a href="{{ path('fo_logout') }}" class="text-light">Odhlásit</a>
+                </span>
+            </div>
+        </nav>
+    </div>
+
+    <div style="background-color: #f5f5f5;">
+        <nav class="navbar navbar-expand-lg navbar-light container">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('bo_feedback_add', {'slug':app.user.slug}) }}">Přidat feedback</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('bo_feature_add', {'slug':app.user.slug}) }}">Přidat feature</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <main class="container mt-4 pb-5">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted">Product tool &copy; 2021 Jan Zabloudil</span>
+        </div>
+    </footer>
+{% endblock %}

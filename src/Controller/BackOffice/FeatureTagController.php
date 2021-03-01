@@ -21,7 +21,7 @@ class FeatureTagController extends AbstractController
 {
 
     /**
-     * @Route("/admin/{slug}/tag/pridat", name="add-feature-tag")
+     * @Route("/admin/{slug}/tag/pridat", name="bo_feature_tag_add")
      * @param Company $company
      * @param Request $request
      * @param Add $handler
@@ -38,19 +38,19 @@ class FeatureTagController extends AbstractController
 
             $handler->handle($tag, $company);
 
-            return $this->redirectToRoute('feature-tag-list', [
+            return $this->redirectToRoute('bo_feature_tag_list', [
                 'slug' => $company->getSlug()
             ]);
         }
 
-        return $this->render('backoffice/addEditFeatureTag.html.twig', [
+        return $this->render('back_office/feature_tag/add_edit.html.twig', [
             'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/admin/{company_slug}/tag/{tag_id}/upravit", name="edit-feature-tag")
+     * @Route("/admin/{company_slug}/tag/{tag_id}/upravit", name="bo_feature_tag_edit")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("tag", options={"mapping": {"tag_id": "id"}} )
      * @param Company $company
@@ -73,14 +73,14 @@ class FeatureTagController extends AbstractController
             $this->addFlash('success', 'Tag updated');
         }
 
-        return $this->render('backoffice/addEditFeatureTag.html.twig', [
+        return $this->render('back_office/feature_tag/add_edit.html.twig', [
             'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/admin/{slug}/tags", name="feature-tag-list")
+     * @Route("/admin/{slug}/tags", name="bo_feature_tag_list")
      * @param Company $company
      * @return Response
      */
@@ -88,7 +88,7 @@ class FeatureTagController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        return $this->render('backoffice/featureTagsList.html.twig', [
+        return $this->render('back_office/feature_tag/list.html.twig', [
             'tags' => $company->getFeatureTags(),
             'slug' => $company->getSlug()
         ]);
@@ -96,7 +96,7 @@ class FeatureTagController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/tag/{tag_id}/smazat", name="delete-feature-tag")
+     * @Route("/admin/{company_slug}/tag/{tag_id}/smazat", name="bo_feature_tag_delete")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("tag", options={"mapping": {"tag_id": "id"}} )
      * @param Company $company
@@ -110,7 +110,7 @@ class FeatureTagController extends AbstractController
 
         $handler->handle($tag);
 
-        return $this->redirectToRoute('feature-tag-list', [
+        return $this->redirectToRoute('bo_feature_tag_list', [
             'slug' => $company->getSlug()
         ]);
     }

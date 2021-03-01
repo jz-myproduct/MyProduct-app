@@ -1,0 +1,19 @@
+{% extends "front_office/portal/base.html.twig" %}
+
+{% block content %}
+
+    {% for stateWithFeatures in featuresByState %}
+        <p class="font-weight-bold text-center border-bottom border-success py-2">{{ stateWithFeatures.state }}</p>
+        <div class="d-flex flex-nowrap">
+        {% for feature in stateWithFeatures.features %}
+            <div class="border border-secondary p-3 m-1 rounded">
+                <strong>
+                    <a href="{{ path('fo_portal_feedback_feature', {'portal_slug':portal.slug, 'feature_id':feature.id}) }}">{{ feature.name }}</a>
+                    <span class="badge badge-warning">{{ feature.feedbackCount }}</span>
+                </strong><br />
+                {{ feature.description }}
+            </div>
+        {% endfor %}
+        </div>
+    {% endfor %}
+{% endblock %}
