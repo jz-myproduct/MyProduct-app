@@ -5,7 +5,7 @@
         Feedback
     </h1>
     {% if feedback.isNew %}<p class="text-center"><span class="badge badge-danger">Nový</span></p>{% endif %}
-    <p class="text-center text-secondary">Přidáno {{ feedback.createdAt|date('Y.m.d h:m:s') }}</p>
+    <p class="text-center text-secondary">Přidáno {{ feedback.createdAt|date('Y.m.d h:m') }}</p>
     <p class="text-right">
         <a href="{{ path('bo_feedback_edit', {'company_slug':app.user.slug, 'feedback_id': feedback.id}) }}" class="btn btn-outline-primary">Upravit</a>
         <a href="{{ path('bo_feedback_change_status', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}" class="btn btn-outline-secondary">Označit jako
@@ -17,30 +17,18 @@
         </a>
         <a href="{{ path('bo_feedback_delete', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}" class="btn btn-outline-danger">Smazat</a>
     </p>
+
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('bo_feedback_detail', {'company_slug':app.user.slug, 'feedback_id': feedback.id}) }}">Popis</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('bo_feedback_features', {'company_slug':app.user.slug, 'feedback_id': feedback.id}) }}">Features <span class="badge badge-secondary">{{ feedback.feature|length }}</span></a>
+        </li>
+    </ul>
+
     <p class="font-weight-bold">Co uživatelé říkají?</p>
     <p>{{ feedback.description }}</p>
     <p class="font-weight-bold">Od koho feedback máte?</p>
     <p>{{ feedback.source }}</p>
-    <h2 class="h4 mt-4">Features</h2>
-    <p>
-        {% for relatedFeature in relatedFeatures %}
-            <span class="p-1">
-                <a href="{{ path('bo_feature_detail', { 'company_slug': companySlug, 'feature_id': relatedFeature.id } ) }}"
-                   class="badge badge-info">{{ relatedFeature.name }}</a>
-                <a href="{{ path('bo_feedback_relation_delete', {'company_slug': companySlug, 'feedback_id': feedback.id, 'feature_id': relatedFeature.id, 'p':'feedback' } ) }}"
-                   class="badge badge-danger font-weight-bold"><span aria-hidden="true">&times;</span></a>
-            </span>
-        {% endfor %}
-    </p>
-    <h2 class="h4 mt-4">Features k přidání</h2>
-    <p>
-    {% for unrelatedFeature in unrelatedFeatures %}
-        <span class="p-1">
-            <a href="{{ path('bo_feature_detail', { 'company_slug': companySlug, 'feature_id': unrelatedFeature.id } ) }}"
-               class="badge badge-info">{{ unrelatedFeature.name }}</a>
-            <a href="{{ path('bo_feedback_relation_add', {'company_slug': companySlug, 'feedback_id': feedback.id, 'feature_id': unrelatedFeature.id, 'p':'feedback' } ) }}"
-               class="badge badge-success font-weight-bold">Přidat</a>
-        </span>
-    {% endfor %}
-    </p>
 {% endblock %}

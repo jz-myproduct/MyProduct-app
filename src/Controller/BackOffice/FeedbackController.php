@@ -165,7 +165,7 @@ class FeedbackController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feedback/{feedback_id}", name="bo_feedback_detail")
+     * @Route("/admin/{company_slug}/feedback/{feedback_id}/detail", name="bo_feedback_detail")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
@@ -180,6 +180,27 @@ class FeedbackController extends AbstractController
             ->getUnUsedFeaturesForFeedback($feedback, $company);
 
         return $this->render('back_office/feedback/detail.html.twig', [
+            'feedback' => $feedback,
+            'companySlug' => $company->getSlug(),
+        ]);
+    }
+
+    /**
+     * @Route("/admin/{company_slug}/feedback/{feedback_id}/features", name="bo_feedback_features")
+     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
+     * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
+     * @param Company $company
+     * @param Feedback $feedback
+     * @return Response
+     */
+    public function features(Company $company, Feedback $feedback)
+    {
+        $this->denyAccessUnlessGranted('edit', $feedback);
+
+        $unrelatedFeatures = $this->getDoctrine()->getRepository(Feedback::class)
+            ->getUnUsedFeaturesForFeedback($feedback, $company);
+
+        return $this->render('back_office/feedback/features.html.twig', [
             'feedback' => $feedback,
             'companySlug' => $company->getSlug(),
             'relatedFeatures' => $feedback->getFeature(),
@@ -211,7 +232,7 @@ class FeedbackController extends AbstractController
         // feedback already connected to feature
         if (in_array($feature, $feedback->getFeature()->toArray())) {
 
-            return $this->redirectToRoute('bo_feedback_detail',[
+            return $this->redirectToRoute('bo_feedback_features',[
                 'company_slug' => $company->getSlug(),
                 'feedback_id' => $feedback->getId()
             ]);
@@ -220,7 +241,7 @@ class FeedbackController extends AbstractController
 
         $handler->handle($feedback, $feature);
 
-        return $this->redirectToRoute('bo_feedback_detail',[
+        return $this->redirectToRoute('bo_feedback_features',[
             'company_slug' => $company->getSlug(),
             'feedback_id' => $feedback->getId()
         ]);
@@ -266,7 +287,7 @@ class FeedbackController extends AbstractController
         }
         if ($request->query->get('p') === 'feedback') {
 
-            return $this->redirectToRoute('bo_feedback_detail', [
+            return $this->redirectToRoute('bo_feedback_features', [
                 'feedback_id' => $feedback->getId(),
                 'company_slug' => $company->getSlug(),
             ]);
