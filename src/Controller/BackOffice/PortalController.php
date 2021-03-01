@@ -39,12 +39,10 @@ class PortalController extends AbstractController
 
     public function __construct(
         EntityManagerInterface $manager,
-        SlugService $slugService,
-        PortalFeatureService $portalFeatureService)
+        SlugService $slugService)
     {
         $this->manager = $manager;
         $this->slugService = $slugService;
-        $this->portalFeatureService = $portalFeatureService;
     }
 
     /**
