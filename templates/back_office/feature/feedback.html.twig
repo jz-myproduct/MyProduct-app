@@ -9,8 +9,8 @@
     </p>
     <p class="text-center text-secondary">Přidáno {{ feature.createdAt|date('Y.m h:m') }}</p>
     <p class="text-right">
-        <a href="" class="btn btn-outline-primary">Upravit</a>
-        <a href="" class="btn btn-outline-danger">Smazat</a>
+        <a href="{{ path('bo_feature_edit', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}" class="btn btn-outline-primary">Upravit</a>
+        <a href="{{ path('bo_feature_delete', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}" class="btn btn-outline-danger">Smazat</a>
     </p>
     <ul class="nav nav-tabs mb-4">
         <li class="nav-item">

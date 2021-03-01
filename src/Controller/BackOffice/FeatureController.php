@@ -101,6 +101,11 @@ class FeatureController extends AbstractController
             $handler->handle($feature);
 
             $this->addFlash('success', 'Feature updated');
+
+            return $this->redirectToRoute('bo_feature_detail', [
+                'company_slug' => $company->getSlug(),
+                'feature_id' => $feature->getId()
+            ]);
         }
 
         return $this->render('back_office/feature/add_edit.html.twig', [
@@ -198,7 +203,7 @@ class FeatureController extends AbstractController
 
             $handler->handle($feedback, $company, $feature);
 
-            return $this->redirectToRoute('bo_feature_detail', [
+            return $this->redirectToRoute('bo_feature_feedback', [
                 'company_slug' => $company->getSlug(),
                 'feature_id' => $feature->getId(),
             ]);

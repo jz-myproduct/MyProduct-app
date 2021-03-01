@@ -33,7 +33,8 @@
                         Nový
                     {% endif %}
                 </a></td>
-            <td><a href="{{ path('bo_feedback_detail', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}">Detail</a></td>
+            <td><a href="{{ path('bo_feedback_edit', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}">Upravit</a></td>
+            <td><a href="{{ path('bo_feedback_delete', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}">Smazat</a></td>
         </tr>
         {% endfor %}
     </table>

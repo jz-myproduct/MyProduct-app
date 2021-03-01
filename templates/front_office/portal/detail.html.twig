@@ -8,7 +8,7 @@
         {% for feature in stateWithFeatures.features %}
             <div class="border border-secondary p-3 m-1 rounded">
                 <strong>
-                    <a href="{{ path('fo_portal_feature_detail', {'portal_slug':portal.slug, 'feature_id':feature.id}) }}">{{ feature.name }}</a>
+                    <a href="{{ path('fo_portal_feedback_feature', {'portal_slug':portal.slug, 'feature_id':feature.id}) }}">{{ feature.name }}</a>
                     <span class="badge badge-warning">{{ feature.feedbackCount }}</span>
                 </strong><br />
                 {{ feature.description }}

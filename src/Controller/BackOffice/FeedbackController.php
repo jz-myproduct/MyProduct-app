@@ -94,6 +94,11 @@ class FeedbackController extends AbstractController
             $handler->handle($feedback);
 
             $this->addFlash('success', 'feedback updated');
+
+            return $this->redirectToRoute('bo_feedback_detail', [
+               'company_slug' => $company->getSlug(),
+               'feedback_id' => $feedback->getId()
+            ]);
         }
 
         return $this->render('back_office/feedback/add_edit.html.twig', [
