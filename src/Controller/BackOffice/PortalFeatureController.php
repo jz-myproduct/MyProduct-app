@@ -66,7 +66,7 @@ class PortalFeatureController extends AbstractController
         return $this->render('back_office/portal_feature/detail.html.twig',[
             'form' => $form->createView(),
             'feature' => $feature,
-            'feedback' => $feedback
+            'feedbacks' => $feedback
         ]);
     }
 
