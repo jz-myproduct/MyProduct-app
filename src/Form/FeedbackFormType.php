@@ -30,18 +30,19 @@ class FeedbackFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
-        $this->featuresChoices = $options['featureChoices'];
+        $featuresChoices = $options['featureChoices'] ? $options['featureChoices']->toArray()
+                                                      : null;
 
         $builder
             ->add('description', TextareaType::class, ['label' => 'Popis'])
             ->add('source', TextareaType::class, ['required' => false, 'label' => 'Zdroj']);
 
-        if($this->featuresChoices)
+
+        if($featuresChoices)
         {
             $builder->add('feature', EntityType::class, [
                 'class' => Feature::class,
-                'choices' => $this->featuresChoices,
+                'choices' => $featuresChoices,
                 'choice_value' => 'id',
                 'choice_label' => 'name',
                 'expanded' => true,

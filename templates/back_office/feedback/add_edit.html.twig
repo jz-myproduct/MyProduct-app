@@ -2,5 +2,21 @@
 
 {% block content %}
     <h1 class="h3 mb-4">Přidat / upravit feedback</h1>
-    {{ form(form) }}
+
+    {{ form_start(form) }}
+
+        {{ form_row(form.description) }}
+
+        {{ form_row(form.source) }}
+
+        {% if form.feature is not defined %}
+            <div class="form-group">
+                <label>Features</label>
+                <p>Zatím nemáte žádné featury k připojení. <a href="{{ path('bo_feature_add', {'slug':app.user.slug}) }}">Přidejte první</a>.</p>
+            </div>
+        {% else %}
+            {{ form_row(form.feature) }}
+        {% endif %}
+
+    {{ form_end(form) }}
 {% endblock %}
