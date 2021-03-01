@@ -115,7 +115,7 @@ class SecurityController extends AbstractController
     public function redirectToAdmin(): Response
     {
         if(! $this->isGranted('ROLE_USER') ){
-            return $this->redirectToRoute('login');
+            return $this->redirectToRoute('fo_login');
         }
 
         return $this->redirectToRoute('bo_home', [
