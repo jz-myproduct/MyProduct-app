@@ -44,23 +44,5 @@ class PortalFeatureService
         return true;
 
     }
-
-    // TODO will be refactored and moved to View soon
-    public function getArray(Company $company)
-    {
-        $array = array();
-
-        foreach ($this->manager->getRepository(PortalFeatureState::class)->findAll() as $portalFeatureState)
-        {
-            $array[] = [
-                'state' => $portalFeatureState->getName(),
-                'features' => $this->manager
-                    ->getRepository(PortalFeature::class)
-                    ->findFeaturesForPortalByState($company, $portalFeatureState)
-            ];
-        }
-
-        return $array;
-    }
-
+    
 }
