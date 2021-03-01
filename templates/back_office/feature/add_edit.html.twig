@@ -8,6 +8,21 @@
             </div>
         {% endfor %}
 
-        {{ form(form) }}
+        {{ form_start(form) }}
+
+            {{ form_row(form.name) }}
+            {{ form_row(form.description) }}
+            {{ form_row(form.state) }}
+
+            {% if form.tags is not defined %}
+                <div class="form-group">
+                    <label>Tagy</label>
+                    <p>Zatím nemáte žádné tagy. <a href="{{ path('bo_feature_tag_add', {'slug':app.user.slug}) }}">Přidejte první</a>.</p>
+                </div>
+            {% else %}
+                {{ form_row(form.tags) }}
+            {% endif %}
+
+        {{ form_end(form) }}
 
 {% endblock %}

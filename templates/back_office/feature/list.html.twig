@@ -3,6 +3,7 @@
 {% block content %}
     <h1 class="h3">Features</h1>
     <a href="{{ path('bo_feature_add', {'slug':app.user.slug}) }}" class="btn btn-primary mt-3" role="button">Přidat feature</a>
+    <a href="{{ path('bo_feature_tag_list', {'slug':app.user.slug}) }}" class="btn btn-outline-secondary mt-3" role="button">Přehled tagů</a>
 
     <table class="table table-striped mt-5">
     {% for feature in features %}

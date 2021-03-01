@@ -30,7 +30,8 @@ class FeatureFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->tags = $options['tags'];
+        $tags = $options['tags'] ? $options['tags']->toArray()
+                                 : null;
 
         $builder
             ->add('name', TextType::class, ['label' => 'Jméno'])
@@ -42,10 +43,10 @@ class FeatureFormType extends AbstractType
                'label' => 'Stav'
             ]);
 
-        if($this->tags){
+        if($tags){
             $builder->add('tags', EntityType::class, [
                 'class' => FeatureTag::class,
-                'choices' => $this->tags,
+                'choices' => $tags,
                 'choice_value' => 'id',
                 'choice_label' => 'name',
                 'expanded' => true,
