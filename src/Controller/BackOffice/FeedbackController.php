@@ -118,7 +118,8 @@ class FeedbackController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $company);
 
         return $this->render('back_office/feedback/list.twig', [
-            'feedbacks' => $company->getFeedbacks(),
+            'feedbacks' => $this->manager->getRepository(Feedback::class)
+                ->findBy(['company' => $company], ['isNew' => 'DESC']),
             'companySlug' => $company->getSlug()
         ]);
     }

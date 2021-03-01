@@ -124,7 +124,8 @@ class FeatureController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $company);
 
         return $this->render('back_office/feature/list.html.twig', [
-            'features' => $company->getFeatures(),
+            'features' => $this->manager->getRepository(Feature::class)
+                ->findBy(['company' => $company], ['score' => 'DESC']),
             'companySlug' => $company->getSlug()
         ]);
     }
