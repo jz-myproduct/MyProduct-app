@@ -1,0 +1,16 @@
+<h1 class="h3 text-center">
+    Feedback
+</h1>
+{% if feedback.isNew %}<p class="text-center"><span class="badge badge-danger">Nový</span></p>{% endif %}
+<p class="text-center text-secondary">Přidáno {{ feedback.createdAt|date('Y.m.d h:m') }}</p>
+<p class="text-right">
+    <a href="{{ path('bo_feedback_edit', {'company_slug':app.user.slug, 'feedback_id': feedback.id}) }}" class="btn btn-outline-primary">Upravit</a>
+    <a href="{{ path('bo_feedback_change_status', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}" class="btn btn-outline-secondary">Označit jako
+        {% if feedback.isNew %}
+            přečtený
+        {% else %}
+            nový
+        {% endif %}
+    </a>
+    <a href="{{ path('bo_feedback_delete', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}" class="btn btn-outline-danger">Smazat</a>
+</p>
