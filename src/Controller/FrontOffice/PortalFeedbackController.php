@@ -31,17 +31,15 @@ class PortalFeedbackController extends AbstractController
      * @param PortalFeature $portalFeature
      * @param Request $request
      * @param AddFeatureFeedbackOnPortal $handler
-     * @param PortalFeatureService $portalFeatureService
      * @return Response
      */
     public function detail(
         Portal $portal,
         PortalFeature $portalFeature,
         Request $request,
-        AddFeatureFeedbackOnPortal $handler,
-        PortalFeatureService $portalFeatureService)
+        AddFeatureFeedbackOnPortal $handler)
     {
-        if(! $portalFeatureService->isAllowToBeDisplayed($portalFeature, $portal)){
+        if(! $this->isAllowToBeDisplayed($portalFeature, $portal)){
             throw new NotFoundHttpException();
 
         }
@@ -68,7 +66,7 @@ class PortalFeedbackController extends AbstractController
 
 
     /**
-     * @Route("/portal/{slug}/pridat-feedback", name="fo_portal_feedback_general")
+     * @Route("/portal/{slug}/feedback/pridat", name="fo_portal_feedback_general")
      * @param Portal $portal
      * @param Request $request
      * @param AddGeneralOnPortal $handler
@@ -96,6 +94,27 @@ class PortalFeedbackController extends AbstractController
             'portal' => $portal,
             'form' => $form->createView()
         ]);
+    }
+
+    public function isAllowToBeDisplayed(PortalFeature $portalFeature, Portal $portal)
+    {
+
+        if(! $portal->getDisplay())
+        {
+            return false;
+        }
+
+        if(! $portalFeature->getDisplay())
+        {
+            return false;
+        }
+
+        if($portalFeature->getFeature()->getCompany() !== $portal->getCompany())
+        {
+            return false;
+        }
+
+        return true;
     }
 
 }

@@ -7,6 +7,7 @@ namespace App\Controller\FrontOffice;
 use App\Entity\Feedback;
 use App\Entity\Portal;
 use App\Entity\PortalFeature;
+use App\Entity\PortalFeatureState;
 use App\Form\PortalFeedbackFormType;
 use App\Handler\Feedback\AddFeatureFeedbackOnPortal;
 use App\Handler\Feedback\AddGeneralOnPortal;
@@ -24,29 +25,42 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class PortalController extends AbstractController
 {
     /**
-     * @var PortalFeatureService
+     * @var EntityManagerInterface
      */
-    private $portalFeatureService;
+    private $manager;
 
-    public function __construct(PortalFeatureService $portalFeatureService)
+    public function __construct(EntityManagerInterface $manager)
     {
-        $this->portalFeatureService = $portalFeatureService;
+        $this->manager = $manager;
     }
 
     /**
-     * @Route("/portal/{slug}", name="fo_portal_detail")
+     * @Route("/portal/{slug}/{state?}", name="fo_portal_detail")
+     * @ParamConverter("portal", options={"mapping": {"slug": "slug"}})
+     * @ParamConverter("state", options={"mapping": {"state": "slug"}})
      * @param Portal $portal
+     * @param PortalFeatureState|null $state
      * @return Response|NotFoundHttpException
      */
-    public function detail(Portal $portal)
+    public function detail(Portal $portal, ?PortalFeatureState $state)
     {
         if(! $portal->getDisplay()){
             throw new NotFoundHttpException();
         }
 
+        $state = $state ?? $this->manager->getRepository(PortalFeatureState::class)->findInitialState();
+
+        $states = $this->manager->getRepository(PortalFeatureState::class)->findAll();
+
+        $features = $this->manager->getRepository(PortalFeature::class)
+            ->findFeaturesForPortalByState($portal->getCompany(), $state);
+
+
         return $this->render('front_office/portal/detail.html.twig', [
             'portal' => $portal,
-            'featuresByState' => $this->portalFeatureService->getArray($portal->getCompany())
+            'states' => $states,
+            'currentState' => $state,
+            'portalFeatures' => $features
         ]);
     }
 

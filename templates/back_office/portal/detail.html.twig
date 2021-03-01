@@ -1,30 +1,39 @@
 {% extends "back_office/base.html.twig" %}
 
 {% block content %}
+    {% if(app.request.get('state')) %}
+        {% set slugState = app.request.get('state').slug %}
+    {% else %}
+        {% set slugState = currentState.slug %}
+    {% endif %}
+
     <h1 class="h3 mb-4 text-center">Portál</h1>
     <h2 class="h4 mb-4">Nastavení</h2>
     {{ form(form) }}
 
     {% if portal.display %}
-    <div class="mt-5">
-        <div class="alert alert-info" role="alert">
-            Portal naleznete <a href="{{ path('fo_portal_detail', {'slug':portal.slug}) }}">zde</a>.
+        <div class="mt-5">
+            <div class="alert alert-info" role="alert">
+                Portal naleznete <a href="{{ path('fo_portal_detail', {'slug':portal.slug}) }}">zde</a>.
+            </div>
         </div>
-        {% for stateWithFeatures in featuresByState %}
-            <p class="font-weight-bold text-center border-bottom border-info py-2">{{ stateWithFeatures.state }}</p>
-            <div class="d-flex flex-nowrap">
-            {% for feature in stateWithFeatures.features %}
-                <div class="border border-secondary p-3 m-1 rounded">
-                    <strong>
-                        <a href="{{ path('bo_feature_portal', {'company_slug':app.user.slug, 'feature_id':feature.feature.id}) }}">{{ feature.name }}</a>
-                        <span class="badge badge-warning">{{ feature.feedbackCount }}</span>
-                    </strong><br />
-                    {{ feature.description }}
-                </div>
+        <ul class="nav nav-tabs justify-content-center mt-5">
+            {% for state in states %}
+                <li>
+                    <a href="{{ path('bo_portal_detail', {'slug':app.user.slug, 'state':state.slug}) }}" class="nav-link {% if slugState == state.slug %}active{% endif %} }">{{ state.name }}</a>
+                </li>
             {% endfor %}
+        </ul>
+        <div class="d-flex flex-nowrap mt-4">
+        {% for feature in portalFeatures %}
+            <div class="border border-secondary p-3 m-1 rounded">
+                <strong>
+                    <a href="{{ path('bo_feature_portal', {'company_slug':app.user.slug, 'feature_id':feature.feature.id}) }}">{{ feature.name }}</a>
+                    <span class="badge badge-warning">{{ feature.feedbackCount }}</span>
+                </strong><br />
+                {{ feature.description }}
             </div>
         {% endfor %}
-    </div>
     {% else %}
         <div class="alert alert-danger mt-5" role="alert">
             Portál neběží.
