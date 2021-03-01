@@ -68,7 +68,7 @@ class PortalFeedbackController extends AbstractController
 
 
     /**
-     * @Route("/portal/{slug}/pridat-feedback", name="fo_portal_feedback_general")
+     * @Route("/portal/{slug}/feedback/pridat", name="fo_portal_feedback_general")
      * @param Portal $portal
      * @param Request $request
      * @param AddGeneralOnPortal $handler

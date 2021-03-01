@@ -19,6 +19,17 @@ class PortalFeatureStateRepository extends ServiceEntityRepository
         parent::__construct($registry, PortalFeatureState::class);
     }
 
+    public function findInitialState()
+    {
+        $result = $this->createQueryBuilder('s')
+            ->orderBy('s.position', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        return $result[0];
+    }
+
     // /**
     //  * @return PortalFeatureState[] Returns an array of PortalFeatureState objects
     //  */

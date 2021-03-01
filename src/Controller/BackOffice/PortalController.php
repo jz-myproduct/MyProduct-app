@@ -4,6 +4,8 @@
 namespace App\Controller\BackOffice;
 
 use App\Entity\Company;
+use App\Entity\Feature;
+use App\Entity\FeatureState;
 use App\Entity\Portal;
 use App\Entity\PortalFeature;
 use App\Entity\PortalFeatureState;
@@ -46,13 +48,16 @@ class PortalController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{slug}/portal", name="bo_portal_detail")
+     * @Route("/admin/{slug}/portal/{state?}", name="bo_portal_detail")
+     * @ParamConverter("company", options={"mapping": {"slug": "slug"}})
+     * @ParamConverter("state", options={"mapping": {"state": "slug"}})
      * @param Company $company
      * @param Request $request
      * @param Edit $handler
+     * @param FeatureState $state
      * @return Response
      */
-    public function detail(Company $company, Request $request, Edit $handler)
+    public function detail(Company $company, Request $request, Edit $handler, ?PortalFeatureState $state)
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
@@ -66,12 +71,22 @@ class PortalController extends AbstractController
             $handler->handle($portal);
         }
 
+        $state = $state ?? $this->manager->getRepository(PortalFeatureState::class)->findInitialState();
+
+        $states = $this->manager->getRepository(PortalFeatureState::class)->findAll();
+
+        $features = $this->manager->getRepository(PortalFeature::class)
+            ->findFeaturesForPortalByState($company, $state);
+
         return $this->render('back_office/portal/detail.html.twig', [
            'companySlug' => $company->getSlug(),
            'form' => $form->createView(),
            'portal' => $portal,
-           'featuresByState' => $this->portalFeatureService->getArray($company)
+           'currentState' => $state,
+           'states' => $states,
+           'portalFeatures' => $features
         ]);
+
     }
 
 }
