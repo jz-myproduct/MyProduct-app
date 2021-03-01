@@ -25,17 +25,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class PortalController extends AbstractController
 {
     /**
-     * @var PortalFeatureService
-     */
-    private $portalFeatureService;
-    /**
      * @var EntityManagerInterface
      */
     private $manager;
 
-    public function __construct(PortalFeatureService $portalFeatureService, EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager)
     {
-        $this->portalFeatureService = $portalFeatureService;
         $this->manager = $manager;
     }
 
