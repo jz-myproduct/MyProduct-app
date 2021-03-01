@@ -87,12 +87,12 @@ class PortalFeedbackController extends AbstractController
 
             $handler->handle($feedback, $portal->getCompany());
 
-            return $this->redirectToRoute('front-office-portal', [
+            return $this->redirectToRoute('fo_portal_detail', [
                 'slug' => $portal->getSlug()
             ]);
         }
 
-        return $this->render('front_office/general.twig', [
+        return $this->render('front_office/portal/feedback/general.html.twig', [
             'portal' => $portal,
             'form' => $form->createView()
         ]);

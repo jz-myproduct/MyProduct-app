@@ -15,7 +15,7 @@ class PortalFeedbackFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('description', TextareaType::class, ['label' => 'Proč tuto featuru potřebujete?'])
+            ->add('description', TextareaType::class, ['label' => 'Popiště featuru a uveďte proč ji potřebujete'])
             ->add('source', TextType::class, ['required' => false, 'label' => 'E-mail či jiný kontakt'])
             ->add('save', SubmitType::class, ['label' => 'Přidat'])
         ;
