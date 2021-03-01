@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c4dca443-96cc-47d0-b295-f3db7166b427" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Services/SlugService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/FrontOfficeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/FrontOfficeController.php" afterDir="false" />
-    </list>
+    <list default="true" id="c4dca443-96cc-47d0-b295-f3db7166b427" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -25,6 +20,7 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
@@ -129,6 +125,8 @@
       <path value="$PROJECT_DIR$/vendor/webmozart/assert" />
       <path value="$PROJECT_DIR$/vendor/psr/link" />
       <path value="$PROJECT_DIR$/vendor/egulias/email-validator" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/data-fixtures" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-fixtures-bundle" />
     </include_path>
   </component>
   <component name="ProjectId" id="1oWdim2B9wlIhtawfGLXlH7iCEE" />
@@ -192,6 +190,10 @@
       <screen x="0" y="25" width="1440" height="803" />
     </state>
     <state x="377" y="252" key="com.intellij.ide.util.TipDialog/0.25.1440.803@0.25.1440.803" timestamp="1613406413295" />
+    <state x="506" y="371" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1614627790517">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="506" y="371" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1440.900@0.0.1440.900" timestamp="1614627790517" />
     <state x="364" y="152" width="670" height="676" key="search.everywhere.popup" timestamp="1613414114858">
       <screen x="0" y="25" width="1440" height="803" />
     </state>
