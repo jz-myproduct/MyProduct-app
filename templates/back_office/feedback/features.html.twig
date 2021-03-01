@@ -1,31 +1,9 @@
 {% extends "back_office/base.html.twig" %}
 
 {% block content %}
-    <h1 class="h3 text-center">
-        Feedback
-    </h1>
-    {% if feedback.isNew %}<p class="text-center"><span class="badge badge-danger">Nový</span></p>{% endif %}
-    <p class="text-center text-secondary">Přidáno {{ feedback.createdAt|date('Y.m.d h:m') }}</p>
-    <p class="text-right">
-        <a href="{{ path('bo_feedback_edit', {'company_slug':app.user.slug, 'feedback_id': feedback.id}) }}" class="btn btn-outline-primary">Upravit</a>
-        <a href="{{ path('bo_feedback_change_status', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}" class="btn btn-outline-secondary">Označit jako
-            {% if feedback.isNew %}
-                přečtený
-            {% else %}
-                nový
-            {% endif %}
-        </a>
-        <a href="{{ path('bo_feedback_delete', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}" class="btn btn-outline-danger">Smazat</a>
-    </p>
+    {% include('back_office/components/feedback_header.html.twig') %}
 
-    <ul class="nav nav-tabs mb-4">
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('bo_feedback_detail', {'company_slug':app.user.slug, 'feedback_id': feedback.id}) }}">Popis</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" href="{{ path('bo_feedback_features', {'company_slug':app.user.slug, 'feedback_id': feedback.id}) }}">Features <span class="badge badge-secondary">{{ feedback.feature|length }}</span></a>
-        </li>
-    </ul>
+    {% include('back_office/components/feedback_tabs.html.twig') %}
 
     <p>
         {% for relatedFeature in relatedFeatures %}
