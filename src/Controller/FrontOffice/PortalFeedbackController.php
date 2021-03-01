@@ -24,7 +24,7 @@ class PortalFeedbackController extends AbstractController
 {
 
     /**
-     * @Route("/portal/{portal_slug}/feature/{feature_id}", name="fo_portal_feature_detail")
+     * @Route("/portal/{portal_slug}/feature/{feature_id}", name="fo_portal_feedback_feature")
      * @ParamConverter("portal", options={"mapping": {"portal_slug": "slug"}})
      * @ParamConverter("portalFeature", options={"mapping": {"feature_id": "id"}})
      * @param Portal $portal
@@ -68,7 +68,7 @@ class PortalFeedbackController extends AbstractController
 
 
     /**
-     * @Route("/portal/{slug}/pridat-feedback", name="fo_portal_general_feedback_add")
+     * @Route("/portal/{slug}/pridat-feedback", name="fo_portal_feedback_general")
      * @param Portal $portal
      * @param Request $request
      * @param AddGeneralOnPortal $handler

@@ -32,6 +32,7 @@ class PortalFeatureController extends AbstractController
      * @param Edit $editHandler
      * @return Response
      */
+
     public function detail(
         Company $company,
         Feature $feature,
@@ -68,5 +69,6 @@ class PortalFeatureController extends AbstractController
             'feedback' => $feedback
         ]);
     }
+
 
 }
