@@ -1,24 +1,17 @@
 {% extends "back_office/base.html.twig" %}
-{% block title %}
-    {{ 'register_action'|trans }}
-{% endblock %}
+
 {% block content %}
-    {{ 'home_title'|trans }}
-    {% if app.user %}
-        <div class="mb-3">
-            Administrace<br />
-            You are logged in as {{ app.user.username }}, <a href="{{ path('logout') }}">Logout</a>
-        </div>
-    {% endif %}
-    <h2>Feature tags</h2>
-    <ul>
+
+    <h1 class="h3">Feature tags</h1>
+    <a href="{{ path('bo_feature_tag_add', {'slug':app.user.slug}) }}" class="btn btn-primary mt-3" role="button">Přidat tag</a>
+    <table class="table table-striped mt-5">
         {% for tag in tags %}
-            <li>
-               {{ tag.name }}
-                <a href="{{ path('edit-feature-tag', {'company_slug': slug, 'tag_id':tag.id }) }}">Upravit</a>
-                <a href="{{ path('delete-feature-tag', {'company_slug': slug, 'tag_id':tag.id }) }}">Smazat</a>
-            </li>
+            <tr>
+                <td>{{ tag.name }}</td>
+                <td><a href="{{ path('bo_feature_tag_edit', {'company_slug': slug, 'tag_id':tag.id }) }}">Upravit</a></td>
+                <td><a href="{{ path('bo_feature_tag_delete', {'company_slug': slug, 'tag_id':tag.id }) }}">Smazat</a></td>
+            </tr>
         {% endfor %}
-    </ul>
+    </table>
 
 {% endblock %}

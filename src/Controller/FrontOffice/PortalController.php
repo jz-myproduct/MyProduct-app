@@ -34,7 +34,7 @@ class PortalController extends AbstractController
     }
 
     /**
-     * @Route("/portal/{slug}", name="fo-portal")
+     * @Route("/portal/{slug}", name="fo_portal")
      * @param Portal $portal
      * @return Response|NotFoundHttpException
      */

@@ -38,12 +38,12 @@ class FeatureTagController extends AbstractController
 
             $handler->handle($tag, $company);
 
-            return $this->redirectToRoute('feature-tag-list', [
+            return $this->redirectToRoute('bo_feature_tag_list', [
                 'slug' => $company->getSlug()
             ]);
         }
 
-        return $this->render('back_office/add_edit.html.twig', [
+        return $this->render('back_office/feature_tag/add_edit.html.twig', [
             'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
@@ -73,14 +73,14 @@ class FeatureTagController extends AbstractController
             $this->addFlash('success', 'Tag updated');
         }
 
-        return $this->render('back_office/add_edit.html.twig', [
+        return $this->render('back_office/feature_tag/add_edit.html.twig', [
             'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/admin/{slug}/tags", name="bo-feature-tag-list")
+     * @Route("/admin/{slug}/tags", name="bo_feature_tag_list")
      * @param Company $company
      * @return Response
      */
@@ -88,7 +88,7 @@ class FeatureTagController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        return $this->render('back_office/list.html.twig', [
+        return $this->render('back_office/feature_tag/list.html.twig', [
             'tags' => $company->getFeatureTags(),
             'slug' => $company->getSlug()
         ]);
@@ -110,7 +110,7 @@ class FeatureTagController extends AbstractController
 
         $handler->handle($tag);
 
-        return $this->redirectToRoute('feature-tag-list', [
+        return $this->redirectToRoute('bo_feature_tag_list', [
             'slug' => $company->getSlug()
         ]);
     }

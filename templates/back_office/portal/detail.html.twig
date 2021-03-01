@@ -1,19 +1,33 @@
 {% extends "back_office/base.html.twig" %}
 
 {% block content %}
-    <h1 class="h3">Portal</h1>
+    <h1 class="h3 mb-4 text-center">Portál</h1>
+    <h2 class="h4 mb-4">Nastavení</h2>
     {{ form(form) }}
+
     {% if portal.display %}
-        <h3>Portal běží</h3>
-        Portal naleznete <a href="{{ path('front-office-portal', {'slug':portal.slug}) }}">zde</a>
-        <h4>Features k zobrazení</h4>
-
-            {% for stateWithFeatures in featuresByState %}
-                <strong>{{ stateWithFeatures.state }}</strong><br />
-                {% for feature in stateWithFeatures.features %}
-                    {{ feature.name }}<br/>
-                {% endfor %}
+    <div class="mt-5">
+        <div class="alert alert-info" role="alert">
+            Portal naleznete <a href="{{ path('fo_portal', {'slug':portal.slug}) }}">zde</a>.
+        </div>
+        {% for stateWithFeatures in featuresByState %}
+            <p class="font-weight-bold text-center border-bottom border-info py-2">{{ stateWithFeatures.state }}</p>
+            <div class="d-flex flex-nowrap">
+            {% for feature in stateWithFeatures.features %}
+                <div class="border border-secondary p-3 m-1 rounded">
+                    <strong>
+                        <a href="{{ path('bo_feature_portal', {'company_slug':app.user.slug, 'feature_id':feature.feature.id}) }}">{{ feature.name }}</a>
+                        <span class="badge badge-warning">{{ feature.feedbackCount }}</span>
+                    </strong><br />
+                    {{ feature.description }}
+                </div>
             {% endfor %}
-
+            </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <div class="alert alert-danger mt-5" role="alert">
+            Portál neběží.
+        </div>
     {% endif %}
 {% endblock %}

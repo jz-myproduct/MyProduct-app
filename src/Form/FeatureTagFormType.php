@@ -14,8 +14,8 @@ class FeatureTagFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('save', SubmitType::class, ['label' => 'Přidat'])
+            ->add('name', TextType::class, ['label' => 'Jméno'])
+            ->add('save', SubmitType::class, ['label' => 'Uložit'])
         ;
     }
 
