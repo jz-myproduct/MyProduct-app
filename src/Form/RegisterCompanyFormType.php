@@ -17,10 +17,10 @@ class RegisterCompanyFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class)
-            ->add('password', PasswordType::class)
-            ->add('name', TextType::class)
-            ->add('save', SubmitType::class, ['label' => 'Register'])
+            ->add('email', EmailType::class, ['label' => 'Email'])
+            ->add('password', PasswordType::class, ['label' => 'Heslo'])
+            ->add('name', TextType::class, ['label' => 'Jméno firmy'])
+            ->add('save', SubmitType::class, ['label' => 'Vytvořit firmu'])
         ;
     }
 
