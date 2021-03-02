@@ -46,7 +46,6 @@ class FeatureTagController extends AbstractController
         }
 
         return $this->render('back_office/feature_tag/add_edit.html.twig', [
-            'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
     }
@@ -76,7 +75,6 @@ class FeatureTagController extends AbstractController
         }
 
         return $this->render('back_office/feature_tag/add_edit.html.twig', [
-            'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
     }
@@ -91,8 +89,7 @@ class FeatureTagController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $company);
 
         return $this->render('back_office/feature_tag/list.html.twig', [
-            'tags' => $company->getFeatureTags(),
-            'slug' => $company->getSlug()
+            'tags' => $company->getFeatureTags()
         ]);
 
     }

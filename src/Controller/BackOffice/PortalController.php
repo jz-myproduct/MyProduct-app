@@ -75,7 +75,6 @@ class PortalController extends AbstractController
             ->findFeaturesForPortalByState($company, $state);
 
         return $this->render('back_office/portal/detail.html.twig', [
-           'companySlug' => $company->getSlug(),
            'form' => $form->createView(),
            'portal' => $portal,
            'currentState' => $state,
