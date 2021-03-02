@@ -15,6 +15,7 @@ use App\Handler\Feature\Delete;
 use App\Handler\Feature\Edit;
 use App\Handler\Feedback\AddOnFeatureDetail;
 use App\Services\SlugService;
+use App\View\Feature\ListView;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -117,16 +118,14 @@ class FeatureController extends AbstractController
     /**
      * @Route("/admin/{slug}/features", name="bo_feature_list")
      * @param Company $company
+     * @param ListView $view
      * @return Response
      */
-    public function list(Company $company)
+    public function list(Company $company, ListView $view)
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        return $this->render('back_office/feature/list.html.twig', [
-            'features' => $this->manager->getRepository(Feature::class)
-                ->findBy(['company' => $company], ['score' => 'DESC'])
-        ]);
+        return $this->render('back_office/feature/list.html.twig', $view->create($company));
     }
 
     /**
