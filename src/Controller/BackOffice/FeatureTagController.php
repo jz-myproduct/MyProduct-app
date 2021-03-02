@@ -40,9 +40,9 @@ class FeatureTagController extends AbstractController
 
             $this->addFlash('success', 'Tag přidán.');
 
-            return $this->redirectToRoute('bo_feature_tag_list', [
-                'slug' => $company->getSlug()
-            ]);
+         //   return $this->redirectToRoute('bo_feature_tag_list', [
+           //     'slug' => $company->getSlug()
+           // ]);
         }
 
         return $this->render('back_office/feature_tag/add_edit.html.twig', [
