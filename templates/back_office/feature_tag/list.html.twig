@@ -8,8 +8,8 @@
         {% for tag in tags %}
             <tr>
                 <td>{{ tag.name }}</td>
-                <td><a href="{{ path('bo_feature_tag_edit', {'company_slug': slug, 'tag_id':tag.id }) }}">Upravit</a></td>
-                <td><a href="{{ path('bo_feature_tag_delete', {'company_slug': slug, 'tag_id':tag.id }) }}">Smazat</a></td>
+                <td><a href="{{ path('bo_feature_tag_edit', {'company_slug': app.user.slug, 'tag_id':tag.id }) }}">Upravit</a></td>
+                <td><a href="{{ path('bo_feature_tag_delete', {'company_slug': app.user.slug, 'tag_id':tag.id }) }}">Smazat</a></td>
             </tr>
         {% endfor %}
     </table>

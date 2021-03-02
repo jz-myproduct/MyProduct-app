@@ -52,7 +52,7 @@ class PortalRepository extends ServiceEntityRepository
 
 
     // /**
-    //  * @return Portal[] Returns an array of Portal objects
+    //  * @return FeedbackListView[] Returns an array of FeedbackListView objects
     //  */
     /*
     public function findByExampleField($value)
@@ -69,7 +69,7 @@ class PortalRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Portal
+    public function findOneBySomeField($value): ?FeedbackListView
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.exampleField = :val')

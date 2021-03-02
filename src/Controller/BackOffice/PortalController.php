@@ -11,8 +11,8 @@ use App\Entity\PortalFeature;
 use App\Entity\PortalFeatureState;
 use App\Form\PortalFormType;
 use App\Handler\Portal\Edit;
-use App\Services\PortalFeatureService;
 use App\Services\SlugService;
+use App\View\Shared\PortalDetail;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,7 +51,7 @@ class PortalController extends AbstractController
      * @param PortalFeatureState|null $state
      * @return Response
      */
-    public function detail(Company $company, Request $request, Edit $handler, ?PortalFeatureState $state)
+    public function detail(Company $company, Request $request, Edit $handler, ?PortalFeatureState $state, PortalDetail $view)
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
@@ -64,24 +64,15 @@ class PortalController extends AbstractController
         {
             $handler->handle($portal);
 
-            $this->addFlash('success', 'Portal upraven.');
+            $this->addFlash('success', 'FeedbackListView upraven.');
         }
 
-        $state = $state ?? $this->manager->getRepository(PortalFeatureState::class)->findInitialState();
-
-        $states = $this->manager->getRepository(PortalFeatureState::class)->findAll();
-
-        $features = $this->manager->getRepository(PortalFeature::class)
-            ->findFeaturesForPortalByState($company, $state);
-
-        return $this->render('back_office/portal/detail.html.twig', [
-           'form' => $form->createView(),
-           'portal' => $portal,
-           'currentState' => $state,
-           'states' => $states,
-           'portalFeatures' => $features
-        ]);
-
+        return $this->render(
+            'back_office/portal/detail.html.twig',
+            $view->create(
+                $company,
+                $form->createView()
+            ));
     }
 
 }

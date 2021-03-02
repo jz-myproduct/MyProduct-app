@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\View\Feature;
+namespace App\View\BackOffice\Feature;
 
 
 use App\Entity\Company;
