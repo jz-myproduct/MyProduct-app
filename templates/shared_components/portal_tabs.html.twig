@@ -1,0 +1,21 @@
+{% if(app.request.get('state')) %}
+    {% set slugState = app.request.get('state').slug %}
+{% else %}
+    {% set slugState = currentState.slug %}
+{% endif %}
+
+<ul class="nav nav-tabs justify-content-center mt-5">
+    {% for state in states %}
+        <li>
+            <a href="
+                {% if app.request.get('_route') == 'bo_portal_detail' %}
+                    {{ path('bo_portal_detail', {'slug':app.user.slug, 'state':state.slug}) }}
+                {% endif %}
+                {% if app.request.get('_route') == 'fo_portal_detail' %}
+                    {{ path('fo_portal_detail', {'slug':portal.slug, 'state':state.slug}) }}
+                {% endif %}
+               "
+               class="nav-link {% if slugState == state.slug %}active{% endif %} }">{{ state.name }}</a>
+        </li>
+    {% endfor %}
+</ul>

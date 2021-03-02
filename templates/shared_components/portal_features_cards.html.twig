@@ -1,0 +1,25 @@
+<div class="d-flex flex-nowrap mt-4">
+    {% if portalFeatures %}
+        {% for feature in portalFeatures %}
+        <div class="border border-secondary p-3 m-1 rounded">
+            <strong>
+                <a href="
+
+                {% if app.request.get('_route') == 'bo_portal_detail' %}
+                    {{ path('bo_feature_portal', {'company_slug':app.user.slug, 'feature_id':feature.feature.id}) }}
+                {% endif %}
+
+                {% if app.request.get('_route') == 'fo_portal_detail' %}
+                    {{ path('fo_portal_feedback_feature', {'portal_slug':portal.slug, 'feature_id':feature.id}) }}
+                {% endif %}
+
+                ">{{ feature.name }}</a>
+                <span class="badge badge-warning">{{ feature.feedbackCount }}</span>
+            </strong><br />
+            {{ feature.description }}
+        </div>
+        {% endfor %}
+    {% else %}
+        <div>Žádné featury.</div>
+    {% endif %}
+</div>

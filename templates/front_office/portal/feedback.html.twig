@@ -10,6 +10,13 @@
             </a>
         </p>
         <div class="border border-secondary p-4 rounded">
+
+            {% if app.request.get('_route') == 'fo_portal_feedback_feature' %}
+
+                {% include('front_office/components/portal_feature_info.html.twig') %}
+
+            {% endif %}
+
             <h3 class="text-center h4 mb-4">Přidat feedback</h3>
             {{ form(form) }}
         </div>
