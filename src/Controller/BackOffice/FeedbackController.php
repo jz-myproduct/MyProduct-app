@@ -281,7 +281,7 @@ class FeedbackController extends AbstractController
 
         $deleteHandler->handle($feedback, $feature);
 
-        $this->addFlash('success', 'Featura odebrána.');
+        $this->addFlash('success', 'Spojení odebráno.');
 
         return new RedirectResponse(
             $redirectHandler->handle(
