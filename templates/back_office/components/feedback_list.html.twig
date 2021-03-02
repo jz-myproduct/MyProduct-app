@@ -20,7 +20,7 @@
             </td>
             <td>{{ feedback.createdAt|date('Y.m.d h:m') }}</td>
             {% if app.request.get('_route') == 'bo_feedback_list' %}
-                <td><a href="{{ path('bo_feedback_change_status', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}">
+                <td><a href="{{ path('bo_feedback_change_status', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'p':app.request.get('_route')}) }}">
                         {% if feedback.isNew %}
                             Přečtený
                         {% else %}
