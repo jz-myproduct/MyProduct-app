@@ -38,6 +38,8 @@ class FeatureTagController extends AbstractController
 
             $handler->handle($tag, $company);
 
+            $this->addFlash('success', 'Tag přidán.');
+
             return $this->redirectToRoute('bo_feature_tag_list', [
                 'slug' => $company->getSlug()
             ]);
@@ -70,7 +72,7 @@ class FeatureTagController extends AbstractController
 
             $handler->handle($tag);
 
-            $this->addFlash('success', 'Tag updated');
+            $this->addFlash('success', 'Tag upraven.');
         }
 
         return $this->render('back_office/feature_tag/add_edit.html.twig', [
@@ -109,6 +111,8 @@ class FeatureTagController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $tag);
 
         $handler->handle($tag);
+
+        $this->addFlash('success', 'Tag smazán.');
 
         return $this->redirectToRoute('bo_feature_tag_list', [
             'slug' => $company->getSlug()

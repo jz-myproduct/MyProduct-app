@@ -65,6 +65,8 @@ class FeatureController extends AbstractController
 
             $handler->handle($feature, $company);
 
+            $this->addFlash('success', 'Feature přidána.');
+
             return $this->redirectToRoute('bo_feature_list', [
                 'slug' => $company->getSlug()
             ]);
@@ -100,7 +102,7 @@ class FeatureController extends AbstractController
 
             $handler->handle($feature);
 
-            $this->addFlash('success', 'Feature updated');
+            $this->addFlash('success', 'Feature upravena.');
 
             return $this->redirectToRoute('bo_feature_detail', [
                 'company_slug' => $company->getSlug(),
@@ -145,6 +147,8 @@ class FeatureController extends AbstractController
 
         $handler->handle($feature);
 
+        $this->addFlash('success', 'Feature smazána.');
+
         return $this->redirectToRoute('bo_feature_list', [
             'slug' => $company->getSlug()
         ]);
@@ -164,19 +168,6 @@ class FeatureController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $feature);
 
-        $form = $this->createForm(FeedbackFeatureDetailFormType::class, $feedback = new Feedback());
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $handler->handle($feedback, $company, $feature);
-
-            return $this->redirectToRoute('bo_feature_detail', [
-                'company_slug' => $company->getSlug(),
-                'feature_id' => $feature->getId(),
-            ]);
-        }
-
         // TODO tohle je zbytečné, jen získat počet
         $feedback = $this->getDoctrine()->getRepository(Feedback::class)
             ->getFeatureFeedback($feature);
@@ -192,6 +183,11 @@ class FeatureController extends AbstractController
      * @Route("/admin/{company_slug}/feature/{feature_id}/feedback", name="bo_feature_feedback")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
+     * @param Company $company
+     * @param Feature $feature
+     * @param Request $request
+     * @param AddOnFeatureDetail $handler
+     * @return RedirectResponse|Response
      */
     public function feedback(Company $company, Feature $feature, Request $request, AddOnFeatureDetail $handler)
     {
@@ -203,6 +199,8 @@ class FeatureController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $handler->handle($feedback, $company, $feature);
+
+            $this->addFlash('success', 'Feedback přidán');
 
             return $this->redirectToRoute('bo_feature_feedback', [
                 'company_slug' => $company->getSlug(),

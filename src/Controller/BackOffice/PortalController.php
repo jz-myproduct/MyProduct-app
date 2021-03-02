@@ -32,10 +32,6 @@ class PortalController extends AbstractController
      * @var SlugService
      */
     private $slugService;
-    /**
-     * @var PortalFeatureService
-     */
-    private $portalFeatureService;
 
     public function __construct(
         EntityManagerInterface $manager,
@@ -52,7 +48,7 @@ class PortalController extends AbstractController
      * @param Company $company
      * @param Request $request
      * @param Edit $handler
-     * @param FeatureState $state
+     * @param PortalFeatureState|null $state
      * @return Response
      */
     public function detail(Company $company, Request $request, Edit $handler, ?PortalFeatureState $state)
@@ -67,6 +63,8 @@ class PortalController extends AbstractController
         if($form->isSubmitted() && $form->isValid())
         {
             $handler->handle($portal);
+
+            $this->addFlash('success', 'Portal upraven.');
         }
 
         $state = $state ?? $this->manager->getRepository(PortalFeatureState::class)->findInitialState();

@@ -19,6 +19,8 @@
     </div>
 
     <main class="container mt-4">
+        {% include('shared_components/flash_messages_container.html.twig') %}
+
         {% block content %}{% endblock %}
     </main>
 
