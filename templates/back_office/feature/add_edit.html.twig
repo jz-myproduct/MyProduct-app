@@ -2,11 +2,6 @@
 
 {% block content %}
         <h1 class="h3 mb-4">Přidat / upravit feature</h1>
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success">
-                {{ message }}
-            </div>
-        {% endfor %}
 
         {{ form_start(form) }}
 
