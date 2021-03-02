@@ -43,6 +43,20 @@
     </div>
 
     <main class="container mt-4 pb-5">
+        <div class="mb-5">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+
         {% block content %}{% endblock %}
     </main>
 

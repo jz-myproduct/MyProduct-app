@@ -3,11 +3,13 @@
 {% block content %}
     <h1 class="h3 mb-4">Přihlásit</h1>
 
-    <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
+    {% if error %}
+        <div class="alert alert-danger">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
+        </div>
+    {% endif %}
 
+    <form method="post">
         <div class="form-group">
             <label for="inputEmail">Email</label>
             <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
