@@ -5,15 +5,11 @@ namespace App\Handler\Feedback;
 
 
 use App\Entity\Company;
-use App\Entity\Feature;
 use App\Entity\Feedback;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 
-class DeleteRelationRedirect
+class SwitchStatusRedirect
 {
-
-
     /**
      * @var RouterInterface
      */
@@ -27,32 +23,39 @@ class DeleteRelationRedirect
     public function handle(
         String $param,
         Feedback $feedback,
-        Feature $feature,
         Company $company)
     {
 
         // TODO ty stringy by měli být uloženy někde jako konstanty (ViewClass)
 
-        if ($param === 'feature') {
+        if ($param === 'bo_feedback_list') {
 
-            return $this->router->generate('bo_feature_feedback', [
-                    'feature_id' => $feature->getId(),
-                    'company_slug' => $company->getSlug()
+            return $this->router->generate('bo_feedback_list', [
+               'slug' => $company->getSlug()
             ]);
 
         }
 
-        if ($param === 'feedback') {
+        if ($param === 'bo_feedback_detail') {
+
+            return $this->router->generate('bo_feedback_detail', [
+                'company_slug' => $company->getSlug(),
+                'feedback_id' => $feedback->getId()
+            ]);
+        }
+
+        if ($param === 'bo_feedback_features') {
 
             return $this->router->generate('bo_feedback_features', [
-                    'feedback_id' => $feedback->getId(),
-                    'company_slug' => $company->getSlug()
+                'company_slug' => $company->getSlug(),
+                'feedback_id' => $feedback->getId()
             ]);
         }
 
         return $this->router->generate('bo_home', [
-                    'slug' => $company->getSlug()
+            'slug' => $company->getSlug()
         ]);
 
     }
+
 }

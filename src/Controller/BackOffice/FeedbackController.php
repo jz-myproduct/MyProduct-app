@@ -13,6 +13,7 @@ use App\Handler\Feedback\DeleteRelation;
 use App\Handler\Feedback\DeleteRelationRedirect;
 use App\Handler\Feedback\Edit;
 use App\Handler\Feedback\SwitchStatus;
+use App\Handler\Feedback\SwitchStatusRedirect;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -152,20 +153,30 @@ class FeedbackController extends AbstractController
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
      * @param Feedback $feedback
-     * @param SwitchStatus $handler
+     * @param SwitchStatus $switchHandler
+     * @param SwitchStatusRedirect $redirectHandler
+     * @param Request $request
      * @return RedirectResponse
      */
-    public function switchStatus(Company $company, Feedback $feedback, SwitchStatus $handler)
+    public function switchStatus(
+        Company $company,
+        Feedback $feedback,
+        SwitchStatus $switchHandler,
+        SwitchStatusRedirect $redirectHandler,
+        Request $request)
     {
         $this->denyAccessUnlessGranted('edit', $feedback);
 
-        $handler->handle($feedback);
+        $switchHandler->handle($feedback);
 
         $this->addFlash('success', 'Status upraven.');
 
-        return $this->redirectToRoute('bo_feedback_list', [
-            'slug' => $company->getSlug()
-        ]);
+        return new RedirectResponse(
+          $redirectHandler->handle(
+              $request->query->get('p'),
+              $feedback,
+              $company)
+        );
     }
 
     /**
