@@ -51,6 +51,8 @@ class PortalFeedbackController extends AbstractController
 
             $handler->handle($feedback, $portalFeature, $portal->getCompany());
 
+            $this->addFlash('success', 'Děkujeme za feeedback!');
+
             return $this->redirectToRoute('fo_portal_detail', [
                 'slug' => $portal->getSlug(),
             ]);
@@ -84,6 +86,8 @@ class PortalFeedbackController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $handler->handle($feedback, $portal->getCompany());
+
+            $this->addFlash('success', 'Děkujeme za feeedback!');
 
             return $this->redirectToRoute('fo_portal_detail', [
                 'slug' => $portal->getSlug()

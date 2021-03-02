@@ -59,6 +59,8 @@ class FeedbackController extends AbstractController
 
             $handler->handle($feedback, $company);
 
+            $this->addFlash('success', 'Feedback přidán.');
+
             return $this->redirectToRoute('bo_feedback_list', [
                 'slug' => $company->getSlug()
             ]);
@@ -94,7 +96,7 @@ class FeedbackController extends AbstractController
 
             $handler->handle($feedback);
 
-            $this->addFlash('success', 'feedback updated');
+            $this->addFlash('success', 'Feedback upraven.');
 
             return $this->redirectToRoute('bo_feedback_detail', [
                'company_slug' => $company->getSlug(),
@@ -139,6 +141,8 @@ class FeedbackController extends AbstractController
 
         $handler->delete($feedback);
 
+        $this->addFlash('success', 'Feedback smazán.');
+
         return $this->redirectToRoute('bo_feedback_list', [
             'slug' => $company->getSlug()
         ]);
@@ -159,6 +163,8 @@ class FeedbackController extends AbstractController
 
         $handler->handle($feedback);
 
+        $this->addFlash('success', 'Status upraven.');
+
         return $this->redirectToRoute('bo_feedback_list', [
             'slug' => $company->getSlug()
         ]);
@@ -175,9 +181,6 @@ class FeedbackController extends AbstractController
     public function detail(Company $company, Feedback $feedback)
     {
         $this->denyAccessUnlessGranted('edit', $feedback);
-
-        $unrelatedFeatures = $this->getDoctrine()->getRepository(Feedback::class)
-            ->getUnUsedFeaturesForFeedback($feedback, $company);
 
         return $this->render('back_office/feedback/detail.html.twig', [
             'feedback' => $feedback,
@@ -232,6 +235,8 @@ class FeedbackController extends AbstractController
         // feedback already connected to feature
         if (in_array($feature, $feedback->getFeature()->toArray())) {
 
+            $this->addFlash('info', 'Featura je již přidána.');
+
             return $this->redirectToRoute('bo_feedback_features',[
                 'company_slug' => $company->getSlug(),
                 'feedback_id' => $feedback->getId()
@@ -240,6 +245,8 @@ class FeedbackController extends AbstractController
         }
 
         $handler->handle($feedback, $feature);
+
+        $this->addFlash('success', 'Featura připojena.');
 
         return $this->redirectToRoute('bo_feedback_features',[
             'company_slug' => $company->getSlug(),
@@ -275,6 +282,8 @@ class FeedbackController extends AbstractController
         }
 
         $handler->handle($feedback, $feature);
+
+        $this->addFlash('success', 'Featura odebrána.');
 
         // TODO refactor
         if ($request->query->get('p') === 'feature') {

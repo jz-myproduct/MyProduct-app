@@ -56,7 +56,7 @@ class PortalFeatureController extends AbstractController
                 $addHandler->handle($portalFeature, $feature);
             }
 
-            $this->addFlash('success', 'Portal feature updated');
+            $this->addFlash('success', 'Featura na portálu upravena.');
         }
 
         // TODO needs refactor
