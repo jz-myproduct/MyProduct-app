@@ -8,9 +8,9 @@
     <p>
         {% for relatedFeature in relatedFeatures %}
             <span class="p-1">
-                <a href="{{ path('bo_feature_detail', { 'company_slug': companySlug, 'feature_id': relatedFeature.id } ) }}"
+                <a href="{{ path('bo_feature_detail', { 'company_slug': app.user.slug, 'feature_id': relatedFeature.id } ) }}"
                    class="badge badge-info">{{ relatedFeature.name }}</a>
-                <a href="{{ path('bo_feedback_relation_delete', {'company_slug': companySlug, 'feedback_id': feedback.id, 'feature_id': relatedFeature.id, 'p':'feedback' } ) }}"
+                <a href="{{ path('bo_feedback_relation_delete', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'feature_id': relatedFeature.id, 'p':'feedback' } ) }}"
                    class="badge badge-danger font-weight-bold"><span aria-hidden="true">&times;</span></a>
             </span>
         {% endfor %}
@@ -20,9 +20,9 @@
         {% if unrelatedFeatures %}
             {% for unrelatedFeature in unrelatedFeatures %}
                 <span class="p-1">
-                <a href="{{ path('bo_feature_detail', { 'company_slug': companySlug, 'feature_id': unrelatedFeature.id } ) }}"
+                <a href="{{ path('bo_feature_detail', { 'company_slug': app.user.slug, 'feature_id': unrelatedFeature.id } ) }}"
                    class="badge badge-info">{{ unrelatedFeature.name }}</a>
-                <a href="{{ path('bo_feedback_relation_add', {'company_slug': companySlug, 'feedback_id': feedback.id, 'feature_id': unrelatedFeature.id, 'p':'feedback' } ) }}"
+                <a href="{{ path('bo_feedback_relation_add', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'feature_id': unrelatedFeature.id, 'p':'feedback' } ) }}"
                    class="badge badge-success font-weight-bold">Přidat</a>
             </span>
             {% endfor %}
