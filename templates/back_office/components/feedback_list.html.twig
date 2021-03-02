@@ -19,15 +19,20 @@
                 </a>
             </td>
             <td>{{ feedback.createdAt|date('Y.m.d h:m') }}</td>
-            <td><a href="{{ path('bo_feedback_change_status', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}">
-                    {% if feedback.isNew %}
-                        Přečtený
-                    {% else %}
-                        Nový
-                    {% endif %}
-                </a></td>
-            <td><a href="{{ path('bo_feedback_edit', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}">Upravit</a></td>
-            <td><a href="{{ path('bo_feedback_delete', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}">Smazat</a></td>
+            {% if app.request.get('_route') == 'bo_feedback_list' %}
+                <td><a href="{{ path('bo_feedback_change_status', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}">
+                        {% if feedback.isNew %}
+                            Přečtený
+                        {% else %}
+                            Nový
+                        {% endif %}
+                    </a></td>
+                <td><a href="{{ path('bo_feedback_edit', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}">Upravit</a></td>
+                <td><a href="{{ path('bo_feedback_delete', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}">Smazat</a></td>
+            {% endif %}
+            {% if app.request.get('_route') == 'bo_feature_feedback' %}
+                <td><a href="{{ path('bo_feedback_relation_delete', {'company_slug':app.user.slug, 'feedback_id':feedback.id, 'feature_id':feature.id, 'p':'feature'}) }}">Odebrat propojení</a></td>
+            {% endif %}
         </tr>
     {% endfor %}
 </table>
