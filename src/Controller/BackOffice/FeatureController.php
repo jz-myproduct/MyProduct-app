@@ -73,7 +73,6 @@ class FeatureController extends AbstractController
         }
 
         return $this->render('back_office/feature/add_edit.html.twig', [
-            'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
     }
@@ -111,7 +110,6 @@ class FeatureController extends AbstractController
         }
 
         return $this->render('back_office/feature/add_edit.html.twig', [
-            'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
     }
@@ -127,8 +125,7 @@ class FeatureController extends AbstractController
 
         return $this->render('back_office/feature/list.html.twig', [
             'features' => $this->manager->getRepository(Feature::class)
-                ->findBy(['company' => $company], ['score' => 'DESC']),
-            'companySlug' => $company->getSlug()
+                ->findBy(['company' => $company], ['score' => 'DESC'])
         ]);
     }
 
@@ -174,8 +171,7 @@ class FeatureController extends AbstractController
 
         return $this->render('back_office/feature/detail.html.twig', [
             'feature' => $feature,
-            'feedbacks' => $feedback,
-            'companySlug' => $company->getSlug()
+            'feedbacks' => $feedback
         ]);
     }
 
@@ -213,7 +209,6 @@ class FeatureController extends AbstractController
 
         return $this->render('back_office/feature/feedback.html.twig', [
             'feature' => $feature,
-            'companySlug' => $company->getSlug(),
             'feedbacks' => $feedback,
             'form' => $form->createView(),
         ]);

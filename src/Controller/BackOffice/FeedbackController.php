@@ -67,7 +67,6 @@ class FeedbackController extends AbstractController
         }
 
         return $this->render('back_office/feedback/add_edit.html.twig', [
-            'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
     }
@@ -105,7 +104,6 @@ class FeedbackController extends AbstractController
         }
 
         return $this->render('back_office/feedback/add_edit.html.twig', [
-            'companySlug' => $company->getSlug(),
             'form' => $form->createView()
         ]);
     }
@@ -121,8 +119,7 @@ class FeedbackController extends AbstractController
 
         return $this->render('back_office/feedback/list.twig', [
             'feedbacks' => $this->manager->getRepository(Feedback::class)
-                ->findBy(['company' => $company], ['isNew' => 'DESC']),
-            'companySlug' => $company->getSlug()
+                ->findBy(['company' => $company], ['isNew' => 'DESC'])
         ]);
     }
 
@@ -183,8 +180,7 @@ class FeedbackController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $feedback);
 
         return $this->render('back_office/feedback/detail.html.twig', [
-            'feedback' => $feedback,
-            'companySlug' => $company->getSlug(),
+            'feedback' => $feedback
         ]);
     }
 
@@ -205,7 +201,6 @@ class FeedbackController extends AbstractController
 
         return $this->render('back_office/feedback/features.html.twig', [
             'feedback' => $feedback,
-            'companySlug' => $company->getSlug(),
             'relatedFeatures' => $feedback->getFeature(),
             'unrelatedFeatures' => $unrelatedFeatures
         ]);
