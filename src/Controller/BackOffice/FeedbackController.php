@@ -10,6 +10,7 @@ use App\Handler\Feedback\Add;
 use App\Handler\Feedback\AddRelation;
 use App\Handler\Feedback\Delete;
 use App\Handler\Feedback\DeleteRelation;
+use App\Handler\Feedback\DeleteRelationRedirect;
 use App\Handler\Feedback\Edit;
 use App\Handler\Feedback\SwitchStatus;
 use Doctrine\ORM\EntityManagerInterface;
@@ -258,15 +259,17 @@ class FeedbackController extends AbstractController
      * @param Feedback $feedback
      * @param Feature $feature
      * @param Request $request
-     * @param DeleteRelation $handler
-     * @return Response
+     * @param DeleteRelation $deleteHandler
+     * @param DeleteRelationRedirect $redirectHandler
+     * @return RedirectResponse
      */
     public function deleteFeedbackFeatureRelation(
         Company $company,
         Feedback $feedback,
         Feature $feature,
         Request $request,
-        DeleteRelation $handler)
+        DeleteRelation $deleteHandler,
+        DeleteRelationRedirect $redirectHandler)
     {
 
         $this->denyAccessUnlessGranted('edit', $feature);
@@ -276,30 +279,17 @@ class FeedbackController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $handler->handle($feedback, $feature);
+        $deleteHandler->handle($feedback, $feature);
 
         $this->addFlash('success', 'Featura odebrána.');
 
-        // TODO refactor
-        if ($request->query->get('p') === 'feature') {
-
-            return $this->redirectToRoute('bo_feature_feedback', [
-                'feature_id' => $feature->getId(),
-                'company_slug' => $company->getSlug(),
-            ]);
-
-        }
-        if ($request->query->get('p') === 'feedback') {
-
-            return $this->redirectToRoute('bo_feedback_features', [
-                'feedback_id' => $feedback->getId(),
-                'company_slug' => $company->getSlug(),
-            ]);
-        }
-
-        return $this->redirectToRoute('bo_home', [
-            'slug' => $company->getSlug()
-        ]);
-
+        return new RedirectResponse(
+            $redirectHandler->handle(
+                $request->query->get('p'),
+                $feedback,
+                $feature,
+                $company
+            )
+        );
     }
 }
