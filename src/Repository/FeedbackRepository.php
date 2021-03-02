@@ -42,6 +42,7 @@ class FeedbackRepository extends ServiceEntityRepository
             ->innerJoin('fe.feature', 'fea')
             ->where('fea.id = :feature_id')
             ->setParameter('feature_id',$feature->getId())
+            ->orderBy('fe.isNew', 'DESC')
             ->getQuery()
             ->getResult();
     }

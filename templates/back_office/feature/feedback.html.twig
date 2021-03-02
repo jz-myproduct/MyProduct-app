@@ -3,31 +3,10 @@
 {% block content %}
     {% include('back_office/components/feature_header.html.twig') %}
 
-    {%  include('back_office/components/feature_tabs.html.twig') %}
-    <table class="table">
-        {% for feedback in feedbacks %}
-            <tr>
-                <td>
-                    <a href="{{ path('bo_feedback_detail', {'company_slug': companySlug, 'feedback_id': feedback.id} ) }}">
-                        {{ feedback.description }}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
-                            <path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z"/>
-                        </svg>
-                    </a>
-                </td>
-                <td>{{ feedback.source }}</td>
-                {% if feedback.fromPortal %}
-                 <td class="text-info">Portal</td>
-                {% else %}
-                  <td></td>
-                {% endif %}
-                <td>{{ feedback.createdAt|date('Y.m h:m') }}</td>
-                <td>
-                    <a href="{{ path('bo_feedback_relation_delete', {'company_slug': companySlug, 'feedback_id': feedback.id, 'feature_id': feature.id, 'p':'feature' } ) }}">Smazat</a>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
+    {% include('back_office/components/feature_tabs.html.twig') %}
+
+    {% include('back_office/components/feedback_list.html.twig') %}
+
     <h2 class="h4 mt-4 mb-4">Přidat nový feedback</h2>
     {{ form(form) }}
 {% endblock %}
