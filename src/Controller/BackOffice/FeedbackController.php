@@ -14,6 +14,8 @@ use App\Handler\Feedback\DeleteRelationRedirect;
 use App\Handler\Feedback\Edit;
 use App\Handler\Feedback\SwitchStatus;
 use App\Handler\Feedback\SwitchStatusRedirect;
+use App\View\BackOffice\Feedback\ListView;
+use App\View\BackOffice\Feedback\UnrelatedFeaturesView;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -113,16 +115,14 @@ class FeedbackController extends AbstractController
     /**
      * @Route("/admin/{slug}/feedbacks", name="bo_feedback_list")
      * @param Company $company
+     * @param ListView $view
      * @return Response
      */
-    public function list(Company $company)
+    public function list(Company $company, ListView $view)
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        return $this->render('back_office/feedback/list.twig', [
-            'feedbacks' => $this->manager->getRepository(Feedback::class)
-                ->findBy(['company' => $company], ['isNew' => 'DESC'])
-        ]);
+        return $this->render('back_office/feedback/list.twig', $view->create($company));
     }
 
     /**
@@ -202,19 +202,18 @@ class FeedbackController extends AbstractController
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
      * @param Feedback $feedback
+     * @param UnrelatedFeaturesView $view
      * @return Response
      */
-    public function features(Company $company, Feedback $feedback)
+    public function features(Company $company, Feedback $feedback, UnrelatedFeaturesView $view)
     {
         $this->denyAccessUnlessGranted('edit', $feedback);
 
-        $unrelatedFeatures = $this->getDoctrine()->getRepository(Feedback::class)
-            ->getUnUsedFeaturesForFeedback($feedback, $company);
 
         return $this->render('back_office/feedback/features.html.twig', [
             'feedback' => $feedback,
-            'relatedFeatures' => $feedback->getFeature(),
-            'unrelatedFeatures' => $unrelatedFeatures
+            'relatedFeatureList' => $feedback->getFeature(),
+            'unrelatedFeatureList' => $view->create($company, $feedback)
         ]);
     }
 

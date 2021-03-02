@@ -12,6 +12,7 @@ use App\Form\PortalFeedbackFormType;
 use App\Handler\Feedback\AddFeatureFeedbackOnPortal;
 use App\Handler\Feedback\AddGeneralOnPortal;
 use App\Services\PortalFeatureService;
+use App\View\Shared\PortalDetail;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -42,26 +43,12 @@ class PortalController extends AbstractController
      * @param PortalFeatureState|null $state
      * @return Response|NotFoundHttpException
      */
-    public function detail(Portal $portal, ?PortalFeatureState $state)
+    public function detail(Portal $portal, ?PortalFeatureState $state, PortalDetail $view)
     {
         if(! $portal->getDisplay()){
             throw new NotFoundHttpException();
         }
 
-        $state = $state ?? $this->manager->getRepository(PortalFeatureState::class)->findInitialState();
-
-        $states = $this->manager->getRepository(PortalFeatureState::class)->findAll();
-
-        $features = $this->manager->getRepository(PortalFeature::class)
-            ->findFeaturesForPortalByState($portal->getCompany(), $state);
-
-
-        return $this->render('front_office/portal/detail.html.twig', [
-            'portal' => $portal,
-            'states' => $states,
-            'currentState' => $state,
-            'portalFeatures' => $features
-        ]);
+        return $this->render('front_office/portal/detail.html.twig', $view->create($portal->getCompany()));
     }
-
 }

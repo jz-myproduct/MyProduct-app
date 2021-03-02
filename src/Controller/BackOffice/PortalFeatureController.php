@@ -11,6 +11,7 @@ use App\Entity\PortalFeature;
 use App\Form\PortalFeatureFormType;
 use App\Handler\PortalFeature\Add;
 use App\Handler\PortalFeature\Edit;
+use App\View\BackOffice\PortalFeature\FeedbackListView;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,6 +31,7 @@ class PortalFeatureController extends AbstractController
      * @param Request $request
      * @param Add $addHandler
      * @param Edit $editHandler
+     * @param FeedbackListView $view
      * @return Response
      */
 
@@ -38,7 +40,8 @@ class PortalFeatureController extends AbstractController
         Feature $feature,
         Request $request,
         Add $addHandler,
-        Edit $editHandler)
+        Edit $editHandler,
+        FeedbackListView $view)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
 
@@ -59,14 +62,10 @@ class PortalFeatureController extends AbstractController
             $this->addFlash('success', 'Featura na portálu upravena.');
         }
 
-        // TODO needs refactor
-        $feedback = $this->getDoctrine()->getRepository(Feedback::class)
-            ->getFeatureFeedback($feature);
-
         return $this->render('back_office/portal_feature/detail.html.twig',[
             'form' => $form->createView(),
             'feature' => $feature,
-            'feedbacks' => $feedback
+            'feedbackList' => $view->create($feature)
         ]);
     }
 

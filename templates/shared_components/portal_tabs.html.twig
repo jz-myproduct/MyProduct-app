@@ -5,7 +5,7 @@
 {% endif %}
 
 <ul class="nav nav-tabs justify-content-center mt-5">
-    {% for state in states %}
+    {% for state in stateList %}
         <li>
             <a href="
                 {% if app.request.get('_route') == 'bo_portal_detail' %}

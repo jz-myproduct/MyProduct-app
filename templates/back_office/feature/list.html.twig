@@ -6,7 +6,7 @@
     <a href="{{ path('bo_feature_tag_list', {'slug':app.user.slug}) }}" class="btn btn-outline-secondary mt-3" role="button">Přehled tagů</a>
 
     <table class="table table-striped mt-5">
-    {% for feature in features %}
+    {% for feature in featureList %}
         <tr>
             <td class="{{ feature.state.name|lower }} font-weight-bold align-middle">{{ feature.state.name }}</td>
             <td class="align-middle"><a href="{{ path('bo_feature_detail', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}">

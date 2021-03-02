@@ -15,6 +15,8 @@ use App\Handler\Feature\Delete;
 use App\Handler\Feature\Edit;
 use App\Handler\Feedback\AddOnFeatureDetail;
 use App\Services\SlugService;
+use App\View\BackOffice\Feature\FeedbackListView;
+use App\View\BackOffice\Feature\ListView;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -117,16 +119,14 @@ class FeatureController extends AbstractController
     /**
      * @Route("/admin/{slug}/features", name="bo_feature_list")
      * @param Company $company
+     * @param ListView $view
      * @return Response
      */
-    public function list(Company $company)
+    public function list(Company $company, ListView $view)
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        return $this->render('back_office/feature/list.html.twig', [
-            'features' => $this->manager->getRepository(Feature::class)
-                ->findBy(['company' => $company], ['score' => 'DESC'])
-        ]);
+        return $this->render('back_office/feature/list.html.twig', $view->create($company));
     }
 
     /**
@@ -159,19 +159,21 @@ class FeatureController extends AbstractController
      * @param Feature $feature
      * @param Request $request
      * @param AddOnFeatureDetail $handler
+     * @param FeedbackListView $view
      * @return Response
      */
-    public function detail(Company $company, Feature $feature, Request $request, AddOnFeatureDetail $handler)
+    public function detail(
+        Company $company,
+        Feature $feature,
+        Request $request,
+        AddOnFeatureDetail $handler,
+        FeedbackListView $view)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
 
-        // TODO tohle je zbytečné, jen získat počet
-        $feedback = $this->getDoctrine()->getRepository(Feedback::class)
-            ->getFeatureFeedback($feature);
-
         return $this->render('back_office/feature/detail.html.twig', [
             'feature' => $feature,
-            'feedbacks' => $feedback
+            'feedbackList' => $view->create($feature)
         ]);
     }
 
@@ -183,9 +185,15 @@ class FeatureController extends AbstractController
      * @param Feature $feature
      * @param Request $request
      * @param AddOnFeatureDetail $handler
+     * @param FeedbackListView $view
      * @return RedirectResponse|Response
      */
-    public function feedback(Company $company, Feature $feature, Request $request, AddOnFeatureDetail $handler)
+    public function feedback(
+        Company $company,
+        Feature $feature,
+        Request $request,
+        AddOnFeatureDetail $handler,
+        FeedbackListView $view)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
 
@@ -204,12 +212,9 @@ class FeatureController extends AbstractController
             ]);
         }
 
-        $feedback = $this->getDoctrine()->getRepository(Feedback::class)
-            ->getFeatureFeedback($feature);
-
         return $this->render('back_office/feature/feedback.html.twig', [
             'feature' => $feature,
-            'feedbacks' => $feedback,
+            'feedbackList' => $view->create($feature),
             'form' => $form->createView(),
         ]);
     }
