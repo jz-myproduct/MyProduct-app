@@ -26,29 +26,6 @@ class FeatureEventListener
         $this->scoreService = $scoreService;
     }
 
-    /*
-    public onFeedbackUpdatedEvent()
-    {
-    }
-
-
-    public function postUpdate(LifecycleEventArgs $args)
-    {
-        $this->object = $args->getObject();
-        return;
-    }
-
-    public function postFlush(PostFlushEventArgs $args)
-    {
-        if(!$this->object instanceof feedback){
-            return;
-        }
-
-        $this->scoreService->recalculateScoreForFeatures();
-        return;
-    }
-    */
-
     public function onFeedbackUpdatedEvent()
     {
         $this->scoreService->recalculateScoreForFeatures();

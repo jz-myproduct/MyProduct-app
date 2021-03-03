@@ -36,7 +36,6 @@ class FeatureScoreService
         $company = $this->entityManager->getRepository(Company::class)->getCompanyByEmail(
                      $this->security->getUser()->getUsername());
 
-
         /** @var Company $company */
         foreach($company->getFeatures() as $feature)
         {
