@@ -5,26 +5,30 @@
     <a href="{{ path('bo_feature_add', {'slug':app.user.slug}) }}" class="btn btn-primary mt-3" role="button">Přidat feature</a>
     <a href="{{ path('bo_feature_tag_list', {'slug':app.user.slug}) }}" class="btn btn-outline-secondary mt-3" role="button">Přehled tagů</a>
 
-    <table class="table table-striped mt-5">
-    {% for feature in featureList %}
-        <tr>
-            <td class="{{ feature.state.name|lower }} font-weight-bold align-middle">{{ feature.state.name }}</td>
-            <td class="align-middle"><a href="{{ path('bo_feature_detail', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}">
-                    {{ feature.name }}
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
-                        <path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z"/>
-                    </svg>
-                </a>
-                <p class="mb-0">
-                {% for tag in feature.tags %}
-                    <span class="badge badge-info">{{ tag.name }}</span>
-                {% endfor %}
-                </p>
-            </td>
-            <td class="align-middle"><span class="badge badge-warning" style="font-size:16px">{{ feature.score }}</span></td>
-            <td class="align-middle"><a href="{{ path('bo_feature_edit', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}">Upravit</a></td>
-            <td class="align-middle"><a href="{{ path('bo_feature_delete', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}">Smazat</a></td>
-        </tr>
-    {% endfor %}
-    </table>
+    {% if featureList is not empty %}
+        <table class="table table-striped mt-5">
+        {% for feature in featureList %}
+            <tr>
+                <td class="{{ feature.state.name|lower }} font-weight-bold align-middle">{{ feature.state.name }}</td>
+                <td class="align-middle"><a href="{{ path('bo_feature_detail', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}">
+                        {{ feature.name }}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
+                            <path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z"/>
+                        </svg>
+                    </a>
+                    <p class="mb-0">
+                    {% for tag in feature.tags %}
+                        <span class="badge badge-info">{{ tag.name }}</span>
+                    {% endfor %}
+                    </p>
+                </td>
+                <td class="align-middle"><span class="badge badge-warning" style="font-size:16px">{{ feature.score }}</span></td>
+                <td class="align-middle"><a href="{{ path('bo_feature_edit', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}">Upravit</a></td>
+                <td class="align-middle"><a href="{{ path('bo_feature_delete', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}">Smazat</a></td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <p class="mt-5 lead">Zatím nemáte žádné features.</p>
+    {% endif %}
 {% endblock %}
