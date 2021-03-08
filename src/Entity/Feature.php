@@ -68,9 +68,15 @@ class Feature
      */
     private $portalFeature;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Insight::class, mappedBy="Feature", orphanRemoval=true)
+     */
+    private $insights;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
+        $this->insights = new ArrayCollection();
     }
 
 
@@ -230,6 +236,36 @@ class Feature
         }
 
         $this->portalFeature = $portalFeature;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Insight[]
+     */
+    public function getInsights(): Collection
+    {
+        return $this->insights;
+    }
+
+    public function addInsight(Insight $insight): self
+    {
+        if (!$this->insights->contains($insight)) {
+            $this->insights[] = $insight;
+            $insight->setFeature($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInsight(Insight $insight): self
+    {
+        if ($this->insights->removeElement($insight)) {
+            // set the owning side to null (unless already changed)
+            if ($insight->getFeature() === $this) {
+                $insight->setFeature(null);
+            }
+        }
 
         return $this;
     }

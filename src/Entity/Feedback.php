@@ -45,11 +45,6 @@ class Feedback
     private $updatedAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Feature::class)
-     */
-    private $feature;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $fromPortal;
@@ -59,9 +54,14 @@ class Feedback
      */
     private $isNew;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Insight::class, mappedBy="Feedback", orphanRemoval=true)
+     */
+    private $insights;
+
     public function __construct()
     {
-        $this->feature = new ArrayCollection();
+        $this->insights = new ArrayCollection();
     }
 
 
@@ -133,30 +133,6 @@ class Feedback
         return $this;
     }
 
-    /**
-     * @return Collection|Feature[]
-     */
-    public function getFeature(): Collection
-    {
-        return $this->feature;
-    }
-
-    public function addFeature(Feature $feature): self
-    {
-        if (!$this->feature->contains($feature)) {
-            $this->feature[] = $feature;
-        }
-
-        return $this;
-    }
-
-    public function removeFeature(Feature $feature): self
-    {
-        $this->feature->removeElement($feature);
-
-        return $this;
-    }
-
     public function getFromPortal(): ?bool
     {
         return $this->fromPortal;
@@ -195,6 +171,36 @@ class Feedback
             $this->setIsNew(true);
 
             return $this;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Insight[]
+     */
+    public function getInsights(): Collection
+    {
+        return $this->insights;
+    }
+
+    public function addInsight(Insight $insight): self
+    {
+        if (!$this->insights->contains($insight)) {
+            $this->insights[] = $insight;
+            $insight->setFeedback($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInsight(Insight $insight): self
+    {
+        if ($this->insights->removeElement($insight)) {
+            // set the owning side to null (unless already changed)
+            if ($insight->getFeedback() === $this) {
+                $insight->setFeedback(null);
+            }
         }
 
         return $this;
