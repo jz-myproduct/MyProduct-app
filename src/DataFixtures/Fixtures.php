@@ -130,7 +130,6 @@ class Fixtures extends Fixture
             $currentDateTime = new \DateTime();
             $feedback->setCreatedAt( $currentDateTime );
             $feedback->setUpdatedAt( $currentDateTime );
-            $feedback->addFeature( $feature );
 
             $manager->persist($feedback);
         }
