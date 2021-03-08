@@ -9,14 +9,5 @@
 
         {{ form_row(form.source) }}
 
-        {% if form.feature is not defined %}
-            <div class="form-group">
-                <label>Features</label>
-                <p>Zatím nemáte žádné featury k připojení. <a href="{{ path('bo_feature_add', {'slug':app.user.slug}) }}">Přidejte první</a>.</p>
-            </div>
-        {% else %}
-            {{ form_row(form.feature) }}
-        {% endif %}
-
     {{ form_end(form) }}
 {% endblock %}

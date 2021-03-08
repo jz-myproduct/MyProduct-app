@@ -39,10 +39,12 @@ class FeatureScoreService
         /** @var Company $company */
         foreach($company->getFeatures() as $feature)
         {
+            /*
             $feature->setScore(
                 $this->entityManager->getRepository(Feedback::class)
                     ->getFeedbackCountForFeature($feature)
             );
+            */
         }
         $this->entityManager->flush();
 

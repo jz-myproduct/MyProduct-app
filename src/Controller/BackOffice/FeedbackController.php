@@ -53,9 +53,7 @@ class FeedbackController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        $form = $this->createForm(FeedbackFormType::class, $feedback = new Feedback(), [
-           'featureChoices' => $company->getFeatures()
-        ]);
+        $form = $this->createForm(FeedbackFormType::class, $feedback = new Feedback());
 
         $form->handleRequest($request);
 
