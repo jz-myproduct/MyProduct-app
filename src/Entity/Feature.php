@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\FeatureRepository;
+use ContainerJC0aoQx\get_ServiceLocator_8For1TService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -69,7 +70,7 @@ class Feature
     private $portalFeature;
 
     /**
-     * @ORM\OneToMany(targetEntity=Insight::class, mappedBy="Feature", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Insight::class, mappedBy="feature", orphanRemoval=true)
      */
     private $insights;
 
@@ -190,6 +191,27 @@ class Feature
     public function setScoreUpByOne(): self
     {
         $this->score += 1;
+
+        return $this;
+    }
+
+    public function setScoreUpBy(int $number)
+    {
+        $this->score += $number;
+
+        return $this;
+    }
+
+    public function setScoreDownBy(int $number)
+    {
+        if($this->score - $number >= 0){
+
+            $this->score -= $number;
+
+        } else {
+
+            $this->score = 0;
+        }
 
         return $this;
     }

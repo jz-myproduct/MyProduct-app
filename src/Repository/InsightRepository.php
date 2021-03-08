@@ -2,8 +2,12 @@
 
 namespace App\Repository;
 
+use App\Entity\Company;
+use App\Entity\Feature;
+use App\Entity\Feedback;
 use App\Entity\Insight;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -18,6 +22,31 @@ class InsightRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Insight::class);
     }
+
+    public function getUnUsedFeaturesForFeedback(Feedback $feedback, Company $company)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $sql = 'SELECT f.id, f.name
+                FROM feature f
+                WHERE 
+                f.company_id = ? AND
+                f.id NOT IN (SELECT feature_id
+                             FROM insight
+                             WHERE feedback_id = ?); ';
+
+        $rsm = new ResultSetMappingBuilder( $entityManager );
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Feature', 'f');
+
+        return $entityManager
+            ->createNativeQuery($sql, $rsm)
+            ->setParameter(1, $company)
+            ->setParameter(2, $feedback)
+            ->getResult();
+
+    }
+
+
 
     // /**
     //  * @return Insight[] Returns an array of Insight objects

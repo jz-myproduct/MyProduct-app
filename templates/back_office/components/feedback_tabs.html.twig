@@ -3,6 +3,6 @@
         <a class="nav-link {% if app.request.get('_route') == 'bo_feedback_detail' %}active{% endif %}" href="{{ path('bo_feedback_detail', {'company_slug':app.user.slug, 'feedback_id': feedback.id}) }}">Popis</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link {% if app.request.get('_route') == 'bo_feedback_features' %}active{% endif %}" href="{{ path('bo_feedback_features', {'company_slug':app.user.slug, 'feedback_id': feedback.id}) }}">Features <span class="badge badge-secondary">{{ feedback.feature|length }}</span></a>
+        <a class="nav-link {% if app.request.get('_route') == 'bo_feedback_features' %}active{% endif %}" href="{{ path('bo_feedback_features', {'company_slug':app.user.slug, 'feedback_id': feedback.id}) }}">Features <span class="badge badge-secondary">TODO</span></a>
     </li>
 </ul>

@@ -68,7 +68,7 @@ class PortalController extends AbstractController
         }
 
         return $this->render(
-            'back_office/portal/detail.html.twig',
+            'back_office/portal/add_edit.html.twig',
             $view->create(
                 $company,
                 $form->createView()

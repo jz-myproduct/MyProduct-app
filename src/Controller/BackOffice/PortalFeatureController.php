@@ -62,7 +62,7 @@ class PortalFeatureController extends AbstractController
             $this->addFlash('success', 'Featura na portálu upravena.');
         }
 
-        return $this->render('back_office/portal_feature/detail.html.twig',[
+        return $this->render('back_office/portal_feature/add_edit.html.twig',[
             'form' => $form->createView(),
             'feature' => $feature,
             'feedbackList' => $view->create($feature)

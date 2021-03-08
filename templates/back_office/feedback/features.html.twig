@@ -5,29 +5,32 @@
 
     {% include('back_office/components/feedback_tabs.html.twig') %}
 
+    {% if relatedFeatureList %}
     <p>
         {% for relatedFeature in relatedFeatureList %}
             <span class="p-1">
-                <a href="{{ path('bo_feature_detail', { 'company_slug': app.user.slug, 'feature_id': relatedFeature.id } ) }}"
-                   class="badge badge-info">{{ relatedFeature.name }}</a>
+                <a href="{{ path('bo_insight_edit', { 'company_slug': app.user.slug, 'insight_id':1 } ) }}"
+                   class="badge badge-info">{{ relatedFeature.name }} ({{ relatedFeature.insight }})</a>
                 <a href="{{ path('bo_feedback_relation_delete', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'feature_id': relatedFeature.id, 'p':'feedback' } ) }}"
                    class="badge badge-danger font-weight-bold"><span aria-hidden="true">&times;</span></a>
             </span>
         {% endfor %}
     </p>
+    {% endif %}
+
     <h2 class="h4 mt-4">Přidat</h2>
     <p>
-        {% if unrelatedFeatureList %}
-            {% for unrelatedFeature in unrelatedFeatureList %}
-                <span class="p-1">
-                <a href="{{ path('bo_feature_detail', { 'company_slug': app.user.slug, 'feature_id': unrelatedFeature.id } ) }}"
-                   class="badge badge-info">{{ unrelatedFeature.name }}</a>
-                <a href="{{ path('bo_feedback_relation_add', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'feature_id': unrelatedFeature.id, 'p':'feedback' } ) }}"
-                   class="badge badge-success font-weight-bold">Přidat</a>
-            </span>
-            {% endfor %}
-        {% else %}
-            Žádné další featury k propojení.
-        {% endif %}
+    {% if unrelatedFeatureList %}
+        {% for unrelatedFeature in unrelatedFeatureList %}
+            <span class="p-1">
+            <a href="{{ path('bo_feature_detail', { 'company_slug': app.user.slug, 'feature_id': unrelatedFeature.id } ) }}"
+               class="badge badge-info">{{ unrelatedFeature.name }}</a>
+            <a href="{{ path('bo_insight_add', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'feature_id': unrelatedFeature.id, 'p':'feedback' } ) }}"
+               class="badge badge-success font-weight-bold">Přidat</a>
+        </span>
+        {% endfor %}
+    {% else %}
+        Žádné další featury k propojení.
+    {% endif %}
     </p>
 {% endblock %}

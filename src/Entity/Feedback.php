@@ -55,7 +55,7 @@ class Feedback
     private $isNew;
 
     /**
-     * @ORM\OneToMany(targetEntity=Insight::class, mappedBy="Feedback", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Insight::class, mappedBy="feedback", orphanRemoval=true)
      */
     private $insights;
 

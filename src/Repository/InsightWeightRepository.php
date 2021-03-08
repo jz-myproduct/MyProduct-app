@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\FeedbackValue;
+use App\Entity\InsightWeight;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method FeedbackValue|null find($id, $lockMode = null, $lockVersion = null)
- * @method FeedbackValue|null findOneBy(array $criteria, array $orderBy = null)
- * @method FeedbackValue[]    findAll()
- * @method FeedbackValue[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method InsightWeight|null find($id, $lockMode = null, $lockVersion = null)
+ * @method InsightWeight|null findOneBy(array $criteria, array $orderBy = null)
+ * @method InsightWeight[]    findAll()
+ * @method InsightWeight[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class FeedbackValueRepository extends ServiceEntityRepository
+class InsightWeightRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, FeedbackValue::class);
+        parent::__construct($registry, InsightWeight::class);
     }
 
     // /**
-    //  * @return FeedbackValue[] Returns an array of FeedbackValue objects
+    //  * @return InsightValue[] Returns an array of InsightValue objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class FeedbackValueRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?FeedbackValue
+    public function findOneBySomeField($value): ?InsightValue
     {
         return $this->createQueryBuilder('f')
             ->andWhere('f.exampleField = :val')

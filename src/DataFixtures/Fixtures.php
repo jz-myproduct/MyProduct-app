@@ -7,6 +7,8 @@ use App\Entity\Feature;
 use App\Entity\FeatureState;
 use App\Entity\FeatureTag;
 use App\Entity\Feedback;
+use App\Entity\Insight;
+use App\Entity\InsightWeight;
 use App\Entity\Portal;
 use App\Entity\PortalFeatureState;
 use App\Services\SlugService;
@@ -29,6 +31,16 @@ class Fixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $currentDateTime = new \DateTime();
+
+        foreach ($this->getInsightValue() as $insight)
+        {
+            $insightWeight = new InsightWeight();
+
+            $insightWeight->setName($insight[0]);
+            $insightWeight->setWeight($insight[1]);
+
+            $manager->persist($insightWeight);
+        }
 
         /* Company */
         $company = new Company();
@@ -105,7 +117,6 @@ class Fixtures extends Fixture
             $feature->setCompany( $company );
             $feature->setCreatedAt( $currentDateTime );
             $feature->setUpdatedAt( $currentDateTime );
-            $feature->setScore(1);
 
             $feature->setstate(
                 $manager->getRepository(FeatureState::class)->findInitialState()
@@ -166,6 +177,16 @@ class Fixtures extends Fixture
           ['Nápady', 1],
           ['Ve vývoji', 2],
           ['Hotovo', 3]
+        ];
+    }
+
+    private function getInsightValue()
+    {
+        return [
+          ['Not important', 1],
+          ['Nice-to-have', 2],
+          ['Important', 3],
+          ['Critical', 4]
         ];
     }
 

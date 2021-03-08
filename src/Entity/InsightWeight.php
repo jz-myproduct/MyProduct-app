@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\FeedbackValueRepository;
+use App\Repository\InsightWeightRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=FeedbackValueRepository::class)
+ * @ORM\Entity(repositoryClass=InsightWeightRepository::class)
  */
-class FeedbackValue
+class InsightWeight
 {
     /**
      * @ORM\Id
@@ -25,7 +25,7 @@ class FeedbackValue
     /**
      * @ORM\Column(type="smallint")
      */
-    private $value;
+    private $weight;
 
     public function getId(): ?int
     {
@@ -44,14 +44,14 @@ class FeedbackValue
         return $this;
     }
 
-    public function getValue(): ?int
+    public function getWeight(): ?int
     {
-        return $this->value;
+        return $this->weight;
     }
 
-    public function setValue(int $value): self
+    public function setWeight(int $weight): self
     {
-        $this->value = $value;
+        $this->weight = $weight;
 
         return $this;
     }

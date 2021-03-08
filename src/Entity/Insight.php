@@ -21,19 +21,19 @@ class Insight
      * @ORM\ManyToOne(targetEntity=Feedback::class, inversedBy="insights")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $Feedback;
+    private $feedback;
 
     /**
      * @ORM\ManyToOne(targetEntity=Feature::class, inversedBy="insights")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $Feature;
+    private $feature;
 
     /**
-     * @ORM\ManyToOne(targetEntity=FeedbackValue::class)
+     * @ORM\ManyToOne(targetEntity=InsightWeight::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $value;
+    private $weight;
 
     public function getId(): ?int
     {
@@ -42,36 +42,36 @@ class Insight
 
     public function getFeedback(): ?Feedback
     {
-        return $this->Feedback;
+        return $this->feedback;
     }
 
-    public function setFeedback(?Feedback $Feedback): self
+    public function setFeedback(?Feedback $feedback): self
     {
-        $this->Feedback = $Feedback;
+        $this->feedback = $feedback;
 
         return $this;
     }
 
     public function getFeature(): ?Feature
     {
-        return $this->Feature;
+        return $this->feature;
     }
 
-    public function setFeature(?Feature $Feature): self
+    public function setFeature(?Feature $feature): self
     {
-        $this->Feature = $Feature;
+        $this->feature = $feature;
 
         return $this;
     }
 
-    public function getValue(): ?FeedbackValue
+    public function getWeight(): ?InsightWeight
     {
-        return $this->value;
+        return $this->weight;
     }
 
-    public function setValue(?FeedbackValue $value): self
+    public function setWeight(?InsightWeight $weight): self
     {
-        $this->value = $value;
+        $this->weight = $weight;
 
         return $this;
     }

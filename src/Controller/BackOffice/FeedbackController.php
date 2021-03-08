@@ -5,17 +5,18 @@ namespace App\Controller\BackOffice;
 use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\Feedback;
+use App\Entity\Insight;
 use App\Form\FeedbackFormType;
+use App\Form\InsightFormType;
 use App\Handler\Feedback\Add;
-use App\Handler\Feedback\AddRelation;
 use App\Handler\Feedback\Delete;
 use App\Handler\Feedback\DeleteRelation;
 use App\Handler\Feedback\DeleteRelationRedirect;
 use App\Handler\Feedback\Edit;
 use App\Handler\Feedback\SwitchStatus;
 use App\Handler\Feedback\SwitchStatusRedirect;
+use App\View\BackOffice\Feedback\FeatureView;
 use App\View\BackOffice\Feedback\ListView;
-use App\View\BackOffice\Feedback\UnrelatedFeaturesView;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -200,62 +201,14 @@ class FeedbackController extends AbstractController
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
      * @param Feedback $feedback
-     * @param UnrelatedFeaturesView $view
+     * @param FeatureView $view
      * @return Response
      */
-    public function features(Company $company, Feedback $feedback, UnrelatedFeaturesView $view)
+    public function features(Company $company, Feedback $feedback, FeatureView $view)
     {
         $this->denyAccessUnlessGranted('edit', $feedback);
 
-
-        return $this->render('back_office/feedback/features.html.twig', [
-            'feedback' => $feedback,
-            'relatedFeatureList' => $feedback->getFeature(),
-            'unrelatedFeatureList' => $view->create($company, $feedback)
-        ]);
-    }
-
-
-    /**
-     * @Route("/admin/{company_slug}/pridat-propojeni/{feedback_id}/{feature_id}", name="bo_feedback_relation_add")
-     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
-     * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
-     * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
-     * @param Company $company
-     * @param Feedback $feedback
-     * @param Feature $feature
-     * @param AddRelation $handler
-     * @return RedirectResponse
-     */
-    public function addFeedbackFeatureRelation(
-        Company $company,
-        Feedback $feedback,
-        Feature $feature,
-        AddRelation $handler)
-    {
-        $this->denyAccessUnlessGranted('edit', $feature);
-        $this->denyAccessUnlessGranted('edit', $feedback);
-
-        // feedback already connected to feature
-        if (in_array($feature, $feedback->getFeature()->toArray())) {
-
-            $this->addFlash('info', 'Featura je již přidána.');
-
-            return $this->redirectToRoute('bo_feedback_features',[
-                'company_slug' => $company->getSlug(),
-                'feedback_id' => $feedback->getId()
-            ]);
-
-        }
-
-        $handler->handle($feedback, $feature);
-
-        $this->addFlash('success', 'Featura připojena.');
-
-        return $this->redirectToRoute('bo_feedback_features',[
-            'company_slug' => $company->getSlug(),
-            'feedback_id' => $feedback->getId()
-        ]);
+        return $this->render('back_office/feedback/features.html.twig' , $view->create($company, $feedback));
     }
 
     /**
