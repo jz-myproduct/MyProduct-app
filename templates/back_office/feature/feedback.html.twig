@@ -5,7 +5,37 @@
 
     {% include('back_office/components/feature_tabs.html.twig') %}
 
-    {% include('back_office/components/feedback_list.html.twig') %}
+    {% if insightList is not empty %}
+        <table class="table table-striped mt-5">
+            {% for insight in insightList %}
+                <tr>
+                    {% if insight.feedback.isNew %}
+                        <td class="text-danger font-weight-bold">Nový</td>
+                    {% else %}
+                        <td></td>
+                    {% endif %}
+                    {% if insight.feedback.fromPortal %}
+                        <td class="text-info">Portal</td>
+                    {% else %}
+                        <td></td>
+                    {% endif %}
+                    <td><a href="{{ path('bo_feedback_detail', {'company_slug': app.user.slug, 'feedback_id': insight.feedback.id}) }}">
+                            {{ insight.feedback.description }}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
+                                <path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z"/>
+                            </svg>
+                        </a>
+                    </td>
+                    <td>{{ insight.feedback.createdAt|date('Y.m.d h:m') }}</td>
+                    <td><a href="{{ path('bo_insight_delete', {'company_slug':app.user.slug, 'insight_id':insight.id}) }}">Odebrat propojení</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+
+            <p class="mt-5 lead">Zatím nemáte žádné feedbacks.</p>
+
+    {% endif %}
 
     <h2 class="h4 mt-4 mb-4">Přidat nový feedback</h2>
     {{ form(form) }}

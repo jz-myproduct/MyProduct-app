@@ -5,7 +5,7 @@
     </li>
     <li class="nav-item">
         <a class="nav-link {% if app.request.get('_route') == 'bo_feature_feedback' %}active{% endif %}"
-           href="{{ path('bo_feature_feedback', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Feedbacks <span class="badge badge-secondary">{{ feedbackList|length }}</span></a>
+           href="{{ path('bo_feature_feedback', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Feedbacks <span class="badge badge-secondary">{{ feedbackCount }}</span></a>
     </li>
     <li class="nav-item">
         <a class="nav-link {% if app.request.get('_route') == 'bo_feature_portal' %}active{% endif %}"

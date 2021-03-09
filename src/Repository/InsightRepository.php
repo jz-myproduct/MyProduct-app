@@ -7,6 +7,8 @@ use App\Entity\Feature;
 use App\Entity\Feedback;
 use App\Entity\Insight;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Select;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -43,7 +45,6 @@ class InsightRepository extends ServiceEntityRepository
             ->setParameter(1, $company)
             ->setParameter(2, $feedback)
             ->getResult();
-
     }
 
     public function getInsightsCountForFeedback(Feedback $feedback)
@@ -58,34 +59,15 @@ class InsightRepository extends ServiceEntityRepository
        return (int)$count;
     }
 
-
-
-    // /**
-    //  * @return Insight[] Returns an array of Insight objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getInsightsCountForFeature(Feature $feature)
     {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $count = $this->createQueryBuilder('i')
+                      ->select('count(i.id)')
+                      ->where('i.feature = :feature')
+                      ->setParameter('feature', $feature)
+                      ->getQuery()
+                      ->getSingleScalarResult();
 
-    /*
-    public function findOneBySomeField($value): ?Insight
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return (int)$count;
     }
-    */
 }

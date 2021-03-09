@@ -5,6 +5,7 @@ namespace App\Controller\BackOffice;
 use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\Feedback;
+use App\Entity\Insight;
 use App\Entity\PortalFeature;
 use App\Events\FeedbackUpdatedEvent;
 use App\Form\FeatureFormType;
@@ -15,6 +16,7 @@ use App\Handler\Feature\Delete;
 use App\Handler\Feature\Edit;
 use App\Handler\Feedback\AddOnFeatureDetail;
 use App\Services\SlugService;
+use App\View\BackOffice\Feature\DetailView;
 use App\View\BackOffice\Feature\FeedbackListView;
 use App\View\BackOffice\Feature\ListView;
 use DateTime;
@@ -159,7 +161,7 @@ class FeatureController extends AbstractController
      * @param Feature $feature
      * @param Request $request
      * @param AddOnFeatureDetail $handler
-     * @param FeedbackListView $view
+     * @param DetailView $view
      * @return Response
      */
     public function detail(
@@ -167,14 +169,11 @@ class FeatureController extends AbstractController
         Feature $feature,
         Request $request,
         AddOnFeatureDetail $handler,
-        FeedbackListView $view)
+        DetailView $view)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
 
-        return $this->render('back_office/feature/add_edit.html.twig', [
-            'feature' => $feature,
-            'feedbackList' => $view->create($feature)
-        ]);
+        return $this->render('back_office/feature/detail.html.twig', $view->create($feature));
     }
 
     /**
@@ -212,10 +211,8 @@ class FeatureController extends AbstractController
             ]);
         }
 
-        return $this->render('back_office/feature/feedback.html.twig', [
-            'feature' => $feature,
-            'feedbackList' => $view->create($feature),
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            'back_office/feature/feedback.html.twig',
+            $view->create($feature, $form->createView()));
     }
 }

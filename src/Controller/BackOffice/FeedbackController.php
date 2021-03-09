@@ -90,9 +90,7 @@ class FeedbackController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $feedback);
 
-        $form = $this->createForm(FeedbackFormType::class, $feedback, [
-            'featureChoices' => $company->getFeatures()
-        ]);
+        $form = $this->createForm(FeedbackFormType::class, $feedback);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -122,7 +120,7 @@ class FeedbackController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        return $this->render('back_office/feedback/list.twig', $view->create($company));
+        return $this->render('back_office/feedback/list.html.twig', $view->create($company));
     }
 
     /**
