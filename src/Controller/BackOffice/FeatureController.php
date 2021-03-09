@@ -6,10 +6,12 @@ use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\Feedback;
 use App\Entity\Insight;
+use App\Entity\InsightWeight;
 use App\Entity\PortalFeature;
 use App\Events\FeedbackUpdatedEvent;
 use App\Form\FeatureFormType;
 use App\Form\FeedbackFeatureDetailFormType;
+use App\Form\InsightOnFeatureFormType;
 use App\Form\PortalFeatureFormType;
 use App\Handler\Feature\Add;
 use App\Handler\Feature\Delete;
@@ -191,19 +193,17 @@ class FeatureController extends AbstractController
         Company $company,
         Feature $feature,
         Request $request,
-        AddOnFeatureDetail $handler,
         FeedbackListView $view)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
 
-        $form = $this->createForm(FeedbackFeatureDetailFormType::class, $feedback = new Feedback());
+        $form = $this->createForm(InsightOnFeatureFormType::class, $insight = new Insight());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $handler->handle($feedback, $company, $feature);
-
             $this->addFlash('success', 'Feedback přidán');
+
 
             return $this->redirectToRoute('bo_feature_feedback', [
                 'company_slug' => $company->getSlug(),
