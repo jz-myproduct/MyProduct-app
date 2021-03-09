@@ -9,9 +9,9 @@
     <p>
         {% for relatedFeature in relatedFeatureList %}
             <span class="p-1">
-                <a href="{{ path('bo_insight_edit', { 'company_slug': app.user.slug, 'insight_id':1 } ) }}"
-                   class="badge badge-info">{{ relatedFeature.name }} ({{ relatedFeature.insight }})</a>
-                <a href="{{ path('bo_feedback_relation_delete', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'feature_id': relatedFeature.id, 'p':'feedback' } ) }}"
+                <a href="{{ path('bo_insight_edit', { 'company_slug': app.user.slug, 'insight_id':relatedFeature.insight.id } ) }}"
+                   class="badge badge-info">{{ relatedFeature.feature.name }} ({{ relatedFeature.insight.name }})</a>
+                <a href="{{ path('bo_insight_delete', {'company_slug': app.user.slug, 'insight_id':relatedFeature.insight.id, 'p':'feedback' } ) }}"
                    class="badge badge-danger font-weight-bold"><span aria-hidden="true">&times;</span></a>
             </span>
         {% endfor %}

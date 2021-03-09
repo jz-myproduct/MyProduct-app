@@ -23,6 +23,8 @@ class Delete
     {
         $this->manager->remove($insight);
         $this->manager->flush();
+
+        // TODO update feature score
     }
 
 }

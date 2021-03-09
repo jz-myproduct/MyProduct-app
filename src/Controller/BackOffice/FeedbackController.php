@@ -15,6 +15,7 @@ use App\Handler\Feedback\DeleteRelationRedirect;
 use App\Handler\Feedback\Edit;
 use App\Handler\Feedback\SwitchStatus;
 use App\Handler\Feedback\SwitchStatusRedirect;
+use App\View\BackOffice\Feedback\DetailView;
 use App\View\BackOffice\Feedback\FeatureView;
 use App\View\BackOffice\Feedback\ListView;
 use Doctrine\ORM\EntityManagerInterface;
@@ -184,15 +185,14 @@ class FeedbackController extends AbstractController
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
      * @param Feedback $feedback
+     * @param DetailView $view
      * @return Response
      */
-    public function detail(Company $company, Feedback $feedback)
+    public function detail(Company $company, Feedback $feedback, DetailView $view)
     {
         $this->denyAccessUnlessGranted('edit', $feedback);
 
-        return $this->render('back_office/feedback/detail.html.twig', [
-            'feedback' => $feedback
-        ]);
+        return $this->render('back_office/feedback/detail.html.twig', $view->create($feedback));
     }
 
     /**
@@ -209,48 +209,5 @@ class FeedbackController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $feedback);
 
         return $this->render('back_office/feedback/features.html.twig' , $view->create($company, $feedback));
-    }
-
-    /**
-     * @Route("/admin/{company_slug}/smazat-propojeni/{feedback_id}/{feature_id}", name="bo_feedback_relation_delete")
-     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
-     * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
-     * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
-     * @param Company $company
-     * @param Feedback $feedback
-     * @param Feature $feature
-     * @param Request $request
-     * @param DeleteRelation $deleteHandler
-     * @param DeleteRelationRedirect $redirectHandler
-     * @return RedirectResponse
-     */
-    public function deleteFeedbackFeatureRelation(
-        Company $company,
-        Feedback $feedback,
-        Feature $feature,
-        Request $request,
-        DeleteRelation $deleteHandler,
-        DeleteRelationRedirect $redirectHandler)
-    {
-
-        $this->denyAccessUnlessGranted('edit', $feature);
-        $this->denyAccessUnlessGranted('edit', $feedback);
-
-        if (!in_array($feature, $feedback->getFeature()->toArray())) {
-            throw new NotFoundHttpException();
-        }
-
-        $deleteHandler->handle($feedback, $feature);
-
-        $this->addFlash('success', 'Spojení odebráno.');
-
-        return new RedirectResponse(
-            $redirectHandler->handle(
-                $request->query->get('p'),
-                $feedback,
-                $feature,
-                $company
-            )
-        );
     }
 }

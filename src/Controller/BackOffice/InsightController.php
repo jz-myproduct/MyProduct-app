@@ -129,4 +129,37 @@ class InsightController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/admin/{company_slug}/smazat-insight/{insight_id}", name="bo_insight_delete")
+     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
+     * @ParamConverter("insight", options={"mapping": {"insight_id": "id"}})
+     * @param Company $company
+     * @param Insight $insight
+     * @param Delete $deleteHandler
+     * @param Redirect $redirectHandler
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function delete(
+        Company $company,
+        Insight $insight,
+        Delete $deleteHandler,
+        Redirect $redirectHandler,
+        Request $request)
+    {
+        $this->denyAccessUnlessGranted('edit', $insight);
+
+        $deleteHandler->handle($insight);
+
+        $this->addFlash('success', 'Spojení odebráno.');
+
+        return new RedirectResponse(
+            $redirectHandler->handle(
+                $request->query->get('p'),
+                $insight,
+                $company
+            )
+        );
+    }
+
 }

@@ -46,6 +46,18 @@ class InsightRepository extends ServiceEntityRepository
 
     }
 
+    public function getInsightsCountForFeedback(Feedback $feedback)
+    {
+       $count = $this->createQueryBuilder('i')
+                     ->select('count(i.id)')
+                     ->where('i.feedback = :feedback')
+                     ->setParameter('feedback', $feedback)
+                     ->getQuery()
+                     ->getSingleScalarResult();
+
+       return (int)$count;
+    }
+
 
 
     // /**

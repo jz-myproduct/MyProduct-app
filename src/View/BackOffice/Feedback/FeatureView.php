@@ -26,21 +26,32 @@ class FeatureView
         $unrelatedFeatureList =  $this->manager->getRepository(Insight::class)
             ->getUnUsedFeaturesForFeedback($feedback, $company);
 
+        $insightsCount = $this->manager->getRepository(Insight::class)
+            ->getInsightsCountForFeedback($feedback);
+
+        return [
+            'feedback' => $feedback,
+            'relatedFeatureList' => $this->prepareRelatedFeatures($feedback),
+            'unrelatedFeatureList' => $unrelatedFeatureList,
+            'insightsCount' => $insightsCount
+        ];
+    }
+
+    private function prepareRelatedFeatures(Feedback $feedback)
+    {
         $relatedFeatureList = array();
 
         foreach ($feedback->getInsights() as $insight)
         {
             array_push($relatedFeatureList, [
-                'insight' => $insight->getWeight()->getName(),
-                'name' => $insight->getFeature()->getName(),
-                'id' => $insight->getFeature()->getId()
+
+                'insight' => [ 'id' => $insight->getId(), 'name' => $insight->getWeight()->getName() ],
+                'feature' => [ 'id' => $insight->getFeature()->getId(), 'name' => $insight->getFeature()->getName()]
+
             ]);
         }
 
-        return [
-            'feedback' => $feedback,
-            'relatedFeatureList' => $relatedFeatureList,
-            'unrelatedFeatureList' => $unrelatedFeatureList
-        ];
+        return $relatedFeatureList;
+
     }
 }

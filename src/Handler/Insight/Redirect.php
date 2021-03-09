@@ -5,8 +5,7 @@ namespace App\Handler\Insight;
 
 
 use App\Entity\Company;
-use App\Entity\Feature;
-use App\Entity\Feedback;
+use App\Entity\Insight;
 use Symfony\Component\Routing\RouterInterface;
 
 class Redirect
@@ -23,8 +22,7 @@ class Redirect
 
     public function handle(
         String $param,
-        Feedback $feedback,
-        Feature $feature,
+        Insight $insight,
         Company $company)
     {
 
@@ -33,7 +31,7 @@ class Redirect
         if ($param === 'feature') {
 
             return $this->router->generate('bo_feature_feedback', [
-                'feature_id' => $feature->getId(),
+                'feature_id' => $insight->getFeature()->getId(),
                 'company_slug' => $company->getSlug()
             ]);
 
@@ -42,7 +40,7 @@ class Redirect
         if ($param === 'feedback') {
 
             return $this->router->generate('bo_feedback_features', [
-                'feedback_id' => $feedback->getId(),
+                'feedback_id' => $insight->getFeedback()->getId(),
                 'company_slug' => $company->getSlug()
             ]);
         }
