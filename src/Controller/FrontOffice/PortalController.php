@@ -10,7 +10,7 @@ use App\Entity\PortalFeature;
 use App\Entity\PortalFeatureState;
 use App\Form\PortalFeedbackFormType;
 use App\Handler\Feedback\AddFeatureFeedbackOnPortal;
-use App\Handler\Feedback\AddGeneralOnPortal;
+use App\Handler\Feedback\AddOnPortal;
 use App\Services\PortalFeatureService;
 use App\View\Shared\PortalDetail;
 use Doctrine\ORM\EntityManagerInterface;
@@ -41,6 +41,7 @@ class PortalController extends AbstractController
      * @ParamConverter("state", options={"mapping": {"state": "slug"}})
      * @param Portal $portal
      * @param PortalFeatureState|null $state
+     * @param PortalDetail $view
      * @return Response|NotFoundHttpException
      */
     public function detail(Portal $portal, ?PortalFeatureState $state, PortalDetail $view)
@@ -49,6 +50,8 @@ class PortalController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        return $this->render('front_office/portal/add_edit.html.twig', $view->create($portal->getCompany()));
+        return $this->render('front_office/portal/detail.html.twig',
+            $view->create($portal->getCompany())
+        );
     }
 }

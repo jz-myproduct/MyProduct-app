@@ -5,12 +5,13 @@ namespace App\Controller\FrontOffice;
 
 
 use App\Entity\Feedback;
+use App\Entity\Insight;
 use App\Entity\Portal;
 use App\Entity\PortalFeature;
+use App\Form\InsightOnFeatureFormType;
 use App\Form\PortalFeedbackFormType;
 use App\Handler\Feedback\AddFeatureFeedbackOnPortal;
-use App\Handler\Feedback\AddGeneralOnPortal;
-use App\Services\PortalFeatureService;
+use App\Handler\Feedback\AddOnPortal;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,26 +31,25 @@ class PortalFeedbackController extends AbstractController
      * @param Portal $portal
      * @param PortalFeature $portalFeature
      * @param Request $request
-     * @param AddFeatureFeedbackOnPortal $handler
+     * @param \App\Handler\Insight\AddOnPortal $handler
      * @return Response
      */
     public function detail(
         Portal $portal,
         PortalFeature $portalFeature,
         Request $request,
-        AddFeatureFeedbackOnPortal $handler)
+        \App\Handler\Insight\AddOnPortal $handler)
     {
         if(! $this->isAllowToBeDisplayed($portalFeature, $portal)){
             throw new NotFoundHttpException();
-
         }
 
-        $form = $this->createForm(PortalFeedbackFormType::class, $feedback = new Feedback());
+        $form = $this->createForm(InsightOnFeatureFormType::class, $insight = new Insight());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $handler->handle($feedback, $portalFeature, $portal->getCompany());
+            $handler->handle($insight, $portalFeature);
 
             $this->addFlash('success', 'Děkujeme za feeedback!');
 
@@ -71,10 +71,10 @@ class PortalFeedbackController extends AbstractController
      * @Route("/portal/{slug}/feedback/pridat", name="fo_portal_feedback_general")
      * @param Portal $portal
      * @param Request $request
-     * @param AddGeneralOnPortal $handler
+     * @param AddOnPortal $handler
      * @return RedirectResponse|Response
      */
-    public function addGeneralFeedback(Portal $portal, Request $request, AddGeneralOnPortal $handler)
+    public function addFeedback(Portal $portal, Request $request, AddOnPortal $handler)
     {
         if (!$portal->getDisplay()) {
             throw new NotFoundHttpException();
@@ -100,7 +100,7 @@ class PortalFeedbackController extends AbstractController
         ]);
     }
 
-    public function isAllowToBeDisplayed(PortalFeature $portalFeature, Portal $portal)
+    private function isAllowToBeDisplayed(PortalFeature $portalFeature, Portal $portal)
     {
 
         if(! $portal->getDisplay())

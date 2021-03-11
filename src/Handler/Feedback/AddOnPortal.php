@@ -9,7 +9,7 @@ use App\Entity\Feedback;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
-class AddGeneralOnPortal
+class AddOnPortal
 {
 
     /**
@@ -34,6 +34,8 @@ class AddGeneralOnPortal
 
         $this->manager->persist($feedback);
         $this->manager->flush();
+
+        return $feedback;
     }
 
 }
