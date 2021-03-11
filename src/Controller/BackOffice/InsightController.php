@@ -9,7 +9,7 @@ use App\Entity\Feature;
 use App\Entity\Feedback;
 use App\Entity\Insight;
 use App\Form\InsightFormType;
-use App\Handler\Insight\Add;
+use App\Handler\Insight\AddFromFeedback;
 use App\Handler\Insight\Delete;
 use App\Handler\Insight\Edit;
 use App\Handler\Insight\Redirect;
@@ -44,7 +44,7 @@ class InsightController extends AbstractController
      * @param Feedback $feedback
      * @param Feature $feature
      * @param Request $request
-     * @param Add $handler
+     * @param AddFromFeedback $handler
      * @return RedirectResponse|Response
      */
     public function add(
@@ -52,7 +52,7 @@ class InsightController extends AbstractController
         Feedback $feedback,
         Feature $feature,
         Request $request,
-        Add $handler)
+        AddFromFeedback $handler)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
         $this->denyAccessUnlessGranted('edit', $feedback);

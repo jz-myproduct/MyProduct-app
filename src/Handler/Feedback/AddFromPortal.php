@@ -9,7 +9,7 @@ use App\Entity\Feedback;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
-class AddOnPortal
+class AddFromPortal
 {
 
     /**

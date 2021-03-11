@@ -10,7 +10,7 @@ use App\Entity\PortalFeature;
 use App\Entity\PortalFeatureState;
 use App\Form\PortalFeedbackFormType;
 use App\Handler\Feedback\AddFeatureFeedbackOnPortal;
-use App\Handler\Feedback\AddOnPortal;
+use App\Handler\Feedback\AddFromPortal;
 use App\Services\PortalFeatureService;
 use App\View\Shared\PortalDetail;
 use Doctrine\ORM\EntityManagerInterface;

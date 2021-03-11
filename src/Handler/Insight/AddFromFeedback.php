@@ -9,7 +9,7 @@ use App\Entity\Feedback;
 use App\Entity\Insight;
 use Doctrine\ORM\EntityManagerInterface;
 
-class Add
+class AddFromFeedback
 {
 
     /**

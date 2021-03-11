@@ -9,18 +9,18 @@ use App\Entity\Insight;
 use App\Entity\PortalFeature;
 use Doctrine\ORM\EntityManagerInterface;
 
-class AddOnPortal
+class AddFromPortal
 {
     /**
      * @var EntityManagerInterface
      */
     private $manager;
     /**
-     * @var \App\Handler\Feedback\AddOnPortal
+     * @var \App\Handler\Feedback\AddFromPortal
      */
     private $feedbackHandler;
 
-    public function __construct(EntityManagerInterface $manager, \App\Handler\Feedback\AddOnPortal $feedbackHandler)
+    public function __construct(EntityManagerInterface $manager, \App\Handler\Feedback\AddFromPortal $feedbackHandler)
     {
         $this->manager = $manager;
         $this->feedbackHandler = $feedbackHandler;

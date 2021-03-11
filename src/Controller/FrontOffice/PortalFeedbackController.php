@@ -10,7 +10,7 @@ use App\Entity\Portal;
 use App\Entity\PortalFeature;
 use App\Form\InsightOnFeatureFormType;
 use App\Form\PortalFeedbackFormType;
-use App\Handler\Feedback\AddOnPortal;
+use App\Handler\Feedback\AddFromPortal;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,14 +30,14 @@ class PortalFeedbackController extends AbstractController
      * @param Portal $portal
      * @param PortalFeature $portalFeature
      * @param Request $request
-     * @param \App\Handler\Insight\AddOnPortal $handler
+     * @param \App\Handler\Insight\AddFromPortal $handler
      * @return Response
      */
     public function detail(
         Portal $portal,
         PortalFeature $portalFeature,
         Request $request,
-        \App\Handler\Insight\AddOnPortal $handler)
+        \App\Handler\Insight\AddFromPortal $handler)
     {
         if(! $this->isAllowToBeDisplayed($portalFeature, $portal)){
             throw new NotFoundHttpException();
@@ -70,10 +70,10 @@ class PortalFeedbackController extends AbstractController
      * @Route("/portal/{slug}/feedback/pridat", name="fo_portal_feedback_general")
      * @param Portal $portal
      * @param Request $request
-     * @param AddOnPortal $handler
+     * @param AddFromPortal $handler
      * @return RedirectResponse|Response
      */
-    public function addFeedback(Portal $portal, Request $request, AddOnPortal $handler)
+    public function addFeedback(Portal $portal, Request $request, AddFromPortal $handler)
     {
         if (!$portal->getDisplay()) {
             throw new NotFoundHttpException();

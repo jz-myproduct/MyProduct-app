@@ -16,7 +16,7 @@ use App\Form\PortalFeatureFormType;
 use App\Handler\Feature\Add;
 use App\Handler\Feature\Delete;
 use App\Handler\Feature\Edit;
-use App\Handler\Insight\AddOnFeatureDetail;
+use App\Handler\Insight\AddFromFeature;
 use App\Services\SlugService;
 use App\View\BackOffice\Feature\DetailView;
 use App\View\BackOffice\Feature\FeedbackListView;
@@ -181,7 +181,7 @@ class FeatureController extends AbstractController
      * @param Company $company
      * @param Feature $feature
      * @param Request $request
-     * @param AddOnFeatureDetail $handler
+     * @param AddFromFeature $handler
      * @param FeedbackListView $view
      * @return RedirectResponse|Response
      */
@@ -189,7 +189,7 @@ class FeatureController extends AbstractController
         Company $company,
         Feature $feature,
         Request $request,
-        AddOnFeatureDetail $handler,
+        AddFromFeature $handler,
         FeedbackListView $view)
     {
         $this->denyAccessUnlessGranted('edit', $feature);

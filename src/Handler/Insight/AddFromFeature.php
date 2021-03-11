@@ -8,7 +8,7 @@ use App\Entity\Feature;
 use App\Entity\Insight;
 use Doctrine\ORM\EntityManagerInterface;
 
-class AddOnFeatureDetail
+class AddFromFeature
 {
     /**
      * @var EntityManagerInterface
