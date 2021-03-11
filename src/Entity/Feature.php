@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\FeatureRepository;
+use ContainerJC0aoQx\get_ServiceLocator_8For1TService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -68,9 +69,15 @@ class Feature
      */
     private $portalFeature;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Insight::class, mappedBy="feature", orphanRemoval=true)
+     */
+    private $insights;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
+        $this->insights = new ArrayCollection();
     }
 
 
@@ -188,6 +195,27 @@ class Feature
         return $this;
     }
 
+    public function setScoreUpBy(int $number)
+    {
+        $this->score += $number;
+
+        return $this;
+    }
+
+    public function setScoreDownBy(int $number)
+    {
+        if($this->score - $number >= 0){
+
+            $this->score -= $number;
+
+        } else {
+
+            $this->score = 0;
+        }
+
+        return $this;
+    }
+
     /**
      * @return Collection|FeatureTag[]
      */
@@ -230,6 +258,36 @@ class Feature
         }
 
         $this->portalFeature = $portalFeature;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Insight[]
+     */
+    public function getInsights(): Collection
+    {
+        return $this->insights;
+    }
+
+    public function addInsight(Insight $insight): self
+    {
+        if (!$this->insights->contains($insight)) {
+            $this->insights[] = $insight;
+            $insight->setFeature($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInsight(Insight $insight): self
+    {
+        if ($this->insights->removeElement($insight)) {
+            // set the owning side to null (unless already changed)
+            if ($insight->getFeature() === $this) {
+                $insight->setFeature(null);
+            }
+        }
 
         return $this;
     }

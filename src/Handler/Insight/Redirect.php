@@ -1,19 +1,15 @@
 <?php
 
 
-namespace App\Handler\Feedback;
+namespace App\Handler\Insight;
 
 
 use App\Entity\Company;
-use App\Entity\Feature;
-use App\Entity\Feedback;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use App\Entity\Insight;
 use Symfony\Component\Routing\RouterInterface;
 
-class DeleteRelationRedirect
+class Redirect
 {
-
-
     /**
      * @var RouterInterface
      */
@@ -26,8 +22,7 @@ class DeleteRelationRedirect
 
     public function handle(
         String $param,
-        Feedback $feedback,
-        Feature $feature,
+        Insight $insight,
         Company $company)
     {
 
@@ -36,8 +31,8 @@ class DeleteRelationRedirect
         if ($param === 'feature') {
 
             return $this->router->generate('bo_feature_feedback', [
-                    'feature_id' => $feature->getId(),
-                    'company_slug' => $company->getSlug()
+                'feature_id' => $insight->getFeature()->getId(),
+                'company_slug' => $company->getSlug()
             ]);
 
         }
@@ -45,14 +40,15 @@ class DeleteRelationRedirect
         if ($param === 'feedback') {
 
             return $this->router->generate('bo_feedback_features', [
-                    'feedback_id' => $feedback->getId(),
-                    'company_slug' => $company->getSlug()
+                'feedback_id' => $insight->getFeedback()->getId(),
+                'company_slug' => $company->getSlug()
             ]);
         }
 
         return $this->router->generate('bo_home', [
-                    'slug' => $company->getSlug()
+            'slug' => $company->getSlug()
         ]);
 
     }
+
 }

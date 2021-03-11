@@ -22,6 +22,7 @@ class FeedbackRepository extends ServiceEntityRepository
         parent::__construct($registry, Feedback::class);
     }
 
+    /*
     public function getFeedbackCountForFeature(Feature $feature)
     {
         $count = $this->createQueryBuilder('fe')

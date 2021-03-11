@@ -5,16 +5,20 @@ namespace App\Controller\BackOffice;
 use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\Feedback;
+use App\Entity\Insight;
+use App\Entity\InsightWeight;
 use App\Entity\PortalFeature;
 use App\Events\FeedbackUpdatedEvent;
 use App\Form\FeatureFormType;
 use App\Form\FeedbackFeatureDetailFormType;
+use App\Form\InsightOnFeatureFormType;
 use App\Form\PortalFeatureFormType;
 use App\Handler\Feature\Add;
 use App\Handler\Feature\Delete;
 use App\Handler\Feature\Edit;
-use App\Handler\Feedback\AddOnFeatureDetail;
+use App\Handler\Insight\AddFromFeature;
 use App\Services\SlugService;
+use App\View\BackOffice\Feature\DetailView;
 use App\View\BackOffice\Feature\FeedbackListView;
 use App\View\BackOffice\Feature\ListView;
 use DateTime;
@@ -157,24 +161,17 @@ class FeatureController extends AbstractController
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @param Company $company
      * @param Feature $feature
-     * @param Request $request
-     * @param AddOnFeatureDetail $handler
-     * @param FeedbackListView $view
+     * @param DetailView $view
      * @return Response
      */
     public function detail(
         Company $company,
         Feature $feature,
-        Request $request,
-        AddOnFeatureDetail $handler,
-        FeedbackListView $view)
+        DetailView $view)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
 
-        return $this->render('back_office/feature/detail.html.twig', [
-            'feature' => $feature,
-            'feedbackList' => $view->create($feature)
-        ]);
+        return $this->render('back_office/feature/detail.html.twig', $view->create($feature));
     }
 
     /**
@@ -184,7 +181,7 @@ class FeatureController extends AbstractController
      * @param Company $company
      * @param Feature $feature
      * @param Request $request
-     * @param AddOnFeatureDetail $handler
+     * @param AddFromFeature $handler
      * @param FeedbackListView $view
      * @return RedirectResponse|Response
      */
@@ -192,17 +189,17 @@ class FeatureController extends AbstractController
         Company $company,
         Feature $feature,
         Request $request,
-        AddOnFeatureDetail $handler,
+        AddFromFeature $handler,
         FeedbackListView $view)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
 
-        $form = $this->createForm(FeedbackFeatureDetailFormType::class, $feedback = new Feedback());
+        $form = $this->createForm(InsightOnFeatureFormType::class, $insight = new Insight());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $handler->handle($feedback, $company, $feature);
+            $handler->handle($insight, $feature);
 
             $this->addFlash('success', 'Feedback přidán');
 
@@ -212,10 +209,8 @@ class FeatureController extends AbstractController
             ]);
         }
 
-        return $this->render('back_office/feature/feedback.html.twig', [
-            'feature' => $feature,
-            'feedbackList' => $view->create($feature),
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            'back_office/feature/feedback.html.twig',
+            $view->create($feature, $form->createView()));
     }
 }

@@ -64,7 +64,7 @@ class PortalController extends AbstractController
         {
             $handler->handle($portal);
 
-            $this->addFlash('success', 'FeedbackListView upraven.');
+            $this->addFlash('success', 'DetailView upraven.');
         }
 
         return $this->render(

@@ -1,16 +1,15 @@
 <?php
 
 
-namespace App\View\BackOffice\Feature;
+namespace App\View\BackOffice\PortalFeature;
 
 
 use App\Entity\Feature;
-use App\Entity\Feedback;
 use App\Entity\Insight;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormView;
 
-class FeedbackListView
+class DetailView
 {
     /**
      * @var EntityManagerInterface
@@ -22,19 +21,15 @@ class FeedbackListView
         $this->manager = $manager;
     }
 
-    public function create(Feature $feature, FormView $form)
+    public function create(FormView $form, Feature $feature)
     {
         $feedbackCount = $this->manager->getRepository(Insight::class)
             ->getInsightsCountForFeature($feature);
 
-        $insightList = $this->manager->getRepository(Insight::class)->findBy(['feature' => $feature]);
-
         return [
+            'form' => $form,
             'feature' => $feature,
-            'insightList' => $insightList,
-            'feedbackCount' => $feedbackCount,
-            'form' => $form
+            'feedbackCount' => $feedbackCount
         ];
     }
-
 }

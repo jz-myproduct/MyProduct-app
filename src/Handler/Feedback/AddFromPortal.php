@@ -6,12 +6,15 @@ namespace App\Handler\Feedback;
 
 use App\Entity\Company;
 use App\Entity\Feedback;
-use App\Entity\Portal;
-use App\Entity\PortalFeature;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
-class AddFeatureFeedbackOnPortal
+class AddFromPortal
 {
+
+    /**
+     * @var EntityManagerInterface
+     */
     private $manager;
 
     public function __construct(EntityManagerInterface $manager)
@@ -19,7 +22,7 @@ class AddFeatureFeedbackOnPortal
         $this->manager = $manager;
     }
 
-    public function handle(Feedback $feedback, PortalFeature $portalFeature, Company $company)
+    public function handle(Feedback $feedback, Company $company)
     {
         $feedback->setCompany($company);
         $feedback->setIsNew(true);
@@ -29,14 +32,10 @@ class AddFeatureFeedbackOnPortal
         $feedback->setCreatedAt($currentDateTime);
         $feedback->setUpdatedAt($currentDateTime);
 
-        $feedback->addFeature(
-            $portalFeature->getFeature()
-        );
-        $portalFeature->getFeature()->setScoreUpByOne();
-        $portalFeature->setFeedbackCountUpByOne();
-
         $this->manager->persist($feedback);
         $this->manager->flush();
+
+        return $feedback;
     }
 
 }

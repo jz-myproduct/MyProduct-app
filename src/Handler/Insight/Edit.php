@@ -1,17 +1,15 @@
 <?php
 
 
-namespace App\Handler\Feedback;
+namespace App\Handler\Insight;
 
-use App\Entity\Company;
-use App\Entity\Feedback;
+
+use App\Entity\Insight;
 use App\Events\FeedbackUpdatedEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
 
-
-class Add
+class Edit
 {
     /**
      * @var EntityManagerInterface
@@ -28,20 +26,13 @@ class Add
         $this->dispatcher = $dispatcher;
     }
 
-    public function handle(Feedback $feedback, Company $company)
+    public function handle(Insight $insight)
     {
-        $feedback->setCompany($company);
-        $feedback->setIsNew(true);
-
-        $currentDateTime = new \DateTime();
-        $feedback->setCreatedAt($currentDateTime);
-        $feedback->setUpdatedAt($currentDateTime);
-        $feedback->setFromPortal(false);
-
-        $this->manager->persist($feedback);
         $this->manager->flush();
 
-        return $feedback;
+        $this->dispatcher->dispatch(
+            new FeedbackUpdatedEvent(),
+            'feedback.updated.event');
     }
 
 }
