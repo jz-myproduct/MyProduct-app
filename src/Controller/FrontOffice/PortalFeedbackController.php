@@ -10,7 +10,6 @@ use App\Entity\Portal;
 use App\Entity\PortalFeature;
 use App\Form\InsightOnFeatureFormType;
 use App\Form\PortalFeedbackFormType;
-use App\Handler\Feedback\AddFeatureFeedbackOnPortal;
 use App\Handler\Feedback\AddOnPortal;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
