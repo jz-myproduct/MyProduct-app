@@ -203,7 +203,6 @@ class FeatureController extends AbstractController
 
             $this->addFlash('success', 'Feedback přidán');
 
-
             return $this->redirectToRoute('bo_feature_feedback', [
                 'company_slug' => $company->getSlug(),
                 'feature_id' => $feature->getId(),

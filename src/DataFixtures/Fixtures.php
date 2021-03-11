@@ -58,7 +58,7 @@ class Fixtures extends Fixture
 
         $manager->persist($company);
 
-        /* FeedbackListView */
+        /* DetailView */
         $portal = new Portal();
         $portal->setDisplay(false);
         $portal->setName('Honzova firma');
@@ -82,7 +82,7 @@ class Fixtures extends Fixture
             $manager->persist($featureState);
         }
 
-        /* FeedbackListView features states */
+        /* DetailView features states */
         foreach ( $this->getPortalFeaturesData() as $portalFeatureStateData)
         {
             $portalFeatureState = new PortalFeatureState();
