@@ -16,7 +16,7 @@ use App\Form\PortalFeatureFormType;
 use App\Handler\Feature\Add;
 use App\Handler\Feature\Delete;
 use App\Handler\Feature\Edit;
-use App\Handler\Feedback\AddOnFeatureDetail;
+use App\Handler\Insight\AddOnFeatureDetail;
 use App\Services\SlugService;
 use App\View\BackOffice\Feature\DetailView;
 use App\View\BackOffice\Feature\FeedbackListView;
@@ -161,16 +161,12 @@ class FeatureController extends AbstractController
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @param Company $company
      * @param Feature $feature
-     * @param Request $request
-     * @param AddOnFeatureDetail $handler
      * @param DetailView $view
      * @return Response
      */
     public function detail(
         Company $company,
         Feature $feature,
-        Request $request,
-        AddOnFeatureDetail $handler,
         DetailView $view)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
@@ -193,6 +189,7 @@ class FeatureController extends AbstractController
         Company $company,
         Feature $feature,
         Request $request,
+        AddOnFeatureDetail $handler,
         FeedbackListView $view)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
@@ -201,6 +198,8 @@ class FeatureController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $handler->handle($insight, $feature);
 
             $this->addFlash('success', 'Feedback přidán');
 

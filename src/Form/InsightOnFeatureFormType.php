@@ -30,10 +30,13 @@ class InsightOnFeatureFormType extends AbstractType
             ->add('feedback', FeedbackFormType::class, [
                 'label' => false
             ])
-            ->add('weight', InsightFormType::class, [
-                'label' => false
+            ->add('weight', ChoiceType::class, [
+                'choices' => $this->manager->getRepository(InsightWeight::class)->findAll(),
+                'choice_value' => 'id',
+                'choice_label' => 'name',
+                'label' => 'Feature je'
             ])
-        ;
+            ->add('save', SubmitType::class, ['label' => 'Uložit']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

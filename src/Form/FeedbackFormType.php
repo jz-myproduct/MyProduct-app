@@ -32,9 +32,7 @@ class FeedbackFormType extends AbstractType
     {
         $builder
             ->add('description', TextareaType::class, ['label' => 'Popis'])
-            ->add('source', TextareaType::class, ['required' => false, 'label' => 'Zdroj'])
-            ->add('save', SubmitType::class, ['label' => 'Uložit']);
-
+            ->add('source', TextareaType::class, ['required' => false, 'label' => 'Zdroj']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

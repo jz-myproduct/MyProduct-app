@@ -26,15 +26,13 @@
                             </svg>
                         </a>
                     </td>
-                    <td>{{ insight.feedback.createdAt|date('Y.m.d h:m') }}</td>
+                    <td>{{ insight.feedback.createdAt|date('Y.m.d') }}</td>
                     <td><a href="{{ path('bo_insight_delete', {'company_slug':app.user.slug, 'insight_id':insight.id}) }}">Odebrat propojení</a></td>
                 </tr>
             {% endfor %}
         </table>
     {% else %}
-
             <p class="mt-5 lead">Zatím nemáte žádné feedbacks.</p>
-
     {% endif %}
 
     <h2 class="h4 mt-4 mb-4">Přidat nový feedback</h2>
