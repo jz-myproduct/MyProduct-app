@@ -21,10 +21,12 @@ class Delete
 
     public function handle(Insight $insight)
     {
+        $insight->getFeature()->setScoreDownBy(
+            $insight->getWeight()->getWeight()
+        );
+
         $this->manager->remove($insight);
         $this->manager->flush();
-
-        // TODO update feature score
     }
 
 }

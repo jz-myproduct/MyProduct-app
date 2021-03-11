@@ -37,6 +37,10 @@ class AddOnPortal
          $portalFeature->getFeature()
        );
 
+       $insight->getFeature()->setScoreUpBy(
+           $insight->getWeight()->getWeight()
+       );
+
        $this->manager->persist($feedback);
        $this->manager->persist($insight);
 

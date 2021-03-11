@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\Feedback;
+use App\Entity\Insight;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpParser\Internal\DiffElem;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -39,12 +40,10 @@ class FeatureScoreService
         /** @var Company $company */
         foreach($company->getFeatures() as $feature)
         {
-            /*
             $feature->setScore(
-                $this->entityManager->getRepository(Feedback::class)
-                    ->getFeedbackCountForFeature($feature)
+                $this->entityManager->getRepository(Insight::class)
+                    ->getScoreCountForFeature($feature)
             );
-            */
         }
         $this->entityManager->flush();
 

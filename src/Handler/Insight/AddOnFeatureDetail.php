@@ -33,6 +33,10 @@ class AddOnFeatureDetail
         );
         $insight->setFeature($feature);
 
+        $feature->setScoreUpBy(
+            $insight->getWeight()->getWeight()
+        );
+
         $this->manager->persist($feedback);
         $this->manager->persist($insight);
 

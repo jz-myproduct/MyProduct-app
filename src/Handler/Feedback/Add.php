@@ -41,10 +41,6 @@ class Add
         $this->manager->persist($feedback);
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(
-            new FeedbackUpdatedEvent(),
-            'feedback.updated.event');
-
         return $feedback;
     }
 

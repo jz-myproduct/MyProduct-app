@@ -70,4 +70,23 @@ class InsightRepository extends ServiceEntityRepository
 
         return (int)$count;
     }
+
+    public function getScoreCountForFeature(Feature $feature)
+    {
+        $conn = $this->getEntityManager()
+            ->getConnection();
+
+        $sql = 'SELECT sum(w.weight)
+                FROM insight i
+                JOIN insight_weight w 
+                ON i.weight_id = w.id
+                WHERE i.feature_id = :id
+                    ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([
+            'id' => $feature->getId()
+        ]);
+        return (int)$stmt->fetchOne();
+
+    }
 }
