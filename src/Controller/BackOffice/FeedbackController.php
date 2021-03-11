@@ -10,8 +10,6 @@ use App\Form\FeedbackFormType;
 use App\Form\InsightFormType;
 use App\Handler\Feedback\Add;
 use App\Handler\Feedback\Delete;
-use App\Handler\Feedback\DeleteRelation;
-use App\Handler\Feedback\DeleteRelationRedirect;
 use App\Handler\Feedback\Edit;
 use App\Handler\Feedback\SwitchStatus;
 use App\Handler\Feedback\SwitchStatusRedirect;
