@@ -63,6 +63,11 @@ class PortalFeature
      */
     private $feedbackCount;
 
+    /**
+     * @ORM\OneToOne(targetEntity=File::class, cascade={"persist", "remove"})
+     */
+    private $image;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -190,4 +195,15 @@ class PortalFeature
         return $this;
     }
 
+    public function getImage(): ?File
+    {
+        return $this->image;
+    }
+
+    public function setImage(?File $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
 }
