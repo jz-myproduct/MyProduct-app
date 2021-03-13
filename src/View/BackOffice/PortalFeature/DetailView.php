@@ -29,6 +29,7 @@ class DetailView
         return [
             'form' => $form,
             'feature' => $feature,
+            'portalFeature' => $feature->getPortalFeature() ?? null,
             'feedbackCount' => $feedbackCount
         ];
     }
