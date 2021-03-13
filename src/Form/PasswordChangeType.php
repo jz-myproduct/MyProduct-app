@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 
 class PasswordChangeType extends AbstractType
 {
@@ -24,7 +25,10 @@ class PasswordChangeType extends AbstractType
                 'invalid_message' => 'Zadané heslo se neshoduje',
                 'required' => true,
                 'first_options' => ['label' => 'Nové heslo'],
-                'second_options' => ['label' => 'Nové heslo znova']
+                'second_options' => ['label' => 'Nové heslo znova'],
+                'constraints' => [
+                    new Length(['min' => 6])
+                ]
             ])
             ->add('save', SubmitType::class, ['label' => 'Změnit heslo'])
 
