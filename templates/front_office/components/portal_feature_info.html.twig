@@ -3,5 +3,9 @@
         {{ feature.name }}
         <span class="badge badge-warning">{{ feature.feedbackCount }}</span>
     </h2>
+    {% if feature.image %}
+        <p><img src="{{ asset(upload_directory ~ '/' ~ feature.image.name) }}"
+                alt="{{ feature.name }}" style="max-width:500px" /></p>
+    {% endif %}
     <p>{{ feature.description }}</p>
 </div>

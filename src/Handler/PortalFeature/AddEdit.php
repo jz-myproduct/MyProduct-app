@@ -43,7 +43,7 @@ class AddEdit
         {
             try{
                 $imageFileName = $this->fileUploader->upload($uploadedFile);
-                
+
                 $file = new File();
                 $file->setName($imageFileName);
 
