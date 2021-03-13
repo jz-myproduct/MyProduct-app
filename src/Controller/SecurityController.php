@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Company;
 use App\Entity\Portal;
+use App\Form\PasswordChangeType;
 use App\Form\RegisterCompanyFormType;
+use App\Form\SettingsInfoType;
 use App\Handler\Company\Add;
+use App\Handler\Company\Edit;
 use App\Security\LoginFormAuthenticator;
 use App\Services\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,18 +42,24 @@ class SecurityController extends AbstractController
      * @var LoginFormAuthenticator
      */
     private $loginFormAuthenticator;
+    /**
+     * @var UserPasswordEncoderInterface
+     */
+    private $passwordEncoder;
 
 
     public function __construct(
         EntityManagerInterface $manager,
         SlugService $slugService,
         GuardAuthenticatorHandler $guardHandler,
-        LoginFormAuthenticator $loginFormAuthenticator)
+        LoginFormAuthenticator $loginFormAuthenticator,
+        UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->manager = $manager;
         $this->slugService = $slugService;
         $this->guardHandler = $guardHandler;
         $this->loginFormAuthenticator = $loginFormAuthenticator;
+        $this->passwordEncoder = $passwordEncoder;
     }
 
     /**
@@ -120,6 +129,48 @@ class SecurityController extends AbstractController
 
         return $this->redirectToRoute('bo_home', [
             'slug' => $this->getUser()->getSlug()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/{slug}/nastaveni/zmenit-heslo", name="bo_settings_password")
+     * @param Company $company
+     * @param Request $request
+     * @return Response
+     */
+    public function changePassowrd(Company $company, Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('edit', $company);
+
+        $form = $this->createForm(PasswordChangeType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            if(! $this->passwordEncoder->isPasswordValid(
+                $company,
+                $form->get('oldPassword')->getData()))
+            {
+                $this->addFlash('error', 'Zadejte správné současné heslo.');
+
+            } else {
+
+                $company->setPassword(
+                    $this->passwordEncoder->encodePassword(
+                        $company,
+                        $form->get('password')->getData()
+                    )
+                );
+
+                $this->manager->flush();
+
+                $this->addFlash('success', 'Heslo úspěšně změněno');
+            }
+        }
+
+        return $this->render('back_office/company/change_password.html.twig', [
+            'form' => $form->createView()
         ]);
     }
 
