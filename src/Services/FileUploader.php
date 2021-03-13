@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App\Entity\File;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -43,11 +44,17 @@ class FileUploader
         return $fileName;
     }
 
-    public function delete(string $path)
+    public function delete(File $file)
     {
-        $this->filesystem->remove($path);
+        $this->filesystem->remove(
+            $this->getFilePath($file)
+        );
     }
 
+    public function getFilePath(File $file)
+    {
+        return $this->uploadDirectory.'/'.$file->getName();
+    }
 
 
 }

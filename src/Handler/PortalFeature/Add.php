@@ -10,6 +10,7 @@ use App\Entity\PortalFeature;
 use App\Services\FileUploader;
 use App\Services\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Add
@@ -26,27 +27,43 @@ class Add
      * @var FileUploader
      */
     private $fileUploader;
+    /**
+     * @var AddImage
+     */
+    private $handler;
 
-    public function __construct(EntityManagerInterface $manager, SlugService $slugService, FileUploader $fileUploader)
+    public function __construct(
+        EntityManagerInterface $manager,
+        FileUploader $fileUploader,
+        SlugService $slugService,
+        AddImage $handler)
     {
         $this->manager = $manager;
-        $this->slugService = $slugService;
         $this->fileUploader = $fileUploader;
+        $this->slugService = $slugService;
+        $this->handler = $handler;
     }
 
     public function handle(PortalFeature $portalFeature, Feature $feature, UploadedFile $imageFile = null)
     {
+        dump($imageFile);
 
-        if($imageFile){
+        if($imageFile)
+        {
+            dump('ahoj');
 
-            // TODO handle exception
-            if(! $imageFileName = $this->fileUploader->upload($imageFile)){
+            try{
+                $file = $this->handler->handle($imageFile);
+            } catch (FileException $e){
                 return false;
             }
 
+            $portalFeature->setImage($file);
         }
 
         $currentDateTime = new \DateTime();
+
+
 
         $portalFeature->setFeedbackCount(0);
         $portalFeature->setSlug(
@@ -57,20 +74,13 @@ class Add
 
         $portalFeature->setFeature($feature);
 
-        if($imageFile){
-            $file = new File();
-            $file->setName($imageFileName);
-
-            $this->manager->persist($file);
-
-            $portalFeature->setImage($file);
-        }
-
         $portalFeature->setCreatedAt($currentDateTime);
         $portalFeature->setUpdatedAt($currentDateTime);
 
         $this->manager->persist($portalFeature);
         $this->manager->flush();
+
+        return $portalFeature;
 
     }
 
