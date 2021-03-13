@@ -21,7 +21,10 @@
                     </li>
                 </ul>
                 <span class="navbar-text">
-                  <a href="{{ path('fo_logout') }}" class="text-light">Odhlásit</a>
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item"><a href="{{ path('bo_settings_info', {'slug':app.user.slug}) }}" class="nav-link text-light">Nastavení</a></li>
+                        <li class="nav-item"><a href="{{ path('fo_logout') }}" class="nav-link text-light">Odhlásit</a></li>
+                    </ul>
                 </span>
             </div>
         </nav>
