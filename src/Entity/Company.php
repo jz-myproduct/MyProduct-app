@@ -86,6 +86,17 @@ class Company implements UserInterface
      */
     private $portal;
 
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $passwordHashValidUntil;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $passwordRenewHash;
+
     public function __construct()
     {
         $this->feedback = new ArrayCollection();
@@ -322,6 +333,30 @@ class Company implements UserInterface
     public function setPortal(?Portal $portal): self
     {
         $this->portal = $portal;
+
+        return $this;
+    }
+
+    public function getPasswordHashValidUntil(): ?\DateTimeInterface
+    {
+        return $this->passwordHashValidUntil;
+    }
+
+    public function setPasswordHashValidUntil(?\DateTimeInterface $passwordHashValidUntil): self
+    {
+        $this->passwordHashValidUntil = $passwordHashValidUntil;
+
+        return $this;
+    }
+
+    public function getPasswordRenewHash(): ?string
+    {
+        return $this->passwordRenewHash;
+    }
+
+    public function setPasswordRenewHash(?string $passwordRenewHash): self
+    {
+        $this->passwordRenewHash = $passwordRenewHash;
 
         return $this;
     }

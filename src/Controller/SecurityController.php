@@ -3,16 +3,26 @@
 namespace App\Controller;
 
 use App\Entity\Company;
+use App\Entity\Feature;
 use App\Entity\Portal;
-use App\Form\PasswordChangeType;
+use App\Form\ChangePasswordType;
 use App\Form\RegisterCompanyFormType;
+use App\Form\RenewPassword;
+use App\Form\SetNewPassword;
 use App\Form\SettingsInfoType;
+use App\FormRequest\ChangePasswordRequest;
+use App\FormRequest\RenewPasswordRequest;
+use App\FormRequest\SetNewPasswordRequest;
 use App\Handler\Company\Add;
 use App\Handler\Company\Edit;
+use App\Handler\Company\Password\Change;
+use App\Handler\Company\Password\Renew;
+use App\Handler\Company\Password\SetForgotten;
 use App\Security\LoginFormAuthenticator;
 use App\Services\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,6 +32,8 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class SecurityController extends AbstractController
 {
@@ -136,13 +148,14 @@ class SecurityController extends AbstractController
      * @Route("/admin/{slug}/nastaveni/zmenit-heslo", name="bo_settings_password")
      * @param Company $company
      * @param Request $request
+     * @param Change $handler
      * @return Response
      */
-    public function changePassowrd(Company $company, Request $request): Response
+    public function changePassowrd(Company $company, Request $request, Change $handler): Response
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        $form = $this->createForm(PasswordChangeType::class);
+        $form = $this->createForm(ChangePasswordType::class, $formRequest = new ChangePasswordRequest());
 
         $form->handleRequest($request);
 
@@ -150,20 +163,16 @@ class SecurityController extends AbstractController
 
             if(! $this->passwordEncoder->isPasswordValid(
                 $company,
-                $form->get('oldPassword')->getData()))
+                $formRequest->password))
             {
                 $this->addFlash('error', 'Zadejte správné současné heslo.');
 
             } else {
 
-                $company->setPassword(
-                    $this->passwordEncoder->encodePassword(
-                        $company,
-                        $form->get('password')->getData()
-                    )
+                $handler->handle(
+                    $company,
+                    $formRequest->newPassword
                 );
-
-                $this->manager->flush();
 
                 $this->addFlash('success', 'Heslo úspěšně změněno');
             }
@@ -174,5 +183,80 @@ class SecurityController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/zapomenute-heslo", name="fo_renew_password")
+     * @param Request $request
+     * @param Renew $handler
+     * @return RedirectResponse|Response
+     */
+    public function renewPassword(Request $request, Renew $handler)
+    {
+        if($this->isGranted('ROLE_USER')){
+            return $this->redirectToRoute('bo_home', [
+                'slug' => $this->getUser()->getSlug()
+            ]);
+        }
+
+        $form = $this->createForm(RenewPassword::class, $formRequest = new RenewPasswordRequest());
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            if($handler->handle(
+                    $this->manager->getRepository(Company::class)
+                    ->findOneBy(['email' => $formRequest->email]
+                    )
+                )
+            ){
+                $this->addFlash('success', 'Následujte instrukce ve svém emailu.');
+
+                return $this->redirectToRoute('fo_renew_password');
+            }
+
+            $this->addFlash('error', 'Email se nepodařilo odeslat. Zkuste to později');
+        }
+
+        return $this->render('front_office/password/renew.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/nastavit-heslo/{hash}", name="fo_set_new_password")
+     * @ParamConverter("company", options={"mapping": {"hash": "passwordRenewHash"}})
+     * @param Company $company
+     * @param Request $request
+     * @param SetForgotten $handler
+     * @return Response
+     * @throws \Exception
+     */
+    public function setNewPassword(Company $company, Request $request, SetForgotten $handler)
+    {
+        if($company->getPasswordHashValidUntil() < new \DateTime()){
+
+            return $this->render('front_office/password/expired_hash.html.twig');
+        }
+
+        $form = $this->createForm(SetNewPassword::class, $formRequest = new SetNewPasswordRequest());
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $handler->handle(
+                $company,
+                $formRequest->password
+            );
+
+            $this->addFlash('success', 'Heslo bylo úspěšně změněno.');
+
+            return $this->redirectToRoute('fo_login');
+        }
+
+        return $this->render('front_office/password/set_new.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
 
 }
