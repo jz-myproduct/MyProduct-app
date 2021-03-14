@@ -6,6 +6,7 @@
 parameters:
     upload.directory.name: 'uploads'
     upload.directory: '%kernel.project_dir%/public/%upload.directory.name%'
+    fromMail: 'ja@janzabloudil.cz'
 
 
 services:
@@ -40,3 +41,7 @@ services:
     App\Services\FileUploader:
         arguments:
             $uploadDirectory: '%upload.directory%'
+
+    App\Handler\Company\Password\Renew:
+        arguments:
+            $fromMail: '%fromMail%'
