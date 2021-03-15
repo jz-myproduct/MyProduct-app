@@ -49,6 +49,7 @@ class PortalController extends AbstractController
      * @param Request $request
      * @param Edit $handler
      * @param PortalFeatureState|null $state
+     * @param PortalDetail $view
      * @return Response
      */
     public function detail(Company $company, Request $request, Edit $handler, ?PortalFeatureState $state, PortalDetail $view)
@@ -71,7 +72,8 @@ class PortalController extends AbstractController
             'back_office/portal/detail.html.twig',
             $view->create(
                 $company,
-                $form->createView()
+                $form->createView(),
+                $state
             ));
     }
 
