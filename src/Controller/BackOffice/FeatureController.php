@@ -4,6 +4,7 @@ namespace App\Controller\BackOffice;
 
 use App\Entity\Company;
 use App\Entity\Feature;
+use App\Entity\FeatureState;
 use App\Entity\Feedback;
 use App\Entity\Insight;
 use App\Entity\InsightWeight;
@@ -16,11 +17,13 @@ use App\Form\PortalFeatureFormType;
 use App\Handler\Feature\Add;
 use App\Handler\Feature\Delete;
 use App\Handler\Feature\Edit;
+use App\Handler\Feature\MoveState;
 use App\Handler\Insight\AddFromFeature;
 use App\Services\SlugService;
 use App\View\BackOffice\Feature\DetailView;
 use App\View\BackOffice\Feature\FeedbackListView;
 use App\View\BackOffice\Feature\ListView;
+use App\View\BackOffice\Feature\RoadmapView;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -33,13 +36,14 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class FeatureController extends AbstractController
 {
-    
+
     /**
      * @var EntityManager
      */
@@ -63,7 +67,7 @@ class FeatureController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $company);
 
         $form = $this->createForm(FeatureFormType::class, $feature = new Feature(), [
-            'tags'=> $company->getFeatureTags()
+            'tags' => $company->getFeatureTags()
         ]);
         $form->handleRequest($request);
 
@@ -99,7 +103,7 @@ class FeatureController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $feature);
 
         $form = $this->createForm(FeatureFormType::class, $feature, [
-            'tags'=> $company->getFeatureTags()
+            'tags' => $company->getFeatureTags()
         ]);
         $form->handleRequest($request);
 
@@ -213,4 +217,45 @@ class FeatureController extends AbstractController
             'back_office/feature/feedback.html.twig',
             $view->create($feature, $form->createView()));
     }
+
+    /**
+     * @Route("/admin/{slug}/features/roadmap", name="bo_feature_list_roadmap")
+     * @param Company $company
+     * @param RoadmapView $view
+     * @return Response
+     */
+    public function roadmapView(Company $company, RoadmapView $view)
+    {
+        $this->denyAccessUnlessGranted('edit', $company);
+
+        return $this->render('back_office/feature/roadmap.html.twig', $view->create($company));
+    }
+
+    /**
+     * @Route("/admin/{company_slug}/feature/{feature_id}/posunout-status/{direction}", name="bo_feature_status_move")
+     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
+     * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
+     * @param Company $company
+     * @param Feature $feature
+     * @param $direction
+     * @param MoveState $handler
+     * @return Response|NotFoundHttpException
+     */
+    public function moveStatus(Company $company, Feature $feature, $direction, MoveState $handler)
+    {
+        $this->denyAccessUnlessGranted('edit', $feature);
+
+        if (! in_array($direction, FeatureState::getDirectionSlugs() )){
+            throw new NotFoundHttpException();
+        }
+
+        $handler->handle($feature, $direction);
+
+        return $this->redirectToRoute('bo_feature_list_roadmap', [
+            'slug' => $company->getSlug()
+        ]);
+    }
+
+
+    
 }

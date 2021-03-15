@@ -39,6 +39,19 @@ class FeatureState
      */
     private $features;
 
+    private static $previousDirection =
+        [
+            'int' => -1,
+            'slug' => 'predchozi'
+        ];
+
+    private static $nextDirection =
+        [
+            'int' => 1,
+            'slug' => 'nasledujici'
+        ];
+
+
     public function __construct()
     {
         $this->features = new ArrayCollection();
@@ -114,5 +127,34 @@ class FeatureState
 
         return $this;
     }
+
+    public static function getDirectionSlugs()
+    {
+        return [
+            self::$previousDirection['slug'],
+            self::$nextDirection['slug']
+        ];
+    }
+
+    public static function getPreviousDirectionSlug()
+    {
+        return self::$previousDirection['slug'];
+    }
+
+    public static function getNextDirectionSlug()
+    {
+        return self::$nextDirection['slug'];
+    }
+
+    public static function getPreviousDirectionInt()
+    {
+        return self::$previousDirection['int'];
+    }
+
+    public static function getNextDirectionInt()
+    {
+        return self::$nextDirection['int'];
+    }
+
 
 }

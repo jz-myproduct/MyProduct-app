@@ -30,6 +30,17 @@ class FeatureStateRepository extends ServiceEntityRepository
         return $result[0];
     }
 
+    public function findLastState()
+    {
+        $result = $this->createQueryBuilder('s')
+            ->orderBy('s.position', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        return $result[0];
+    }
+
 
     // /**
     //  * @return FeatureState[] Returns an array of FeatureState objects
