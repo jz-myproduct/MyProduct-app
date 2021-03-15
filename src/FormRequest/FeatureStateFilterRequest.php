@@ -16,4 +16,6 @@ class FeatureStateFilterRequest
      */
     public $state;
 
+    public $tags;
+
 }

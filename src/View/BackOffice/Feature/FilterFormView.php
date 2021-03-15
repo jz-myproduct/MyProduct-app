@@ -6,6 +6,7 @@ namespace App\View\BackOffice\Feature;
 
 
 use App\Entity\FeatureState;
+use App\Entity\FeatureTag;
 use Doctrine\ORM\EntityManagerInterface;
 
 class FilterFormView
@@ -21,12 +22,17 @@ class FilterFormView
         $this->manager = $manager;
     }
 
-    public function create()
+    public function createTag()
     {
-        return $this->prepareChoices();
+        return $this->prepareTagChoices();
     }
 
-    private function prepareChoices()
+    public function createState()
+    {
+        return $this->prepareStateChoices();
+    }
+
+    private function prepareStateChoices()
     {
 
         // add default value
@@ -38,6 +44,18 @@ class FilterFormView
         }
 
         return $array;
+    }
 
+    private function prepareTagChoices()
+    {
+
+        $array = array();
+
+        foreach($this->manager->getRepository(FeatureTag::class)->findAll() as $tag)
+        {
+            $array[$tag->getName()] = $tag->getId();
+        }
+
+        return $array;
     }
 }

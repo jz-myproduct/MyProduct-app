@@ -7,6 +7,7 @@ namespace App\View\BackOffice\Feature;
 use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\FeatureState;
+use App\Entity\FeatureTag;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormView;
 
@@ -22,16 +23,15 @@ class ListView
         $this->manager = $manager;
     }
 
-    public function create(Company $company, FormView $form, FeatureState $featureState = null)
+    public function create(Company $company, FormView $form, FeatureState $state = null, $tagsParam = [])
     {
 
-        if($featureState) {
-            $featureList = $this->manager->getRepository(Feature::class)
-                ->findBy(['company' => $company, 'state' => $featureState], ['score' => 'DESC']);
-        } else {
-            $featureList = $this->manager->getRepository(Feature::class)
-                ->findBy(['company' => $company], ['score' => 'DESC']);
-        }
+        $tags = $this->manager->getRepository(FeatureTag::class)
+            ->findBy( ['id' => $tagsParam ] );
+
+        $featureList = $this->manager->getRepository(Feature::class)
+            ->findCompanyFeaturesByTag($tags, $company, $state);
+
 
         return [
             'featureList' => $featureList,

@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Feature;
+use App\Entity\FeatureTag;
 use App\Entity\Feedback;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -18,6 +20,30 @@ class FeatureRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Feature::class);
+    }
+
+    public function findCompanyFeaturesByTag($tags, $company, $state)
+    {
+
+       $qb = $this->createQueryBuilder('f');
+       $qb->leftJoin('f.tags', 't');
+
+       if($tags)
+       {
+           $qb->where('t IN (:tags)');
+           $qb->setParameter('tags', $tags);
+       }
+
+       if($state)
+       {
+           $qb->andWhere('f.state = :state');
+           $qb->setParameter('state', $state);
+       }
+
+       $qb->andWhere('f.company = :company');
+       $qb->setParameter('company', $company);
+
+       return $qb->getQuery()->getResult();
     }
 
 

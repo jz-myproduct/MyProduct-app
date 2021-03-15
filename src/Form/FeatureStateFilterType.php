@@ -5,6 +5,7 @@ namespace App\Form;
 
 
 use App\Entity\FeatureState;
+use App\Entity\FeatureTag;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -14,27 +15,59 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FeatureStateFilterType extends AbstractType
 {
+    /**
+     * @var EntityManagerInterface
+     */
+    private $manager;
+
+    public function __construct(EntityManagerInterface $manager)
+    {
+        $this->manager = $manager;
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-        $choices = $options['choices'] ? $options['choices'] : null;
-        $currentChoice = $options['currentChoice'] ? $options['currentChoice'] : null;
+        $stateChoices = $options['stateChoices'] ? $options['stateChoices'] : null;
+        $currentStateChoice = $options['currentStateChoice'] ? $options['currentStateChoice'] : null;
+
+        $tagChoices = $options['tagChoices'] ? $options['tagChoices'] : null;
+        $currentTagChoices = $options['currentTagChoices'] ? $options['currentTagChoices'] : null;
+
+        $array = [];
+
+        foreach($this->manager->getRepository(FeatureTag::class)->findAll() as $tag)
+        {
+
+            $array[$tag->getName()] = $tag->getId();
+
+        }
 
         $builder
             ->add('state', ChoiceType::class, [
-                'choices' => $choices,
+                'choices' => $stateChoices,
                 'label' => 'Stav',
-                'data' => $currentChoice
-            ]);
+                'data' => $currentStateChoice
+            ])
+            ->add('tags', ChoiceType::class, [
+                'choices' => $tagChoices,
+     //           'choice_value' => 'id',
+       //         'choice_label' => 'name',
+                'expanded' => true,
+                'multiple' => true,
+                'data' => $currentTagChoices
+            ])
+            ->add('save', SubmitType::class, ['label' => 'Filtrovat']) ;
     }
 
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'currentChoice' => null,
-            'choices' => null
+            'currentStateChoice' => null,
+            'stateChoices' => null,
+            'currentTagChoices' => null,
+            'tagChoices' => null
         ]);
     }
 

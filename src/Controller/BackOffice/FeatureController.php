@@ -5,6 +5,7 @@ namespace App\Controller\BackOffice;
 use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\FeatureState;
+use App\Entity\FeatureTag;
 use App\Entity\Feedback;
 use App\Entity\Insight;
 use App\Entity\InsightWeight;
@@ -20,6 +21,7 @@ use App\Handler\Feature\Add;
 use App\Handler\Feature\Delete;
 use App\Handler\Feature\Edit;
 use App\Handler\Feature\MoveState;
+use App\Handler\Feature\Search;
 use App\Handler\Insight\AddFromFeature;
 use App\Services\SlugService;
 use App\View\BackOffice\Feature\DetailView;
@@ -135,33 +137,34 @@ class FeatureController extends AbstractController
      * @param FeatureState $state
      * @param ListView $view
      * @param Request $request
+     * @param FilterFormView $formView
+     * @param Search $handler
      * @return Response
      */
-    public function list(Company $company, ?FeatureState $state, ListView $view, Request $request, FilterFormView $formView)
+    public function list(
+        Company $company,
+        ?FeatureState $state,
+        ListView $view,
+        Request $request,
+        FilterFormView $formView,
+        Search $handler)
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
         $form = $this->createForm(FeatureStateFilterType::class, $formRequest = new FeatureStateFilterRequest(), [
-            'choices' => $formView->create(),
-            'currentChoice' => $state ? $state->getId() : null
+            'stateChoices' => $formView->createState(),
+            'tagChoices' => $formView->createTag(),
+            'currentStateChoice' => $state ? $state->getId() : null,
+            'currentTagChoices' => $tagsParam = $request->get('tags')
         ]);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-           if($state = $this->manager->getRepository(FeatureState::class)->find($formRequest->state) ){
-
-               return $this->redirectToRoute('bo_feature_list',[
-                   'slug' => $company->getSlug(),
-                   'state_slug' => $state->getSlug()
-               ]);
-
-           }
-
-           return $this->redirectToRoute('bo_feature_list', [
-                'slug' => $company->getSlug()
-           ]);
-
+            return new RedirectResponse(
+                $handler->handle($company, $formRequest)
+            );
 
         }
 
@@ -169,7 +172,8 @@ class FeatureController extends AbstractController
             $view->create(
                 $company,
                 $form->createView(),
-                $state
+                $state,
+                $tagsParam
             ));
     }
 
