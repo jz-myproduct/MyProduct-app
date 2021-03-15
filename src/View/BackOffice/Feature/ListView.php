@@ -8,6 +8,7 @@ use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\FeatureState;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormView;
 
 class ListView
 {
@@ -21,7 +22,7 @@ class ListView
         $this->manager = $manager;
     }
 
-    public function create(Company $company, FeatureState $featureState = null)
+    public function create(Company $company, FormView $form, FeatureState $featureState = null)
     {
 
         if($featureState) {
@@ -33,7 +34,8 @@ class ListView
         }
 
         return [
-            'featureList' => $featureList
+            'featureList' => $featureList,
+            'form' => $form
         ];
     }
 

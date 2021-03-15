@@ -3,6 +3,10 @@
 <a href="{{ path('bo_feature_add', {'slug':app.user.slug}) }}" class="btn btn-primary mt-3" role="button">Přidat feature</a>
 <a href="{{ path('bo_feature_tag_list', {'slug':app.user.slug}) }}" class="btn btn-outline-secondary mt-3" role="button">Přehled tagů</a>
 
+{% if app.request.get('_route') == 'bo_feature_list' %}
+    <div class="mt-3" id="feature_state_filter">{{ form(form) }}</div>
+{% endif %}
+
 <ul class="nav nav-tabs mt-4 justify-content-center">
     <li class="nav-item">
         <a class="nav-link {% if app.request.get('_route') == 'bo_feature_list' %}active{% endif %}"
@@ -13,3 +17,13 @@
            href="{{ path('bo_feature_list_roadmap', {'slug':app.user.slug}) }}">Roadmap</a>
     </li>
 </ul>
+
+<script>
+    $('#feature_state_filter_state').change(function () {
+
+
+        $('#feature_state_filter form').submit();
+        console.log('ahoj');
+
+    })
+</script>

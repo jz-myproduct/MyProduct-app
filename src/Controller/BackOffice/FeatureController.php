@@ -11,9 +11,11 @@ use App\Entity\InsightWeight;
 use App\Entity\PortalFeature;
 use App\Events\FeedbackUpdatedEvent;
 use App\Form\FeatureFormType;
+use App\Form\FeatureStateFilterType;
 use App\Form\FeedbackFeatureDetailFormType;
 use App\Form\InsightOnFeatureFormType;
 use App\Form\PortalFeatureFormType;
+use App\FormRequest\FeatureStateFilterRequest;
 use App\Handler\Feature\Add;
 use App\Handler\Feature\Delete;
 use App\Handler\Feature\Edit;
@@ -22,6 +24,7 @@ use App\Handler\Insight\AddFromFeature;
 use App\Services\SlugService;
 use App\View\BackOffice\Feature\DetailView;
 use App\View\BackOffice\Feature\FeedbackListView;
+use App\View\BackOffice\Feature\FilterFormView;
 use App\View\BackOffice\Feature\ListView;
 use App\View\BackOffice\Feature\RoadmapView;
 use DateTime;
@@ -125,19 +128,49 @@ class FeatureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{slug}/features/{state_slug?}", name="bo_feature_list")
+     * @Route("/admin/{slug}/features/seznam/{state_slug?}", name="bo_feature_list")
      * @ParamConverter("company", options={"mapping": {"slug": "slug"}})
      * @ParamConverter("state", options={"mapping": {"state_slug": "slug"}})
      * @param Company $company
      * @param FeatureState $state
      * @param ListView $view
+     * @param Request $request
      * @return Response
      */
-    public function list(Company $company, ?FeatureState $state, ListView $view)
+    public function list(Company $company, ?FeatureState $state, ListView $view, Request $request, FilterFormView $formView)
     {
         $this->denyAccessUnlessGranted('edit', $company);
-        
-        return $this->render('back_office/feature/list.html.twig', $view->create($company, $state));
+
+        $form = $this->createForm(FeatureStateFilterType::class, $formRequest = new FeatureStateFilterRequest(), [
+            'choices' => $formView->create(),
+            'currentChoice' => $state ? $state->getId() : null
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+           if($state = $this->manager->getRepository(FeatureState::class)->find($formRequest->state) ){
+
+               return $this->redirectToRoute('bo_feature_list',[
+                   'slug' => $company->getSlug(),
+                   'state_slug' => $state->getSlug()
+               ]);
+
+           }
+
+           return $this->redirectToRoute('bo_feature_list', [
+                'slug' => $company->getSlug()
+           ]);
+
+
+        }
+
+        return $this->render('back_office/feature/list.html.twig',
+            $view->create(
+                $company,
+                $form->createView(),
+                $state
+            ));
     }
 
     /**
