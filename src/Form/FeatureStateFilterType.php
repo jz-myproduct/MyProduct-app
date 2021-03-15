@@ -48,7 +48,7 @@ class FeatureStateFilterType extends AbstractType
             ])
             ->add('save', SubmitType::class, ['label' => 'Filtrovat']) ;
     }
-    
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

@@ -41,6 +41,7 @@ class FeatureRepository extends ServiceEntityRepository
        }
 
        $qb->andWhere('f.company = :company');
+       $qb->orderBy('f.score', 'DESC');
        $qb->setParameter('company', $company);
 
        return $qb->getQuery()->getResult();
