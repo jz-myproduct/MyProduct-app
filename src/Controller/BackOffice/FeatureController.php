@@ -125,16 +125,19 @@ class FeatureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{slug}/features", name="bo_feature_list")
+     * @Route("/admin/{slug}/features/{state_slug?}", name="bo_feature_list")
+     * @ParamConverter("company", options={"mapping": {"slug": "slug"}})
+     * @ParamConverter("state", options={"mapping": {"state_slug": "slug"}})
      * @param Company $company
+     * @param FeatureState $state
      * @param ListView $view
      * @return Response
      */
-    public function list(Company $company, ListView $view)
+    public function list(Company $company, ?FeatureState $state, ListView $view)
     {
         $this->denyAccessUnlessGranted('edit', $company);
-
-        return $this->render('back_office/feature/list.html.twig', $view->create($company));
+        
+        return $this->render('back_office/feature/list.html.twig', $view->create($company, $state));
     }
 
     /**

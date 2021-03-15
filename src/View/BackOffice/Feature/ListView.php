@@ -6,6 +6,7 @@ namespace App\View\BackOffice\Feature;
 
 use App\Entity\Company;
 use App\Entity\Feature;
+use App\Entity\FeatureState;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ListView
@@ -20,10 +21,16 @@ class ListView
         $this->manager = $manager;
     }
 
-    public function create(Company $company)
+    public function create(Company $company, FeatureState $featureState = null)
     {
-        $featureList =  $this->manager->getRepository(Feature::class)
-            ->findBy(['company' => $company], ['score' => 'DESC']);
+
+        if($featureState) {
+            $featureList = $this->manager->getRepository(Feature::class)
+                ->findBy(['company' => $company, 'state' => $featureState], ['score' => 'DESC']);
+        } else {
+            $featureList = $this->manager->getRepository(Feature::class)
+                ->findBy(['company' => $company], ['score' => 'DESC']);
+        }
 
         return [
             'featureList' => $featureList
