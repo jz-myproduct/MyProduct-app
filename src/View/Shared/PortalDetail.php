@@ -22,7 +22,7 @@ class PortalDetail
         $this->manager = $manager;
     }
 
-    public function create(Company $company, FormView $form = null)
+    public function create(Company $company, FormView $form = null, $state = null)
     {
         $currentState = $state ?? $this->manager->getRepository(PortalFeatureState::class)
                                     ->findInitialState();
