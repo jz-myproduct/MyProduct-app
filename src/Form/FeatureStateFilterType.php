@@ -34,15 +34,6 @@ class FeatureStateFilterType extends AbstractType
         $tagChoices = $options['tagChoices'] ? $options['tagChoices'] : null;
         $currentTagChoices = $options['currentTagChoices'] ? $options['currentTagChoices'] : null;
 
-        $array = [];
-
-        foreach($this->manager->getRepository(FeatureTag::class)->findAll() as $tag)
-        {
-
-            $array[$tag->getName()] = $tag->getId();
-
-        }
-
         $builder
             ->add('state', ChoiceType::class, [
                 'choices' => $stateChoices,
@@ -51,16 +42,13 @@ class FeatureStateFilterType extends AbstractType
             ])
             ->add('tags', ChoiceType::class, [
                 'choices' => $tagChoices,
-     //           'choice_value' => 'id',
-       //         'choice_label' => 'name',
                 'expanded' => true,
                 'multiple' => true,
                 'data' => $currentTagChoices
             ])
             ->add('save', SubmitType::class, ['label' => 'Filtrovat']) ;
     }
-
-
+    
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
