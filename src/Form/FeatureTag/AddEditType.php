@@ -1,22 +1,20 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\FeatureTag;
 
-use App\Entity\Company;
+use App\Entity\FeatureTag;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SettingsInfoType extends AbstractType
+class AddEditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class, ['label' => 'Email'])
-            ->add('name', TextType::class, ['label' => 'Jméno firmy'])
+            ->add('name', TextType::class, ['label' => 'Jméno'])
             ->add('save', SubmitType::class, ['label' => 'Uložit'])
         ;
     }
@@ -24,7 +22,7 @@ class SettingsInfoType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Company::class,
+            'data_class' => FeatureTag::class,
         ]);
     }
 }

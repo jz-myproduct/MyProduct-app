@@ -28,7 +28,7 @@
                     </td>
                     <td>{{ insight.weight.name }}</td>
                     <td>{{ insight.feedback.createdAt|date('Y.m.d') }}</td>
-                    <td><a href="{{ path('bo_insight_delete', {'company_slug':app.user.slug, 'insight_id':insight.id}) }}">Odebrat propojení</a></td>
+                    <td><a href="{{ path('bo_insight_delete', {'company_slug':app.user.slug, 'insight_id':insight.id, 'p':'feature'}) }}">Odebrat propojení</a></td>
                 </tr>
             {% endfor %}
         </table>

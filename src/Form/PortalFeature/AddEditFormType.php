@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\PortalFeature;
 
 use App\Entity\FeatureState;
 use App\Entity\PortalFeature;
@@ -18,27 +18,19 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 
-class PortalFeatureFormType extends AbstractType
+class AddEditFormType extends AbstractType
 {
-    private $states;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-
-    public function __construct(EntityManagerInterface $manager)
-    {
-        $this->manager = $manager;
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        $states = $options['states'] ? $options['states'] : null;
 
         $builder
             ->add('name', TextType::class, ['label' => 'Jméno'])
             ->add('description', TextareaType::class, ['required' => false, 'label' => 'Popis'])
             ->add('state', ChoiceType::class, [
-                'choices' => $this->manager->getRepository(PortalFeatureState::class)->findAll(),
+                'choices' => $states,
                 'choice_value' => 'id',
                 'choice_label' => 'name',
                 'label' => 'Stav'
@@ -71,6 +63,7 @@ class PortalFeatureFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => PortalFeature::class,
+            'states' => null
         ]);
     }
 }

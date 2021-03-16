@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Feature;
 
 use App\Entity\Feature;
 use App\Entity\FeatureState;
@@ -15,7 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FeatureFormType extends AbstractType
+class AddEditType extends AbstractType
 {
     /**
      * @var EntityManagerInterface

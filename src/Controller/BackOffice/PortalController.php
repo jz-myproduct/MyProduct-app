@@ -9,7 +9,7 @@ use App\Entity\FeatureState;
 use App\Entity\Portal;
 use App\Entity\PortalFeature;
 use App\Entity\PortalFeatureState;
-use App\Form\PortalFormType;
+use App\Form\Portal\SettingsFormType;
 use App\Handler\Portal\Edit;
 use App\Services\SlugService;
 use App\View\Shared\PortalDetail;
@@ -58,7 +58,7 @@ class PortalController extends AbstractController
 
         $portal = $company->getPortal();
 
-        $form = $this->createForm(PortalFormType::class, $portal);
+        $form = $this->createForm(SettingsFormType::class, $portal);
         $form->handleRequest($request);
         
         if($form->isSubmitted() && $form->isValid())
@@ -72,8 +72,8 @@ class PortalController extends AbstractController
             'back_office/portal/detail.html.twig',
             $view->create(
                 $company,
-                $form->createView(),
-                $state
+                $state,
+                $form->createView()
             ));
     }
 

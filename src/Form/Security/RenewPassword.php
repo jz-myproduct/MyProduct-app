@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Form;
+namespace App\Form\Security;
 
 
 use Symfony\Component\Form\AbstractType;

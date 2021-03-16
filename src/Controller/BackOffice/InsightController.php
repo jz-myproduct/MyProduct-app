@@ -8,7 +8,8 @@ use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\Feedback;
 use App\Entity\Insight;
-use App\Form\InsightFormType;
+use App\Entity\InsightWeight;
+use App\Form\AddFromFeedbackType;
 use App\Handler\Insight\AddFromFeedback;
 use App\Handler\Insight\Delete;
 use App\Handler\Insight\Edit;
@@ -71,7 +72,9 @@ class InsightController extends AbstractController
             ]);
         }
 
-        $form = $this->createForm(InsightFormType::class, $insight = new Insight());
+        $form = $this->createForm(AddFromFeedbackType::class, $insight = new Insight(), [
+            'weights' => $this->manager->getRepository(InsightWeight::class)->findAll()
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -109,7 +112,7 @@ class InsightController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $insight);
 
-        $form = $this->createForm(InsightFormType::class, $insight);
+        $form = $this->createForm(AddFromFeedbackType::class, $insight);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

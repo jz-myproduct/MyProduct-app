@@ -8,7 +8,7 @@ use App\Entity\Feedback;
 use App\Entity\Portal;
 use App\Entity\PortalFeature;
 use App\Entity\PortalFeatureState;
-use App\Form\PortalFeedbackFormType;
+use App\Form\AddFeedbackType;
 use App\Handler\Feedback\AddFeatureFeedbackOnPortal;
 use App\Handler\Feedback\AddFromPortal;
 use App\Services\PortalFeatureService;
@@ -51,7 +51,7 @@ class PortalController extends AbstractController
         }
 
         return $this->render('front_office/portal/detail.html.twig',
-            $view->create($portal->getCompany())
+            $view->create($portal->getCompany(), $state)
         );
     }
 }

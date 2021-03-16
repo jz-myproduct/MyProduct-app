@@ -6,8 +6,7 @@ use App\Entity\Company;
 
 use App\Entity\Feedback;
 use App\Entity\Portal;
-use App\Form\FeedbackFormType;
-use App\Form\SettingsInfoType;
+use App\Form\Settings\InfoType;
 use App\Handler\Company\Edit;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -60,7 +59,7 @@ class DefaultController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        $form = $this->createForm(SettingsInfoType::class, $company);
+        $form = $this->createForm(InfoType::class, $company);
 
         $form->handleRequest($request);
 
