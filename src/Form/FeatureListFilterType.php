@@ -13,17 +13,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FeatureStateFilterType extends AbstractType
+class FeatureListFilterType extends AbstractType
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-
-    public function __construct(EntityManagerInterface $manager)
-    {
-        $this->manager = $manager;
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
