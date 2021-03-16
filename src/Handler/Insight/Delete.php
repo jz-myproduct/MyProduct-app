@@ -22,7 +22,7 @@ class Delete
     public function handle(Insight $insight)
     {
         $insight->getFeature()->setScoreDownBy(
-            $insight->getWeight()->getWeight()
+            $insight->getWeight()->getNumber()
         );
 
         $this->manager->remove($insight);

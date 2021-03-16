@@ -75,7 +75,8 @@ class FeatureController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $company);
 
         $form = $this->createForm(FeatureFormType::class, $feature = new Feature(), [
-            'tags' => $company->getFeatureTags()
+            'tags' => $company->getFeatureTags(),
+            'states' => $this->manager->getRepository(FeatureState::class)->findAll()
         ]);
         $form->handleRequest($request);
 

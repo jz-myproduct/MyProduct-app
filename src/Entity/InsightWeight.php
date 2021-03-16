@@ -25,7 +25,7 @@ class InsightWeight
     /**
      * @ORM\Column(type="smallint")
      */
-    private $weight;
+    private $number;
 
     public function getId(): ?int
     {
@@ -44,14 +44,14 @@ class InsightWeight
         return $this;
     }
 
-    public function getWeight(): ?int
+    public function getNumber(): ?int
     {
-        return $this->weight;
+        return $this->number;
     }
 
-    public function setWeight(int $weight): self
+    public function setNumber(int $number): self
     {
-        $this->weight = $weight;
+        $this->number = $number;
 
         return $this;
     }

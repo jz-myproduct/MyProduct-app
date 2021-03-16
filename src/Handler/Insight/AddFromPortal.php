@@ -38,7 +38,7 @@ class AddFromPortal
        );
 
        $insight->getFeature()->setScoreUpBy(
-           $insight->getWeight()->getWeight()
+           $insight->getWeight()->getNumber()
        );
 
        $this->manager->persist($feedback);

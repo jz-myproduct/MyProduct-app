@@ -30,14 +30,14 @@ class FeatureFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $tags = $options['tags'] ? $options['tags']->toArray()
-                                 : null;
+        $tags = $options['tags'] ? $options['tags']->toArray() : null;
+        $states = $options['states'] ?? null;
 
         $builder
             ->add('name', TextType::class, ['label' => 'Jméno'])
             ->add('description', TextareaType::class, ['required' => false, 'label' => 'Popis'])
             ->add('state', ChoiceType::class, [
-               'choices' => $this->entityManager->getRepository(FeatureState::class)->findAll(),
+               'choices' => $states,
                'choice_value' => 'id',
                'choice_label' => 'name',
                'label' => 'Stav'
@@ -61,7 +61,8 @@ class FeatureFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Feature::class,
-            'tags' => null
+            'tags' => null,
+            'states' => null
         ]);
     }
 }
