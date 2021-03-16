@@ -7,7 +7,9 @@ namespace App\View\BackOffice\Feature;
 use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\FeatureState;
+use App\Entity\FeatureTag;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormView;
 
 class RoadmapView
 {
@@ -22,18 +24,22 @@ class RoadmapView
         $this->manager = $manager;
     }
 
-    public function create(Company $company)
+    public function create(Company $company, FormView $form, $tagsParam = [])
     {
         $states = $this->manager->getRepository(FeatureState::class)->findAll();
 
         return [
-            'features' => $this->prepareFeaturesData($company, $states),
-            'columnWidth' => $this->prepareColumnWidth($states)
+            'features' => $this->prepareFeaturesData($company, $states, $tagsParam),
+            'columnWidth' => $this->prepareColumnWidth($states),
+            'form' => $form
         ];
     }
 
-    private function prepareFeaturesData(Company $company, $states)
+    private function prepareFeaturesData(Company $company, $states, $tagsParam = [])
     {
+        $tags = $this->manager->getRepository(FeatureTag::class)
+            ->findBy( ['id' => $tagsParam ] );
+
         $features = array();
 
         foreach($states as $featureState)
@@ -42,10 +48,8 @@ class RoadmapView
 
                 'state' => $featureState->getName(),
                 'features' =>
-                    $this->manager->getRepository(Feature::class)->findBy([
-                        'state' => $featureState,
-                        'company' => $company
-                    ]),
+                    $this->manager->getRepository(Feature::class)
+                        ->findCompanyFeaturesByTag($tags, $company, $featureState),
                 'isFirst' =>
                     $featureState === $this->manager->getRepository(FeatureState::class)->findInitialState() ?
                         true : false,

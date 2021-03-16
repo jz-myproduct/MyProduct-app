@@ -3,9 +3,8 @@
 <a href="{{ path('bo_feature_add', {'slug':app.user.slug}) }}" class="btn btn-primary mt-3" role="button">Přidat feature</a>
 <a href="{{ path('bo_feature_tag_list', {'slug':app.user.slug}) }}" class="btn btn-outline-secondary mt-3" role="button">Přehled tagů</a>
 
-{% if app.request.get('_route') == 'bo_feature_list' %}
-    <div class="mt-3" id="feature_state_filter">{{ form(form) }}</div>
-{% endif %}
+<div class="mt-3" id="feature_state_filter">{{ form(form) }}</div>
+
 
 <ul class="nav nav-tabs mt-4 justify-content-center">
     <li class="nav-item">
@@ -19,13 +18,23 @@
 </ul>
 
 <script>
-    /*
-    $('#feature_state_filter_state').change(function () {
-
+    $('#feature_list_filter_state').change(function () {
 
         $('#feature_state_filter form').submit();
-        console.log('ahoj');
 
-    })
-    */
+    });
+
+    $("#feature_list_filter_tags input").change(function() {
+
+        setTimeout(function(){
+            $('#feature_state_filter form').submit();
+        }, 1500);
+    });
+
+    $("#feature_roadmap_filter_tags input").change(function() {
+
+        setTimeout(function(){
+            $('#feature_state_filter form').submit();
+        }, 1500);
+    });
 </script>

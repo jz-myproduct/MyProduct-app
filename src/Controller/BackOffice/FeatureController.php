@@ -12,11 +12,13 @@ use App\Entity\InsightWeight;
 use App\Entity\PortalFeature;
 use App\Events\FeedbackUpdatedEvent;
 use App\Form\FeatureFormType;
-use App\Form\FeatureStateFilterType;
+use App\Form\FeatureListFilterType;
+use App\Form\FeatureRoadmapFilterType;
 use App\Form\FeedbackFeatureDetailFormType;
 use App\Form\InsightOnFeatureFormType;
 use App\Form\PortalFeatureFormType;
-use App\FormRequest\FeatureStateFilterRequest;
+use App\FormRequest\FeatureListFilterRequest;
+use App\FormRequest\FeatureRoadmapFilterRequest;
 use App\Handler\Feature\Add;
 use App\Handler\Feature\Delete;
 use App\Handler\Feature\Edit;
@@ -38,6 +40,7 @@ use Exception;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -151,7 +154,7 @@ class FeatureController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        $form = $this->createForm(FeatureStateFilterType::class, $formRequest = new FeatureStateFilterRequest(), [
+        $form = $this->createForm(FeatureListFilterType::class, $formRequest = new FeatureListFilterRequest(), [
             'stateChoices' => $formView->createState(),
             'tagChoices' => $formView->createTag(),
             'currentStateChoice' => $state ? $state->getId() : null,
@@ -163,7 +166,7 @@ class FeatureController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             return new RedirectResponse(
-                $handler->handle($company, $formRequest)
+                $handler->handleList($company, $formRequest)
             );
 
         }
@@ -259,16 +262,49 @@ class FeatureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{slug}/features/roadmap", name="bo_feature_list_roadmap")
+     * @Route("/admin/{slug}/features/roadmap/{state_slug?}", name="bo_feature_list_roadmap")
+     * @ParamConverter("company", options={"mapping": {"slug": "slug"}})
+     * @ParamConverter("state", options={"mapping": {"state_slug": "slug"}})
      * @param Company $company
+     * @param FeatureState $state
      * @param RoadmapView $view
+     * @param FilterFormView $formView
+     * @param Request $request
+     * @param Search $handler
      * @return Response
      */
-    public function roadmapView(Company $company, RoadmapView $view)
+    public function roadmapView(
+        Company $company,
+        ?FeatureState $state,
+        RoadmapView $view,
+        FilterFormView $formView,
+        Request $request,
+        Search $handler)
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        return $this->render('back_office/feature/roadmap.html.twig', $view->create($company));
+        $form = $this->createForm(FeatureRoadmapFilterType::class, $formRequest = new FeatureRoadmapFilterRequest(), [
+            'tagChoices' => $formView->createTag(),
+            'currentTagChoices' => $tagsParam = $request->get('tags')
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            return new RedirectResponse(
+                $handler->handleRoadmap($company, $formRequest)
+            );
+
+        }
+
+        return $this->render('back_office/feature/roadmap.html.twig',
+            $view->create(
+                $company,
+                $form->createView(),
+                $tagsParam
+            )
+        );
     }
 
     /**
@@ -279,9 +315,10 @@ class FeatureController extends AbstractController
      * @param Feature $feature
      * @param $direction
      * @param MoveState $handler
+     * @param Request $request
      * @return Response|NotFoundHttpException
      */
-    public function moveStatus(Company $company, Feature $feature, $direction, MoveState $handler)
+    public function moveStatus(Company $company, Feature $feature, $direction, MoveState $handler, Request $request)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
 
@@ -292,10 +329,9 @@ class FeatureController extends AbstractController
         $handler->handle($feature, $direction);
 
         return $this->redirectToRoute('bo_feature_list_roadmap', [
-            'slug' => $company->getSlug()
+            'slug' => $company->getSlug(),
+            'tags' => $request->get('tags')
         ]);
     }
 
-
-    
 }
