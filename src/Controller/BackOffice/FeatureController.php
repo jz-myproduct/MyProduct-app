@@ -11,12 +11,10 @@ use App\Entity\Insight;
 use App\Entity\InsightWeight;
 use App\Entity\PortalFeature;
 use App\Events\FeedbackUpdatedEvent;
-use App\Form\FeatureFormType;
-use App\Form\FeatureListFilterType;
-use App\Form\FeatureRoadmapFilterType;
-use App\Form\FeedbackFeatureDetailFormType;
-use App\Form\InsightOnFeatureFormType;
-use App\Form\PortalFeatureFormType;
+use App\Form\Feature\AddEditType;
+use App\Form\Feature\ListFilterType;
+use App\Form\Feature\RoadmapFilterType;
+use App\Form\AddFromFeatureType;
 use App\FormRequest\FeatureListFilterRequest;
 use App\FormRequest\FeatureRoadmapFilterRequest;
 use App\Handler\Feature\Add;
@@ -74,7 +72,7 @@ class FeatureController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        $form = $this->createForm(FeatureFormType::class, $feature = new Feature(), [
+        $form = $this->createForm(AddEditType::class, $feature = new Feature(), [
             'tags' => $company->getFeatureTags(),
             'states' => $this->manager->getRepository(FeatureState::class)->findAll()
         ]);
@@ -111,7 +109,7 @@ class FeatureController extends AbstractController
 
         $this->denyAccessUnlessGranted('edit', $feature);
 
-        $form = $this->createForm(FeatureFormType::class, $feature, [
+        $form = $this->createForm(AddEditType::class, $feature, [
             'tags' => $company->getFeatureTags()
         ]);
         $form->handleRequest($request);
@@ -155,7 +153,7 @@ class FeatureController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        $form = $this->createForm(FeatureListFilterType::class, $formRequest = new FeatureListFilterRequest(), [
+        $form = $this->createForm(ListFilterType::class, $formRequest = new FeatureListFilterRequest(), [
             'stateChoices' => $formView->createState(),
             'tagChoices' => $formView->createTag(),
             'currentStateChoice' => $state ? $state->getId() : null,
@@ -242,7 +240,9 @@ class FeatureController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $feature);
 
-        $form = $this->createForm(InsightOnFeatureFormType::class, $insight = new Insight());
+        $form = $this->createForm(AddFromFeatureType::class, $insight = new Insight(), [
+            'weights' => $this->manager->getRepository(InsightWeight::class)->findAll()
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -284,7 +284,7 @@ class FeatureController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        $form = $this->createForm(FeatureRoadmapFilterType::class, $formRequest = new FeatureRoadmapFilterRequest(), [
+        $form = $this->createForm(RoadmapFilterType::class, $formRequest = new FeatureRoadmapFilterRequest(), [
             'tagChoices' => $formView->createTag(),
             'currentTagChoices' => $tagsParam = $request->get('tags')
         ]);

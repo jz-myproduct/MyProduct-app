@@ -8,8 +8,8 @@ use App\Entity\Feedback;
 use App\Entity\Insight;
 use App\Entity\Portal;
 use App\Entity\PortalFeature;
-use App\Form\InsightOnFeatureFormType;
-use App\Form\PortalFeedbackFormType;
+use App\Form\AddFromFeatureType;
+use App\Form\Portal\AddFeedbackType;
 use App\Handler\Feedback\AddFromPortal;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -43,7 +43,7 @@ class PortalFeedbackController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $form = $this->createForm(InsightOnFeatureFormType::class, $insight = new Insight());
+        $form = $this->createForm(AddFromFeatureType::class, $insight = new Insight());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -79,7 +79,7 @@ class PortalFeedbackController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $form = $this->createForm(PortalFeedbackFormType::class, $feedback = new Feedback());
+        $form = $this->createForm(AddFeedbackType::class, $feedback = new Feedback());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

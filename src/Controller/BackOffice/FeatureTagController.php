@@ -4,6 +4,7 @@ namespace App\Controller\BackOffice;
 
 use App\Entity\Company;
 use App\Entity\FeatureTag;
+use App\Form\FeatureTag\AddEditType;
 use App\Form\FeatureTagFormType;
 use App\Handler\FeatureTag\Add;
 use App\Handler\FeatureTag\Delete;
@@ -31,7 +32,7 @@ class FeatureTagController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        $form = $this->createForm(FeatureTagFormType::class,  $tag = new FeatureTag());
+        $form = $this->createForm(AddEditType::class,  $tag = new FeatureTag());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -64,7 +65,7 @@ class FeatureTagController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $tag);
 
-        $form = $this->createForm(FeatureTagFormType::class, $tag);
+        $form = $this->createForm(AddEditType::class, $tag);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

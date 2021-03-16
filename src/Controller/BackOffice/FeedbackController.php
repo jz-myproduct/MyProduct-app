@@ -6,8 +6,8 @@ use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\Feedback;
 use App\Entity\Insight;
-use App\Form\FeedbackFormType;
-use App\Form\InsightFormType;
+use App\Form\Feedback\AddEditType;
+use App\Form\AddFromFeedbackType;
 use App\Handler\Feedback\Add;
 use App\Handler\Feedback\Delete;
 use App\Handler\Feedback\Edit;
@@ -53,7 +53,7 @@ class FeedbackController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        $form = $this->createForm(FeedbackFormType::class, $feedback = new Feedback());
+        $form = $this->createForm(AddEditType::class, $feedback = new Feedback());
 
         $form->handleRequest($request);
 
@@ -88,7 +88,7 @@ class FeedbackController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $feedback);
 
-        $form = $this->createForm(FeedbackFormType::class, $feedback);
+        $form = $this->createForm(AddEditType::class, $feedback);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

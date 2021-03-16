@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Form;
+namespace App\Form\Feature;
 
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FeatureRoadmapFilterType extends AbstractType
+class RoadmapFilterType extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options)

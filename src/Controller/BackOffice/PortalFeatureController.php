@@ -8,10 +8,12 @@ use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\Feedback;
 use App\Entity\PortalFeature;
-use App\Form\PortalFeatureFormType;
+use App\Entity\PortalFeatureState;
+use App\Form\PortalFeature\AddEditFormType;
 use App\Handler\PortalFeature\AddEdit;
 use App\Handler\PortalFeature\DeleteImage;
 use App\View\BackOffice\PortalFeature\DetailView;
+use Doctrine\ORM\EntityManagerInterface;
 use PhpParser\Node\Scalar\MagicConst\File;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,6 +26,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class PortalFeatureController extends AbstractController
 {
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $manager;
+
+    public function __construct(EntityManagerInterface $manager)
+    {
+        $this->manager = $manager;
+    }
 
     /**
      * @Route("/admin/{company_slug}/feature/{feature_id}/portal", name="bo_feature_portal")
@@ -47,7 +59,9 @@ class PortalFeatureController extends AbstractController
 
         $portalFeature = $feature->getPortalFeature() ?? new PortalFeature();
 
-        $form = $this->createForm(PortalFeatureFormType::class, $portalFeature);
+        $form = $this->createForm(AddEditFormType::class, $portalFeature, [
+            'states' => $this->manager->getRepository(PortalFeatureState::class)->findAll()
+        ]);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())

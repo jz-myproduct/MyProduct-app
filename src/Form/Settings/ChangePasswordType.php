@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Form;
+namespace App\Form\Settings;
 
 
 use Symfony\Component\Form\AbstractType;
@@ -9,21 +9,26 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\Length;
 
-class SetNewPassword extends AbstractType
+class ChangePasswordType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('password', RepeatedType::class, [
+            ->add('password', PasswordType::class, [
+                'label' => 'Současné heslo',
+                'required' => true
+            ])
+            ->add('newPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Zadané heslo se neshoduje',
                 'required' => true,
                 'first_options' => ['label' => 'Nové heslo'],
-                'second_options' => ['label' => 'Nové heslo znova'],
+                'second_options' => ['label' => 'Nové heslo znova']
             ])
             ->add('save', SubmitType::class, ['label' => 'Změnit heslo']);
     }
+
 
 }
