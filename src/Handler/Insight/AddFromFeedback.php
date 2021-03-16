@@ -28,7 +28,7 @@ class AddFromFeedback
         $insight->setFeature($feature);
 
         $feature->setScoreUpBy(
-            $insight->getWeight()->getWeight()
+            $insight->getWeight()->getNumber()
         );
 
         $this->manager->persist($insight);

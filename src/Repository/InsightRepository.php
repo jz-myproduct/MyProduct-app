@@ -76,7 +76,7 @@ class InsightRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()
             ->getConnection();
 
-        $sql = 'SELECT sum(w.weight)
+        $sql = 'SELECT sum(w.number)
                 FROM insight i
                 JOIN insight_weight w 
                 ON i.weight_id = w.id

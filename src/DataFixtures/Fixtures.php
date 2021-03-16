@@ -37,7 +37,7 @@ class Fixtures extends Fixture
             $insightWeight = new InsightWeight();
 
             $insightWeight->setName($insight[0]);
-            $insightWeight->setWeight($insight[1]);
+            $insightWeight->setNumber($insight[1]);
 
             $manager->persist($insightWeight);
         }
