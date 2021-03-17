@@ -2,7 +2,7 @@
     {% if feedback.isNew %}<span class="badge badge-danger">Nový</span>{% endif %}
     Feedback
 </h1>
-<p class="text-center text-secondary">Přidáno {{ feedback.createdAt|date('Y.m.d h:m') }}</p>
+<p class="text-center text-secondary">Přidáno {{ feedback.createdAt|date('d.m.y H:i') }}</p>
 <p class="text-right">
     <a href="{{ path('bo_feedback_edit', {'company_slug':app.user.slug, 'feedback_id': feedback.id}) }}" class="btn btn-outline-primary">Upravit</a>
     <a href="{{ path('bo_feedback_change_status', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'p':app.request.get('_route')}) }}" class="btn btn-outline-secondary">Označit jako

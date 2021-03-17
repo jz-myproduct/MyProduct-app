@@ -16,25 +16,3 @@
            href="{{ path('bo_feature_list_roadmap', {'slug':app.user.slug}) }}">Roadmap</a>
     </li>
 </ul>
-
-<script>
-    $('#list_filter_state').change(function () {
-
-        $('#feature_state_filter form').submit();
-
-    });
-
-    $("#list_filter_tags input").change(function() {
-
-        setTimeout(function(){
-            $('#feature_state_filter form').submit();
-        }, 1500);
-    });
-
-    $("#roadmap_filter input").change(function() {
-
-        setTimeout(function(){
-            $('#feature_state_filter form').submit();
-        }, 1500);
-    });
-</script>

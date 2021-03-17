@@ -26,7 +26,7 @@
                             </svg>
                         </a>
                     </td>
-                    <td>{{ feedback.createdAt|date('Y.m.d') }}</td>
+                    <td>{{ feedback.createdAt|date('d.m.y H:i') }}</td>
                     <td><a href="{{ path('bo_feedback_change_status', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'p':app.request.get('_route')}) }}">
                             {% if feedback.isNew %}
                                 Přečtený
