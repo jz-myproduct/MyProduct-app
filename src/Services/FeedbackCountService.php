@@ -32,19 +32,26 @@ class FeedbackCountService
         $company = $this->entityManager->getRepository(Company::class)->getCompanyByEmail(
             $this->security->getUser()->getUsername());
 
-        /** @var Company $company */
-        foreach($company->getFeatures() as $feature)
-        {
-            if($feature->getPortalFeature())
-            {
-                $feedbackCount = $this->entityManager->getRepository(Insight::class)
-                    ->getFeedbackCountForPortalFeature($feature);
 
-                $feature->getPortalFeature()->setFeedbackCount($feedbackCount);
+        if($company)
+        {
+
+            /** @var Company $company */
+            foreach($company->getFeatures() as $feature)
+            {
+                if($feature->getPortalFeature())
+                {
+                    $feedbackCount = $this->entityManager->getRepository(Insight::class)
+                        ->getFeedbackCountForPortalFeature($feature);
+
+                    $feature->getPortalFeature()->setFeedbackCount($feedbackCount);
+                }
             }
+
+            $this->entityManager->flush();
+
         }
 
-        $this->entityManager->flush();
     }
 
 }
