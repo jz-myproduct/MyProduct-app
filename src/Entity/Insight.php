@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\InsightRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=InsightRepository::class)
@@ -20,6 +22,7 @@ class Insight
     /**
      * @ORM\ManyToOne(targetEntity=Feedback::class, inversedBy="insights")
      * @ORM\JoinColumn(nullable=false)
+     *
      */
     private $feedback;
 
@@ -32,6 +35,7 @@ class Insight
     /**
      * @ORM\ManyToOne(targetEntity=InsightWeight::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank()
      */
     private $weight;
 

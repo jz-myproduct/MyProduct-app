@@ -27,6 +27,8 @@ class CompanyExistsValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
+
+
         $company = $this->manager->getRepository(Company::class)->findOneBy(['email' => $value]);
 
         if($company) {

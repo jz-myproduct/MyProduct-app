@@ -15,7 +15,7 @@ class InfoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class, ['label' => 'Email'])
+            ->add('username', EmailType::class, ['label' => 'Email'])
             ->add('name', TextType::class, ['label' => 'Jméno firmy'])
             ->add('save', SubmitType::class, ['label' => 'Uložit'])
         ;
@@ -24,7 +24,6 @@ class InfoType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Company::class,
         ]);
     }
 }

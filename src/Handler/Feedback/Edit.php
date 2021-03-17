@@ -6,6 +6,7 @@ namespace App\Handler\Feedback;
 
 use App\Entity\Feedback;
 use App\Events\FeedbackUpdatedEvent;
+use App\FormRequest\Feedback\AddEditRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -26,9 +27,11 @@ class Edit
         $this->dispatcher = $dispatcher;
     }
 
-    public function handle(Feedback $feedback)
+    public function handle(Feedback $feedback, AddEditRequest $formRequest)
     {
         $feedback->setUpdatedAt(new \DateTime());
+        $feedback->setDescription($formRequest->description);
+        $feedback->setSource($formRequest->source);
 
         $this->manager->flush();
 

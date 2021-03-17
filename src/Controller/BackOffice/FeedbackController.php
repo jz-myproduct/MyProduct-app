@@ -8,6 +8,7 @@ use App\Entity\Feedback;
 use App\Entity\Insight;
 use App\Form\Feedback\AddEditType;
 use App\Form\AddFromFeedbackType;
+use App\FormRequest\Feedback\AddEditRequest;
 use App\Handler\Feedback\Add;
 use App\Handler\Feedback\Delete;
 use App\Handler\Feedback\Edit;
@@ -25,6 +26,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class FeedbackController extends AbstractController
 {
@@ -52,13 +54,13 @@ class FeedbackController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        $form = $this->createForm(AddEditType::class, $feedback = new Feedback());
+        $form = $this->createForm(AddEditType::class, $formRequest = new AddEditRequest());
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $handler->handle($feedback, $company);
+            $handler->handle($formRequest, $company);
 
             $this->addFlash('success', 'Feedback přidán.');
 
@@ -87,12 +89,13 @@ class FeedbackController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $feedback);
 
-        $form = $this->createForm(AddEditType::class, $feedback);
+        $form = $this->createForm(AddEditType::class, $formRequest = AddEditRequest::fromFeedback($feedback));
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $handler->handle($feedback);
+            $handler->handle($feedback, $formRequest);
 
             $this->addFlash('success', 'Feedback upraven.');
 
@@ -101,6 +104,7 @@ class FeedbackController extends AbstractController
                'feedback_id' => $feedback->getId()
             ]);
         }
+
 
         return $this->render('back_office/feedback/add_edit.html.twig', [
             'form' => $form->createView()

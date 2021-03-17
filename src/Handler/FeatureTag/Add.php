@@ -6,6 +6,7 @@ namespace App\Handler\FeatureTag;
 
 use App\Entity\Company;
 use App\Entity\FeatureTag;
+use App\FormRequest\FeatureTag\AddEditRequest;
 use App\Services\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -27,11 +28,14 @@ class Add
         $this->slugService = $slugService;
     }
 
-    public function handle(FeatureTag $featureTag, Company $company)
+    public function handle(AddEditRequest $request, Company $company)
     {
+        $featureTag = new FeatureTag();
+
+        $featureTag->setName($request->name);
         $featureTag->setSlug(
             $this->slugService->createCommonSlug(
-                $featureTag->getName()
+                $request->name
             )
         );
         $featureTag->setCompany($company);

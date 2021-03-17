@@ -1,21 +1,18 @@
 <?php
 
 
-namespace App\FormRequest;
+namespace App\FormRequest\Feature;
 
 use Symfony\Component\Validator\Constraints as Constraints;
-use App\Constraints as Custom;
 
 
-class FeatureListFilterRequest
+
+class RoadmapFilterRequest
 {
 
     /**
      * @Constraints\NotBlank
-     * @var string
      */
-    public $state;
-
     public $tags;
 
 }

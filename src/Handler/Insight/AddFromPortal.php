@@ -7,6 +7,7 @@ namespace App\Handler\Insight;
 use App\Entity\Feature;
 use App\Entity\Insight;
 use App\Entity\PortalFeature;
+use App\FormRequest\Insight\AddFromFeatureRequest;
 use Doctrine\ORM\EntityManagerInterface;
 
 class AddFromPortal
@@ -26,15 +27,19 @@ class AddFromPortal
         $this->feedbackHandler = $feedbackHandler;
     }
 
-    public function handle(Insight $insight, PortalFeature $portalFeature)
+    public function handle(AddFromFeatureRequest $request, PortalFeature $portalFeature)
     {
        $feedback = $this->feedbackHandler->handle(
-            $insight->getFeedback(),
+            $request,
             $portalFeature->getFeature()->getCompany()
        );
 
        $portalFeature->setFeedbackCountUpByOne();
 
+       $insight = new Insight();
+       $insight->setWeight($request->weight);
+
+       $insight->setFeedback($feedback);
        $insight->setFeature(
          $portalFeature->getFeature()
        );

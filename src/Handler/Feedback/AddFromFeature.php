@@ -3,17 +3,16 @@
 
 namespace App\Handler\Feedback;
 
+
 use App\Entity\Company;
 use App\Entity\Feedback;
-use App\Events\FeedbackUpdatedEvent;
 use App\FormRequest\Feedback\AddEditRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
 
-
-class Add
+class AddFromFeature
 {
+
     /**
      * @var EntityManagerInterface
      */
@@ -44,7 +43,6 @@ class Add
         $feedback->setFromPortal(false);
 
         $this->manager->persist($feedback);
-        $this->manager->flush();
 
         return $feedback;
     }

@@ -10,6 +10,7 @@ use App\Entity\Feedback;
 use App\Entity\PortalFeature;
 use App\Entity\PortalFeatureState;
 use App\Form\PortalFeature\AddEditFormType;
+use App\FormRequest\PortalFeature\AddEditRequest;
 use App\Handler\PortalFeature\AddEdit;
 use App\Handler\PortalFeature\DeleteImage;
 use App\View\BackOffice\PortalFeature\DetailView;
@@ -59,7 +60,10 @@ class PortalFeatureController extends AbstractController
 
         $portalFeature = $feature->getPortalFeature() ?? new PortalFeature();
 
-        $form = $this->createForm(AddEditFormType::class, $portalFeature, [
+        $formRequest = $feature->getPortalFeature() ? AddEditRequest::fromPortalFeature($portalFeature)
+                                                    : new AddEditRequest();
+
+        $form = $this->createForm(AddEditFormType::class, $formRequest, [
             'states' => $this->manager->getRepository(PortalFeatureState::class)->findAll()
         ]);
         $form->handleRequest($request);
@@ -68,6 +72,7 @@ class PortalFeatureController extends AbstractController
         {
 
             if(! $handler->handle(
+                $formRequest,
                 $portalFeature,
                 $feature,
                 $form->get('image')->getData() ?? null

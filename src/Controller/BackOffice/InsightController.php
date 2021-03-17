@@ -11,6 +11,8 @@ use App\Entity\Insight;
 use App\Entity\InsightWeight;
 use App\Form\AddFromFeatureType;
 use App\Form\AddFromFeedbackType;
+use App\FormRequest\Insight\AddFromFeatureRequest;
+use App\FormRequest\Insight\AddFromFeedbackRequest;
 use App\Handler\Insight\AddFromFeature;
 use App\Handler\Insight\AddFromFeedback;
 use App\Handler\Insight\Delete;
@@ -62,32 +64,31 @@ class InsightController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $feature);
         $this->denyAccessUnlessGranted('edit', $feedback);
 
-        if($this->manager->getRepository(Insight::class)
-            ->findBy([
+        if($this->manager->getRepository(Insight::class)->findBy([
                 'feedback' => $feedback,
-                'feature' => $feature])
-        )
+                'feature' => $feature]))
         {
             $this->addFlash('info', 'Featura je již přidána.');
 
-            return $this->redirectToRoute('bo_feedback_features',[
+            return $this->redirectToRoute('bo_insight_feedback_list',[
                 'company_slug' => $company->getSlug(),
                 'feedback_id' => $feedback->getId()
             ]);
         }
 
-        $form = $this->createForm(AddFromFeedbackType::class, $insight = new Insight(), [
+        $form = $this->createForm(AddFromFeedbackType::class, $formRequest = new AddFromFeedbackRequest(), [
             'weights' => $this->manager->getRepository(InsightWeight::class)->findAll()
         ]);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $handler->handle($insight, $feedback, $feature);
+            $handler->handle($formRequest, $feedback, $feature);
 
             $this->addFlash('success', 'Featura připojena.');
 
-            return $this->redirectToRoute('bo_feedback_features',[
+            return $this->redirectToRoute('bo_insight_feedback_list',[
                 'company_slug' => $company->getSlug(),
                 'feedback_id' => $feedback->getId()
             ]);
@@ -118,18 +119,18 @@ class InsightController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $feature);
 
-        $form = $this->createForm(AddFromFeatureType::class, $insight = new Insight(), [
+        $form = $this->createForm(AddFromFeatureType::class, $formRequest = new AddFromFeatureRequest(), [
             'weights' => $this->manager->getRepository(InsightWeight::class)->findAll()
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $handler->handle($insight, $feature);
+            $handler->handle($formRequest, $feature);
 
             $this->addFlash('success', 'Feedback přidán');
 
-            return $this->redirectToRoute('bo_feature_feedback', [
+            return $this->redirectToRoute('bo_insight_feature_list', [
                 'company_slug' => $company->getSlug(),
                 'feature_id' => $feature->getId(),
             ]);
@@ -174,16 +175,20 @@ class InsightController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $insight);
 
-        $form = $this->createForm(AddFromFeedbackType::class, $insight);
+        $form = $this->createForm(AddFromFeedbackType::class,
+            $formRequest = AddFromFeedbackRequest::fromInsight($insight), [
+                'weights' => $this->manager->getRepository(InsightWeight::class)->findAll()
+            ]);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $handler->handle($insight);
+            $handler->handle($formRequest, $insight);
 
             $this->addFlash('success', 'Spojení upraveno.');
 
-            return $this->redirectToRoute('bo_feedback_features',[
+            return $this->redirectToRoute('bo_insight_feedback_list',[
                 'company_slug' => $company->getSlug(),
                 'feedback_id' => $insight->getFeedback()->getId()
             ]);

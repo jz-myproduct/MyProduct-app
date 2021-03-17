@@ -6,8 +6,8 @@ namespace App\Handler\Feature;
 
 use App\Entity\Company;
 use App\Entity\FeatureState;
-use App\FormRequest\FeatureListFilterRequest;
-use App\FormRequest\FeatureRoadmapFilterRequest;
+use App\FormRequest\Feature\ListFilterRequest;
+use App\FormRequest\Feature\RoadmapFilterRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -29,7 +29,7 @@ class Search
         $this->router = $router;
     }
 
-    public function handleList(Company $company, FeatureListFilterRequest $formRequest)
+    public function handleList(Company $company, ListFilterRequest $formRequest)
     {
 
         $state = $this->manager->getRepository(FeatureState::class)->find($formRequest->state);
@@ -42,7 +42,7 @@ class Search
 
     }
 
-    public function handleRoadmap(Company $company, FeatureRoadmapFilterRequest $formRequest)
+    public function handleRoadmap(Company $company, RoadmapFilterRequest $formRequest)
     {
 
         return $this->router->generate('bo_feature_list_roadmap', [
