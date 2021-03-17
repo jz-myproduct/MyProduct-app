@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Insight;
 
 use App\Entity\FeatureState;
 use App\Entity\Insight;

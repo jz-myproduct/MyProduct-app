@@ -17,7 +17,7 @@ use App\FormRequest\Feedback\AddEditRequest;
 use App\FormRequest\Insight\AddFromFeatureRequest;
 use App\Handler\Feedback\AddFeatureFeedbackOnPortal;
 use App\Handler\Feedback\AddFromPortal;
-use App\Services\PortalFeatureService;
+use App\Service\PortalFeatureService;
 use App\View\Shared\PortalDetail;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -38,11 +38,11 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\Services\FeatureEventListener:
+    App\Service\FeedbackEventListener:
         tags:
             - { name: kernel.event_listener, event: feedback.updated.event }
 
-    App\Services\FileUploader:
+    App\Service\FileUploader:
         arguments:
             $uploadDirectory: '%upload.directory%'
 

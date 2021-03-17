@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Services;
+namespace App\Service;
 
 
 use App\Entity\Feedback;
@@ -12,7 +12,7 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use phpDocumentor\Reflection\Types\Null_;
 
-class FeatureEventListener
+class FeedbackEventListener
 {
     /**
      * @var FeatureScoreService
