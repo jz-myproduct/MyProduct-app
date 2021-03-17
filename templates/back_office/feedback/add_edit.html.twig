@@ -3,14 +3,5 @@
 {% block content %}
     <h1 class="h3 mb-4">Přidat / upravit feedback</h1>
 
-    {{ form_start(form) }}
-
-        {{ form_row(form.description) }}
-
-        {{ form_row(form.source) }}
-
-        <input type="submit" value="Uložit"
-               class="btn-primary btn" />
-
-    {{ form_end(form) }}
+    {{ form(form) }}
 {% endblock %}
