@@ -78,6 +78,7 @@ class Fixtures extends Fixture
             $featureState->setName( $stateData[0] );
             $featureState->setSlug( $this->slugService->createCommonSlug($stateData[0]) );
             $featureState->setPosition($stateData[1] );
+            $featureState->setColor($stateData[2]);
 
             $manager->persist($featureState);
         }
@@ -164,10 +165,10 @@ class Fixtures extends Fixture
     private function getFeatureStatesData()
     {
         return [
-          ['Idea', 1],
-          ['Upcoming', 2],
-          ['In-progress', 3],
-          ['Done', 4]
+          ['Idea', 1, 'indianred'],
+          ['Upcoming', 2, 'cornflowerblue'],
+          ['In-progress', 3, 'darkorange'],
+          ['Done', 4, 'seagreen']
         ];
     }
 

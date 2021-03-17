@@ -7,7 +7,7 @@
         <table class="table table-striped mt-3">
         {% for feature in featureList %}
             <tr>
-                <td class="{{ feature.state.name|lower }} font-weight-bold align-middle">{{ feature.state.name }}</td>
+                <td style="color: {{ feature.state.color }}"class="font-weight-bold align-middle">{{ feature.state.name }}</td>
                 <td class="align-middle"><a href="{{ path('bo_feature_detail', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}">
                         {{ feature.name }}
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
