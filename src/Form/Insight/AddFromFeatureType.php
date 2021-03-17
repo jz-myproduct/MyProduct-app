@@ -10,6 +10,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,8 +24,12 @@ class AddFromFeatureType extends AbstractType
         $weights = $options['weights'] ? $options['weights'] : null;
 
         $builder
-            ->add('feedback', AddEditType::class, [
-                'label' => false
+            ->add('description', TextareaType::class, [
+                'label' => 'Popis'
+            ])
+            ->add('source', TextareaType::class, [
+                'label' => 'Zdroj',
+                'required' => false
             ])
             ->add('weight', ChoiceType::class, [
                 'choices' => $weights,
@@ -37,7 +43,6 @@ class AddFromFeatureType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Insight::class,
             'weights' => null
         ]);
     }

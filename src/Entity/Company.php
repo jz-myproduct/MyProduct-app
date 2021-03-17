@@ -27,7 +27,8 @@ class Company implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", unique=true, length=255)
+     * @Assert\Length(max=255)
      * @Assert\NotBlank()
      * @Assert\Email()
      */
@@ -40,14 +41,20 @@ class Company implements UserInterface
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(max=255)
+     * @Assert\Length(
+     *      min = 6,
+     *      minMessage = "Heslo musí obsahovat minimálně 6 znaků",
+     * )
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
-     * @Assert\Length(max=64)
+     * @Assert\Length(max=255)
      */
     private $name;
 
@@ -85,7 +92,6 @@ class Company implements UserInterface
      * @ORM\OneToOne(targetEntity=Portal::class, inversedBy="company", cascade={"persist", "remove"})
      */
     private $portal;
-
 
     /**
      * @ORM\Column(type="datetime", nullable=true)

@@ -10,6 +10,7 @@ use App\Entity\Portal;
 use App\Entity\PortalFeature;
 use App\Entity\PortalFeatureState;
 use App\Form\Portal\SettingsFormType;
+use App\FormRequest\Portal\SettingsRequest;
 use App\Handler\Portal\Edit;
 use App\Services\SlugService;
 use App\View\Shared\PortalDetail;
@@ -58,14 +59,14 @@ class PortalController extends AbstractController
 
         $portal = $company->getPortal();
 
-        $form = $this->createForm(SettingsFormType::class, $portal);
+        $form = $this->createForm(SettingsFormType::class, $formRequest = SettingsRequest::fromPortal($portal));
         $form->handleRequest($request);
         
         if($form->isSubmitted() && $form->isValid())
         {
-            $handler->handle($portal);
+            $handler->handle($formRequest, $portal);
 
-            $this->addFlash('success', 'DetailView upraven.');
+            $this->addFlash('success', 'Portal upraven.');
         }
 
         return $this->render(

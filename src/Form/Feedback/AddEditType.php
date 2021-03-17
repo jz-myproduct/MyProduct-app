@@ -32,13 +32,15 @@ class AddEditType extends AbstractType
     {
         $builder
             ->add('description', TextareaType::class, ['label' => 'Popis'])
-            ->add('source', TextareaType::class, ['required' => false, 'label' => 'Zdroj']);
+            ->add('source', TextareaType::class, ['required' => false, 'label' => 'Zdroj'])
+            ->add('save', SubmitType::class, ['label' => 'Uložit']);
+
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Feedback::class
+
         ]);
     }
 }

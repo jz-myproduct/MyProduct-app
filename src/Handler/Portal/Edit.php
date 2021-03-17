@@ -5,6 +5,7 @@ namespace App\Handler\Portal;
 
 
 use App\Entity\Portal;
+use App\FormRequest\Portal\SettingsRequest;
 use App\Services\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -25,11 +26,15 @@ class Edit
         $this->slugService = $slugService;
     }
 
-    public function handle(Portal $portal)
+    public function handle(SettingsRequest $request, Portal $portal)
     {
+
+        $portal->setName($request->name);
         $portal->setSlug(
             $this->slugService->createPortalSlug($portal)
         );
+        $portal->setDisplay($request->display);
+
         $portal->setUpdatedAt(new \DateTime());
 
         $this->manager->flush();

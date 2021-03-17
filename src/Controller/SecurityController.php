@@ -9,9 +9,10 @@ use App\Form\Settings\ChangePasswordType;
 use App\Form\Security\RegisterCompanyFormType;
 use App\Form\Security\RenewPassword;
 use App\Form\Security\SetNewPassword;
-use App\FormRequest\ChangePasswordRequest;
-use App\FormRequest\RenewPasswordRequest;
-use App\FormRequest\SetNewPasswordRequest;
+use App\FormRequest\Settings\ChangePasswordRequest;
+use App\FormRequest\Security\RenewPasswordRequest;
+use App\FormRequest\Security\RegisterRequest;
+use App\FormRequest\Security\SetNewPasswordRequest;
 use App\Handler\Company\Add;
 use App\Handler\Company\Edit;
 use App\Handler\Company\Password\Change;
@@ -88,12 +89,12 @@ class SecurityController extends AbstractController
             ]);
         }
 
-        $form = $this->createForm(RegisterCompanyFormType::class, $company = new Company());
+        $form = $this->createForm(RegisterCompanyFormType::class, $formRequest = new RegisterRequest());
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
         {
-            $company = $handler->handle($company);
+            $company = $handler->handle($formRequest);
 
             return $this->guardHandler->authenticateUserAndHandleSuccess(
                    $company,

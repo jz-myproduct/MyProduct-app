@@ -6,6 +6,7 @@ namespace App\Handler\Company;
 
 use App\Entity\Company;
 use App\Entity\Portal;
+use App\FormRequest\Security\RegisterRequest;
 use App\Services\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -36,15 +37,18 @@ class Add
         $this->slugService = $slugService;
     }
 
-    public function handle(Company $company)
+    public function handle(RegisterRequest $request)
     {
+        $company = new Company();
+
+        $company->setName($request->name);
+        $company->setEmail($request->email);
         $company->setPassword(
-            $this->passwordEncoder->encodePassword($company, $company->getPassword())
+            $this->passwordEncoder->encodePassword($company, $request->password)
         );
-        $company->setRoles( $company->getRoles() );
         $company->setSlug(
             $this->slugService->createCompanySlug(
-                $company->getName()
+                $request->name
             )
         );
         $currentDateTime = new \DateTime();

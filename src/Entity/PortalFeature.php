@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\PortalFeatureRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=PortalFeatureRepository::class)
@@ -19,6 +21,8 @@ class PortalFeature
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(max=255)
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -55,6 +59,7 @@ class PortalFeature
     /**
      * @ORM\ManyToOne(targetEntity=PortalFeatureState::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank()
      */
     private $state;
 

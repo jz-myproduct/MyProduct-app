@@ -1,16 +1,13 @@
 <?php
 
 
-namespace App\FormRequest;
+namespace App\FormRequest\Security;
 
 use Symfony\Component\Validator\Constraints as Constraints;
 
 
-
-
-class ChangePasswordRequest
+class SetNewPasswordRequest
 {
-
     /**
      * @Constraints\NotBlank
      * @Constraints\Length(max=255)
@@ -21,19 +18,4 @@ class ChangePasswordRequest
      * @var string
      */
     public $password;
-
-    /**
-     * @Constraints\NotBlank
-     * @Constraints\Length(max=255)
-     * @Constraints\Length(
-     *      min = 6,
-     *      minMessage = "Heslo musí obsahovat minimálně 6 znaků",
-     * )
-     * @var string
-     */
-    public $newPassword;
-
-
-
-
 }

@@ -7,7 +7,9 @@ namespace App\Handler\PortalFeature;
 use App\Entity\Feature;
 use App\Entity\File;
 use App\Entity\PortalFeature;
+use App\FormRequest\PortalFeature\AddEditRequest;
 use App\Services\FileUploader;
+use App\Services\SlugService;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -25,18 +27,20 @@ class AddEdit
      * @var FileUploader
      */
     private $fileUploader;
+    /**
+     * @var SlugService
+     */
+    private $slugService;
 
-    public function __construct(FileUploader $fileUploader, EntityManagerInterface $manager)
+    public function __construct(FileUploader $fileUploader, EntityManagerInterface $manager, SlugService $slugService)
     {
         $this->fileUploader = $fileUploader;
         $this->manager = $manager;
+        $this->slugService = $slugService;
     }
 
-    public function handle(PortalFeature $portalFeature, Feature $feature, UploadedFile $uploadedFile = null)
+    public function handle(AddEditRequest $request, PortalFeature $portalFeature, Feature $feature, UploadedFile $uploadedFile = null)
     {
-        // TODO refactor to private functions
-
-        $currentDateTime = new \DateTime();
 
         // handle uploaded image
         if($uploadedFile)
@@ -58,15 +62,19 @@ class AddEdit
 
         // handle actions common both new and edited portal feature
         $portalFeature->setUpdatedAt(new \DateTime());
+        $portalFeature->setName($request->name);
+        $portalFeature->setDescription($request->description);
+        $portalFeature->setDisplay($request->display);
+        $portalFeature->setState($request->state);
         $portalFeature->setSlug(
-            $portalFeature->getName()
+            $this->slugService->createCompanySlug($request->name)
         );
 
         //handle new portal feature
-        if($feature)
+        if(! $portalFeature->getFeature())
         {
             $portalFeature->setFeedbackCount(0);
-            $portalFeature->setCreatedAt($currentDateTime);
+            $portalFeature->setCreatedAt(new \DateTime());
             $portalFeature->setFeature($feature);
 
             $this->manager->persist($portalFeature);

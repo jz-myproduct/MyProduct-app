@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\FeatureRepository;
-use ContainerJC0aoQx\get_ServiceLocator_8For1TService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,7 +23,6 @@ class Feature
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
      */
     private $name;
 

@@ -6,6 +6,7 @@ namespace App\Handler\Feature;
 
 use App\Entity\Company;
 use App\Entity\Feature;
+use App\FormRequest\Feature\AddEditRequest;
 use Doctrine\ORM\EntityManagerInterface;
 
 class Add
@@ -20,8 +21,18 @@ class Add
         $this->manager = $manager;
     }
 
-    public function handle(Feature $feature, Company $company)
+    public function handle(AddEditRequest $request, Company $company)
     {
+        $feature = new Feature();
+        $feature->setName($request->name);
+        $feature->setDescription($request->description);
+        $feature->setState($request->state);
+
+        foreach($request->tags as $tag)
+        {
+            $feature->addTag($tag);
+        }
+
         $feature->setCompany($company);
         $feature->setInitialScore();
 

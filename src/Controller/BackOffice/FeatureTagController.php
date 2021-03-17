@@ -6,6 +6,7 @@ use App\Entity\Company;
 use App\Entity\FeatureTag;
 use App\Form\FeatureTag\AddEditType;
 use App\Form\FeatureTagFormType;
+use App\FormRequest\FeatureTag\AddEditRequest;
 use App\Handler\FeatureTag\Add;
 use App\Handler\FeatureTag\Delete;
 use App\Handler\FeatureTag\Edit;
@@ -32,12 +33,12 @@ class FeatureTagController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        $form = $this->createForm(AddEditType::class,  $tag = new FeatureTag());
+        $form = $this->createForm(AddEditType::class,  $formRequest = new AddEditRequest());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $handler->handle($tag, $company);
+            $handler->handle($formRequest, $company);
 
             $this->addFlash('success', 'Tag přidán.');
 
@@ -65,12 +66,12 @@ class FeatureTagController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $tag);
 
-        $form = $this->createForm(AddEditType::class, $tag);
+        $form = $this->createForm(AddEditType::class, $formRequest = AddEditRequest::fromFeatureTag($tag));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $handler->handle($tag);
+            $handler->handle($formRequest, $tag);
 
             $this->addFlash('success', 'Tag upraven.');
         }

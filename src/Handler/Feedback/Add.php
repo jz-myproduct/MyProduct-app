@@ -6,6 +6,7 @@ namespace App\Handler\Feedback;
 use App\Entity\Company;
 use App\Entity\Feedback;
 use App\Events\FeedbackUpdatedEvent;
+use App\FormRequest\Feedback\AddEditRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,8 +29,12 @@ class Add
         $this->dispatcher = $dispatcher;
     }
 
-    public function handle(Feedback $feedback, Company $company)
+    public function handle(AddEditRequest $request, Company $company)
     {
+        $feedback = new Feedback();
+        $feedback->setDescription($request->description);
+        $feedback->setSource($request->source);
+
         $feedback->setCompany($company);
         $feedback->setIsNew(true);
 

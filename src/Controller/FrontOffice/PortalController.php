@@ -12,6 +12,9 @@ use App\Entity\PortalFeature;
 use App\Entity\PortalFeatureState;
 use App\Form\AddFeedbackType;
 use App\Form\AddFromFeatureType;
+use App\Form\Feedback\AddEditType;
+use App\FormRequest\Feedback\AddEditRequest;
+use App\FormRequest\Insight\AddFromFeatureRequest;
 use App\Handler\Feedback\AddFeatureFeedbackOnPortal;
 use App\Handler\Feedback\AddFromPortal;
 use App\Services\PortalFeatureService;
@@ -78,14 +81,14 @@ class PortalController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $form = $this->createForm(AddFromFeatureType::class, $insight = new Insight(), [
+        $form = $this->createForm(AddFromFeatureType::class, $formRequest = new AddFromFeatureRequest(), [
             'weights' => $this->manager->getRepository(InsightWeight::class)->findAll()
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $handler->handle($insight, $portalFeature);
+            $handler->handle($formRequest, $portalFeature);
 
             $this->addFlash('success', 'Děkujeme za feeedback!');
 
@@ -115,12 +118,12 @@ class PortalController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $form = $this->createForm(\App\Form\Portal\AddFeedbackType::class, $feedback = new Feedback());
+        $form = $this->createForm(AddEditType::class, $formRequest = new AddEditRequest());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $handler->handle($feedback, $portal->getCompany());
+            $handler->handleGeneral($formRequest, $portal->getCompany());
 
             $this->addFlash('success', 'Děkujeme za feeedback!');
 

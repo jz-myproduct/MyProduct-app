@@ -6,6 +6,7 @@ namespace App\Handler\Insight;
 
 use App\Entity\Insight;
 use App\Events\FeedbackUpdatedEvent;
+use App\FormRequest\Insight\AddFromFeedbackRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -26,8 +27,10 @@ class Edit
         $this->dispatcher = $dispatcher;
     }
 
-    public function handle(Insight $insight)
+    public function handle(AddFromFeedbackRequest $request, Insight $insight)
     {
+        $insight->setWeight($request->weight);
+
         $this->manager->flush();
 
         $this->dispatcher->dispatch(
