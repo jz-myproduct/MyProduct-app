@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\View\BackOffice\Feature;
+namespace App\View\BackOffice\Insight;
 
 
 use App\Entity\Feature;
@@ -10,7 +10,7 @@ use App\Entity\Insight;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormView;
 
-class FeedbackListView
+class ListOnFeatureView
 {
     /**
      * @var EntityManagerInterface
@@ -24,7 +24,7 @@ class FeedbackListView
 
     public function create(Feature $feature, FormView $form)
     {
-        $feedbackCount = $this->manager->getRepository(Insight::class)
+        $insighsCount = $this->manager->getRepository(Insight::class)
             ->getInsightsCountForFeature($feature);
 
         $insightList = $this->manager->getRepository(Insight::class)->findBy(['feature' => $feature]);
@@ -32,7 +32,7 @@ class FeedbackListView
         return [
             'feature' => $feature,
             'insightList' => $insightList,
-            'feedbackCount' => $feedbackCount,
+            'insightsCount' => $insighsCount,
             'form' => $form
         ];
     }

@@ -20,15 +20,21 @@ class FeatureEventListener
 
 
     private $scoreService;
+    /**
+     * @var FeedbackCountService
+     */
+    private $countService;
 
-    public function __construct(FeatureScoreService $scoreService)
+    public function __construct(FeatureScoreService $scoreService, FeedbackCountService $countService)
     {
         $this->scoreService = $scoreService;
+        $this->countService = $countService;
     }
 
     public function onFeedbackUpdatedEvent()
     {
         $this->scoreService->recalculateScoreForFeatures();
+        $this->countService->recalculateFeedbackCountForPortalFeature();
     }
 
 
