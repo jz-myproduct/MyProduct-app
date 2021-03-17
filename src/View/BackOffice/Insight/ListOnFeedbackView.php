@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\View\BackOffice\Feedback;
+namespace App\View\BackOffice\Insight;
 
 
 use App\Entity\Company;
@@ -9,7 +9,7 @@ use App\Entity\Feedback;
 use App\Entity\Insight;
 use Doctrine\ORM\EntityManagerInterface;
 
-class FeatureView
+class ListOnFeedbackView
 {
     /**
      * @var EntityManagerInterface

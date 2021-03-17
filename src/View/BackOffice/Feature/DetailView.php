@@ -19,12 +19,12 @@ class DetailView
 
     public function create(Feature $feature)
     {
-        $feedbackCount = $this->manager->getRepository(Insight::class)
+        $insightsCount = $this->manager->getRepository(Insight::class)
             ->getInsightsCountForFeature($feature);
 
         return [
             'feature' => $feature,
-            'feedbackCount' => $feedbackCount
+            'insightsCount' => $insightsCount
         ];
     }
 

@@ -10,7 +10,7 @@
                 {% endif %}
 
                 {% if app.request.get('_route') == 'fo_portal_detail' %}
-                    {{ path('fo_portal_feedback_feature', {'portal_slug':portal.slug, 'feature_id':feature.id}) }}
+                    {{ path('fo_portal_feature_detail', {'portal_slug':portal.slug, 'feature_id':feature.id}) }}
                 {% endif %}
 
                 ">{{ feature.name }}</a>

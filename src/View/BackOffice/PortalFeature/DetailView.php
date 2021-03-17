@@ -23,14 +23,14 @@ class DetailView
 
     public function create(FormView $form, Feature $feature)
     {
-        $feedbackCount = $this->manager->getRepository(Insight::class)
+        $insightsCount = $this->manager->getRepository(Insight::class)
             ->getInsightsCountForFeature($feature);
 
         return [
             'form' => $form,
             'feature' => $feature,
             'portalFeature' => $feature->getPortalFeature() ?? null,
-            'feedbackCount' => $feedbackCount
+            'insightsCount' => $insightsCount
         ];
     }
 }

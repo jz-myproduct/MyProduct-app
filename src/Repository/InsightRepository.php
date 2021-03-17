@@ -89,4 +89,29 @@ class InsightRepository extends ServiceEntityRepository
         return (int)$stmt->fetchOne();
 
     }
+
+    public function getFeedbackCountForPortalFeature(Feature $feature)
+    {
+        $conn = $this->getEntityManager()
+            ->getConnection();
+
+        $sql = 'SELECT count(*)
+                FROM insight i 
+                JOIN feedback fb
+                ON i.feedback_id = fb.id
+                JOIN feature fe 
+                ON i.feature_id = fe.id
+                JOIN portal_feature p
+                ON fe.id = p.feature_id
+                WHERE i.feature_id = :id AND fb.from_portal = 1
+                    ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([
+            'id' => $feature->getId()
+        ]);
+        return (int)$stmt->fetchOne();
+
+    }
+
+
 }

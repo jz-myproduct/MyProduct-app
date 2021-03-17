@@ -25,7 +25,6 @@ use App\Handler\Feature\Search;
 use App\Handler\Insight\AddFromFeature;
 use App\Services\SlugService;
 use App\View\BackOffice\Feature\DetailView;
-use App\View\BackOffice\Feature\FeedbackListView;
 use App\View\BackOffice\Feature\FilterFormView;
 use App\View\BackOffice\Feature\ListView;
 use App\View\BackOffice\Feature\RoadmapView;
@@ -180,103 +179,17 @@ class FeatureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feature/{feature_id}/smazat", name="bo_feature_delete")
-     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
-     * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
-     * @param Company $company
-     * @param Feature $feature
-     * @param Delete $handler
-     * @return RedirectResponse
-     */
-    public function delete(Company $company, Feature $feature, Delete $handler)
-    {
-        $this->denyAccessUnlessGranted('edit', $feature);
-
-        $handler->handle($feature);
-
-        $this->addFlash('success', 'Feature smazána.');
-
-        return $this->redirectToRoute('bo_feature_list', [
-            'slug' => $company->getSlug()
-        ]);
-    }
-
-    /**
-     * @Route("/admin/{company_slug}/feature/{feature_id}/detail", name="bo_feature_detail")
-     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
-     * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
-     * @param Company $company
-     * @param Feature $feature
-     * @param DetailView $view
-     * @return Response
-     */
-    public function detail(
-        Company $company,
-        Feature $feature,
-        DetailView $view)
-    {
-        $this->denyAccessUnlessGranted('edit', $feature);
-
-        return $this->render('back_office/feature/detail.html.twig', $view->create($feature));
-    }
-
-    /**
-     * @Route("/admin/{company_slug}/feature/{feature_id}/feedback", name="bo_feature_feedback")
-     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
-     * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
-     * @param Company $company
-     * @param Feature $feature
-     * @param Request $request
-     * @param AddFromFeature $handler
-     * @param FeedbackListView $view
-     * @return RedirectResponse|Response
-     */
-    public function feedback(
-        Company $company,
-        Feature $feature,
-        Request $request,
-        AddFromFeature $handler,
-        FeedbackListView $view)
-    {
-        $this->denyAccessUnlessGranted('edit', $feature);
-
-        $form = $this->createForm(AddFromFeatureType::class, $insight = new Insight(), [
-            'weights' => $this->manager->getRepository(InsightWeight::class)->findAll()
-        ]);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $handler->handle($insight, $feature);
-
-            $this->addFlash('success', 'Feedback přidán');
-
-            return $this->redirectToRoute('bo_feature_feedback', [
-                'company_slug' => $company->getSlug(),
-                'feature_id' => $feature->getId(),
-            ]);
-        }
-
-        return $this->render(
-            'back_office/feature/feedback.html.twig',
-            $view->create($feature, $form->createView()));
-    }
-
-    /**
-     * @Route("/admin/{slug}/features/roadmap/{state_slug?}", name="bo_feature_list_roadmap")
+     * @Route("/admin/{slug}/features/roadmap", name="bo_feature_list_roadmap")
      * @ParamConverter("company", options={"mapping": {"slug": "slug"}})
-     * @ParamConverter("state", options={"mapping": {"state_slug": "slug"}})
      * @param Company $company
-     * @param FeatureState $state
      * @param RoadmapView $view
      * @param FilterFormView $formView
      * @param Request $request
      * @param Search $handler
      * @return Response
      */
-    public function roadmapView(
+    public function roadmap(
         Company $company,
-        ?FeatureState $state,
         RoadmapView $view,
         FilterFormView $formView,
         Request $request,
@@ -306,6 +219,49 @@ class FeatureController extends AbstractController
                 $tagsParam
             )
         );
+    }
+
+    /**
+     * @Route("/admin/{company_slug}/feature/{feature_id}/smazat", name="bo_feature_delete")
+     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
+     * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
+     * @param Company $company
+     * @param Feature $feature
+     * @param Delete $handler
+     * @return RedirectResponse
+     */
+    public function delete(Company $company, Feature $feature, Delete $handler)
+    {
+        $this->denyAccessUnlessGranted('edit', $feature);
+
+        $handler->handle($feature);
+
+        $this->addFlash('success', 'Feature smazána.');
+
+        return $this->redirectToRoute('bo_feature_list', [
+            'slug' => $company->getSlug()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/{company_slug}/feature/{feature_id}/popis", name="bo_feature_detail")
+     * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
+     * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
+     * @param Company $company
+     * @param Feature $feature
+     * @param DetailView $view
+     * @return Response
+     */
+    public function detail(
+        Company $company,
+        Feature $feature,
+        DetailView $view)
+    {
+        $this->denyAccessUnlessGranted('edit', $feature);
+
+        dump($this->manager->getRepository(Insight::class)->getFeedbackCountForPortalFeature($feature));
+
+        return $this->render('back_office/feature/detail.html.twig', $view->create($feature));
     }
 
     /**

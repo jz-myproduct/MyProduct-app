@@ -33,6 +33,8 @@ class AddFromPortal
             $portalFeature->getFeature()->getCompany()
        );
 
+       $portalFeature->setFeedbackCountUpByOne();
+
        $insight->setFeature(
          $portalFeature->getFeature()
        );
