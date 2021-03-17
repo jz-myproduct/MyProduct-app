@@ -18,7 +18,7 @@
         </nav>
     </div>
 
-    <main class="container mt-4">
+    <main class="container mt-4 pb-5">
         {% include('shared_components/flash_messages_container.html.twig') %}
 
         {% block content %}{% endblock %}
@@ -26,7 +26,7 @@
 
     <footer class="footer">
         <div class="container text-right">
-            <span class="text-muted">Vytvořeno pomocí <a href="{{ path('fo_home') }}" class="text-secondary">Product tool</a></span>
+            <span class="text-muted">Vytvořeno pomocí <a href="{{ path('fo_home') }}" class="text-secondary">{{ app_name }}</a></span>
         </div>
     </footer>
 {% endblock %}

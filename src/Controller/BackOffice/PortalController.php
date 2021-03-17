@@ -12,7 +12,7 @@ use App\Entity\PortalFeatureState;
 use App\Form\Portal\SettingsFormType;
 use App\FormRequest\Portal\SettingsRequest;
 use App\Handler\Portal\Edit;
-use App\Services\SlugService;
+use App\Service\SlugService;
 use App\View\Shared\PortalDetail;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;

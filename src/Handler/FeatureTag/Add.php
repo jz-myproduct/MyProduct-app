@@ -7,7 +7,7 @@ namespace App\Handler\FeatureTag;
 use App\Entity\Company;
 use App\Entity\FeatureTag;
 use App\FormRequest\FeatureTag\AddEditRequest;
-use App\Services\SlugService;
+use App\Service\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
 
 class Add

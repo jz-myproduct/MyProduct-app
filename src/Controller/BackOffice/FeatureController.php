@@ -24,7 +24,7 @@ use App\Handler\Feature\Edit;
 use App\Handler\Feature\MoveState;
 use App\Handler\Feature\Search;
 use App\Handler\Insight\AddFromFeature;
-use App\Services\SlugService;
+use App\Service\SlugService;
 use App\View\BackOffice\Feature\DetailView;
 use App\View\BackOffice\Feature\FilterFormView;
 use App\View\BackOffice\Feature\ListView;

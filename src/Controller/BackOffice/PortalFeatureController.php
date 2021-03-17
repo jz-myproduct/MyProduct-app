@@ -123,6 +123,8 @@ class PortalFeatureController extends AbstractController
 
         $handler->handle($file, $feature);
 
+        $this->addFlash('success', 'Obrázek smazán.');
+
         return $this->redirectToRoute('bo_feature_portal', [
             'company_slug' => $company->getSlug(),
             'feature_id' => $feature->getId()

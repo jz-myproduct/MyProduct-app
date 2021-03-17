@@ -6,7 +6,7 @@ namespace App\Handler\PortalFeature;
 
 use App\Entity\Feature;
 use App\Entity\File;
-use App\Services\FileUploader;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 
 class DeleteImage

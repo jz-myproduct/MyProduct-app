@@ -6,7 +6,7 @@ namespace App\Handler\Company;
 
 use App\Entity\Company;
 use App\FormRequest\Settings\InfoRequest;
-use App\Services\SlugService;
+use App\Service\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
 
 class Edit

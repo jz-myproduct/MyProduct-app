@@ -11,7 +11,7 @@ use App\Entity\Insight;
 use App\Entity\InsightWeight;
 use App\Entity\Portal;
 use App\Entity\PortalFeatureState;
-use App\Services\SlugService;
+use App\Service\SlugService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;

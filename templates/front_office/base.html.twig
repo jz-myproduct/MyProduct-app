@@ -7,7 +7,7 @@
 {% block body %}
     <div class="bg-primary">
         <nav class="navbar navbar-expand-lg navbar-light container">
-            <a class="navbar-brand text-light font-weight-bold" href="#">Product tool</a>
+            <a class="navbar-brand text-light font-weight-bold" href="#">{{ app_name }}</a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 {% if not app.user %}
                 <ul class="navbar-nav mr-auto">
@@ -41,7 +41,7 @@
 
     <footer class="footer">
         <div class="container">
-            <span class="text-muted">Product tool &copy; 2021 Jan Zabloudil</span>
+            <span class="text-muted">{{ app_name }} &copy; 2021 {{ author }}</span>
         </div>
     </footer>
 {% endblock %}

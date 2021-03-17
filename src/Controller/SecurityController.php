@@ -19,7 +19,7 @@ use App\Handler\Company\Password\Change;
 use App\Handler\Company\Password\Renew;
 use App\Handler\Company\Password\SetForgotten;
 use App\Security\LoginFormAuthenticator;
-use App\Services\SlugService;
+use App\Service\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;

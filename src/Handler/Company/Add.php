@@ -7,7 +7,7 @@ namespace App\Handler\Company;
 use App\Entity\Company;
 use App\Entity\Portal;
 use App\FormRequest\Security\RegisterRequest;
-use App\Services\SlugService;
+use App\Service\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
