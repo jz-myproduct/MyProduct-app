@@ -80,5 +80,5 @@ class SlugService
     {
         return $this->slugger->slug($value, '-')->folded()->toString();
     }
-    
+
 }

@@ -46,11 +46,6 @@ class DefaultController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        $text = 'ADFDAFšč    řŽ-ů.afdf--df';
-
-        dump($slugger->slug($text, '-')->folded()->toString());
-
-
         return $this->render('back_office/home.html.twig');
     }
 
