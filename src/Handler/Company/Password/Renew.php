@@ -27,18 +27,27 @@ class Renew
      * @var MailerInterface
      */
     private $mailer;
+
     private $fromMail;
+
+    private $domainUrl;
+
+    private $appName;
 
     public function __construct(
         EntityManagerInterface $manager,
         RouterInterface $router,
         MailerInterface $mailer,
-        $fromMail)
+        $fromMail,
+        $domainUrl,
+        $appName)
     {
         $this->manager = $manager;
         $this->router = $router;
         $this->mailer = $mailer;
         $this->fromMail = $fromMail;
+        $this->domainUrl = $domainUrl;
+        $this->appName = $appName;
     }
 
     public function handle(Company $company)
@@ -81,10 +90,12 @@ class Renew
             'hash' => $company->getPasswordRenewHash()
         ]);
 
+        $url = $this->domainUrl.$url;
+
         return (new TemplatedEmail())
                     ->from($this->fromMail)
                     ->to($company->getEmail())
-                    ->subject('Obnovení hesla')
+                    ->subject('Obnovení hesla | '.$this->appName)
                     ->htmlTemplate('email/forgotten_password.html.twig')
                     ->textTemplate('email/forgotten_password.txt.twig')
                     ->context([

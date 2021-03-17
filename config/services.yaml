@@ -7,6 +7,9 @@ parameters:
     upload.directory.name: 'uploads'
     upload.directory: '%kernel.project_dir%/public/%upload.directory.name%'
     fromMail: 'ja@janzabloudil.cz'
+    app.name: 'Product tool'
+    domain.url: 'http://127.0.0.1:8000'
+    author: 'Jan Zabloudil'
 
 
 services:
@@ -45,3 +48,5 @@ services:
     App\Handler\Company\Password\Renew:
         arguments:
             $fromMail: '%fromMail%'
+            $domainUrl: '%domain.url%'
+            $appName: '%app.name%'

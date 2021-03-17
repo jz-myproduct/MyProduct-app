@@ -3,3 +3,6 @@ twig:
     form_themes: ['bootstrap_4_layout.html.twig']
     globals:
         upload_directory: '%upload.directory.name%'
+        app_name: '%app.name%'
+        domain_url: '%domain.url%'
+        author: '%author%'
