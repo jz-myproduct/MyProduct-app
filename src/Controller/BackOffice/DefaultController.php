@@ -21,6 +21,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class DefaultController extends AbstractController
 {
@@ -40,10 +42,9 @@ class DefaultController extends AbstractController
      * @param Company $company
      * @return Response
      */
-    public function index(Company $company): Response
+    public function index(Company $company, SluggerInterface $slugger): Response
     {
         $this->denyAccessUnlessGranted('edit', $company);
-
 
         return $this->render('back_office/home.html.twig');
     }
