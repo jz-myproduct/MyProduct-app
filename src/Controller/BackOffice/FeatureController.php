@@ -115,10 +115,6 @@ class FeatureController extends AbstractController
         ]);
         $form->handleRequest($request);
 
-        if(!$this->isCsrfTokenValid() ){
-
-        }
-
         if ($form->isSubmitted() && $form->isValid()) {
 
             $handler->handle($formRequest, $feature);
