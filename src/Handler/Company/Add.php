@@ -47,7 +47,7 @@ class Add
             $this->passwordEncoder->encodePassword($company, $request->password)
         );
         $company->setSlug(
-            $this->slugService->createCompanySlug(
+            $this->slugService->createInitialCompanySlug(
                 $request->name
             )
         );
