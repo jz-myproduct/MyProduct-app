@@ -7,7 +7,6 @@ use App\Entity\Feature;
 use App\Entity\Feedback;
 use App\Entity\Insight;
 use App\Form\Feedback\AddEditType;
-use App\Form\AddFromFeedbackType;
 use App\FormRequest\Feedback\AddEditRequest;
 use App\Handler\Feedback\Add;
 use App\Handler\Feedback\Delete;
@@ -60,7 +59,7 @@ class FeedbackController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $handler->handle($formRequest, $company);
+            $handler->add($formRequest, $company);
 
             $this->addFlash('success', 'Feedback přidán.');
 

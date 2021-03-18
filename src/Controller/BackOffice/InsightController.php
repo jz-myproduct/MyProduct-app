@@ -13,6 +13,7 @@ use App\Form\Insight\AddFromFeatureType;
 use App\Form\Insight\AddFromFeedbackType;
 use App\FormRequest\Insight\AddFromFeatureRequest;
 use App\FormRequest\Insight\AddFromFeedbackRequest;
+use App\Handler\Insight\Add;
 use App\Handler\Insight\AddFromFeature;
 use App\Handler\Insight\AddFromFeedback;
 use App\Handler\Insight\Delete;
@@ -51,7 +52,7 @@ class InsightController extends AbstractController
      * @param Feedback $feedback
      * @param Feature $feature
      * @param Request $request
-     * @param AddFromFeedback $handler
+     * @param Add $handler
      * @return RedirectResponse|Response
      */
     public function addFromFeedback(
@@ -59,7 +60,7 @@ class InsightController extends AbstractController
         Feedback $feedback,
         Feature $feature,
         Request $request,
-        AddFromFeedback $handler)
+        Add $handler)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
         $this->denyAccessUnlessGranted('edit', $feedback);
@@ -84,7 +85,7 @@ class InsightController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $handler->handle($formRequest, $feedback, $feature);
+            $handler->addFromFeedback($formRequest, $feedback, $feature);
 
             $this->addFlash('success', 'Featura připojena.');
 
@@ -106,7 +107,7 @@ class InsightController extends AbstractController
      * @param Company $company
      * @param Feature $feature
      * @param Request $request
-     * @param AddFromFeature $handler
+     * @param Add $handler
      * @param ListOnFeatureView $view
      * @return RedirectResponse|Response
      */
@@ -114,7 +115,7 @@ class InsightController extends AbstractController
         Company $company,
         Feature $feature,
         Request $request,
-        AddFromFeature $handler,
+        Add $handler,
         ListOnFeatureView $view)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
@@ -126,7 +127,7 @@ class InsightController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $handler->handle($formRequest, $feature);
+            $handler->addFromFeature($formRequest, $feature);
 
             $this->addFlash('success', 'Feedback přidán');
 

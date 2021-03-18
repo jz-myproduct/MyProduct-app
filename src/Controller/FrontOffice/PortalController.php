@@ -15,6 +15,7 @@ use App\Form\Feedback\AddEditType;
 use App\FormRequest\Feedback\AddEditRequest;
 use App\FormRequest\Insight\AddFromFeatureRequest;
 use App\Handler\Feedback\AddFromPortal;
+use App\Handler\Feedback\Add;
 use App\View\Shared\PortalDetail;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -59,20 +60,20 @@ class PortalController extends AbstractController
     }
 
     /**
-     * @Route("/portal/{portal_slug}/feature/{feature_id}", name="fo_portal_feature_detail")
+     * @Route("/portal/{portal_slug}/feature/{feature_id}", name="fo_portal_insight_add")
      * @ParamConverter("portal", options={"mapping": {"portal_slug": "slug"}})
      * @ParamConverter("portalFeature", options={"mapping": {"feature_id": "id"}})
      * @param Portal $portal
      * @param PortalFeature $portalFeature
      * @param Request $request
-     * @param \App\Handler\Insight\AddFromPortal $handler
+     * @param \App\Handler\Insight\Add $handler
      * @return Response
      */
-    public function featureDetail(
+    public function addInsight(
         Portal $portal,
         PortalFeature $portalFeature,
         Request $request,
-        \App\Handler\Insight\AddFromPortal $handler)
+        \App\Handler\Insight\Add $handler)
     {
         if(! $this->isAllowToBeDisplayed($portalFeature, $portal)){
             throw new NotFoundHttpException();
@@ -85,7 +86,7 @@ class PortalController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $handler->handle($formRequest, $portalFeature);
+            $handler->addFromPortal($formRequest, $portalFeature);
 
             $this->addFlash('success', 'Děkujeme za feeedback!');
 
@@ -95,7 +96,7 @@ class PortalController extends AbstractController
         }
 
 
-        return $this->render('front_office/portal/feedback.html.twig', [
+        return $this->render('front_office/portal/feedback_insight.html.twig', [
             'form' => $form->createView(),
             'portal' => $portal,
             'feature' => $portalFeature
@@ -106,10 +107,10 @@ class PortalController extends AbstractController
      * @Route("/portal/{slug}/feedback/pridat", name="fo_portal_feedback_add")
      * @param Portal $portal
      * @param Request $request
-     * @param AddFromPortal $handler
+     * @param Add $handler
      * @return RedirectResponse|Response
      */
-    public function addFeedback(Portal $portal, Request $request, AddFromPortal $handler)
+    public function addFeedback(Portal $portal, Request $request, Add $handler)
     {
         if (!$portal->getDisplay()) {
             throw new NotFoundHttpException();
@@ -120,7 +121,7 @@ class PortalController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $handler->handleGeneral($formRequest, $portal->getCompany());
+            $handler->addFromPortal($formRequest, $portal->getCompany());
 
             $this->addFlash('success', 'Děkujeme za feeedback!');
 
@@ -129,7 +130,7 @@ class PortalController extends AbstractController
             ]);
         }
 
-        return $this->render('front_office/portal/feedback.html.twig', [
+        return $this->render('front_office/portal/feedback_insight.html.twig', [
             'portal' => $portal,
             'form' => $form->createView()
         ]);
