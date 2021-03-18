@@ -30,7 +30,7 @@ class Redirect
 
         if ($param === 'feature') {
 
-            return $this->router->generate('bo_feature_feedback', [
+            return $this->router->generate('bo_insight_feature_list', [
                 'feature_id' => $insight->getFeature()->getId(),
                 'company_slug' => $company->getSlug()
             ]);
@@ -39,7 +39,7 @@ class Redirect
 
         if ($param === 'feedback') {
 
-            return $this->router->generate('bo_feedback_features', [
+            return $this->router->generate('bo_insight_feedback_list', [
                 'feedback_id' => $insight->getFeedback()->getId(),
                 'company_slug' => $company->getSlug()
             ]);
