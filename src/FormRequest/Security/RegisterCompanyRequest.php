@@ -8,7 +8,7 @@ use App\Constraints as Custom;
 
 
 
-class RegisterRequest
+class RegisterCompanyRequest
 {
 
     /**

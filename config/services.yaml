@@ -46,7 +46,7 @@ services:
         arguments:
             $uploadDirectory: '%upload.directory%'
 
-    App\Handler\Company\Password\Renew:
+    App\Handler\Security\RenewPassword:
         arguments:
             $fromMail: '%fromMail%'
             $domainUrl: '%domain.url%'

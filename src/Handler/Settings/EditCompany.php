@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Handler\Company;
+namespace App\Handler\Settings;
 
 
 use App\Entity\Company;
@@ -9,7 +9,7 @@ use App\FormRequest\Settings\InfoRequest;
 use App\Service\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
 
-class Edit
+class EditCompany
 {
     /**
      * @var EntityManagerInterface

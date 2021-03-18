@@ -1,16 +1,15 @@
 <?php
 
 
-namespace App\Handler\Company\Password;
+namespace App\Handler\Settings;
 
 
 use App\Entity\Company;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class SetForgotten
+class ChangePassword
 {
-
     /**
      * @var EntityManagerInterface
      */
@@ -19,7 +18,6 @@ class SetForgotten
      * @var UserPasswordEncoderInterface
      */
     private $passwordEncoder;
-
 
     public function __construct(EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -36,10 +34,8 @@ class SetForgotten
             )
         );
 
-        $company->setPasswordRenewHash(null);
-        $company->setPasswordHashValidUntil(null);
-
         $this->manager->flush();
+
     }
 
 }

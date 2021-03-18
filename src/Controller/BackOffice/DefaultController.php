@@ -8,7 +8,7 @@ use App\Entity\Feedback;
 use App\Entity\Portal;
 use App\Form\Settings\InfoType;
 use App\FormRequest\Settings\InfoRequest;
-use App\Handler\Company\Edit;
+use App\Handler\Settings\EditCompany;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,10 +54,10 @@ class DefaultController extends AbstractController
      * @Route("/admin/{slug}/nastaveni/info", name="bo_settings_info")
      * @param Company $company
      * @param Request $request
-     * @param Edit $handler
+     * @param EditCompany $handler
      * @return Response
      */
-    public function settings(Company $company, Request $request, Edit $handler): Response
+    public function settings(Company $company, Request $request, EditCompany $handler): Response
     {
         $this->denyAccessUnlessGranted('edit', $company);
 

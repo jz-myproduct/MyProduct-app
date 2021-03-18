@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Handler\Company\Password;
+namespace App\Handler\Security;
 
 
 use App\Entity\Company;
@@ -13,7 +13,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints\DateTime;
 
-class Renew
+class RenewPassword
 {
     /**
      * @var EntityManagerInterface

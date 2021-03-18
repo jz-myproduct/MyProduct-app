@@ -11,13 +11,11 @@ use App\Form\Security\RenewPassword;
 use App\Form\Security\SetNewPassword;
 use App\FormRequest\Settings\ChangePasswordRequest;
 use App\FormRequest\Security\RenewPasswordRequest;
-use App\FormRequest\Security\RegisterRequest;
+use App\FormRequest\Security\RegisterCompanyRequest;
 use App\FormRequest\Security\SetNewPasswordRequest;
-use App\Handler\Company\Add;
-use App\Handler\Company\Edit;
-use App\Handler\Company\Password\Change;
-use App\Handler\Company\Password\Renew;
-use App\Handler\Company\Password\SetForgotten;
+use App\Handler\Security\RegisterCompany;
+use App\Handler\Settings\ChangePassword;
+use App\Handler\Security\SetForgottenPassword;
 use App\Security\LoginFormAuthenticator;
 use App\Service\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -77,10 +75,10 @@ class SecurityController extends AbstractController
     /**
      * @Route("/zaregistrovat", name="fo_register")
      * @param Request $request
-     * @param Add $handler
+     * @param RegisterCompany $handler
      * @return Response
      */
-    public function register(Request $request, Add $handler): Response
+    public function register(Request $request, RegisterCompany $handler): Response
     {
         if ($this->isGranted('ROLE_USER'))
         {
@@ -89,7 +87,7 @@ class SecurityController extends AbstractController
             ]);
         }
 
-        $form = $this->createForm(RegisterCompanyFormType::class, $formRequest = new RegisterRequest());
+        $form = $this->createForm(RegisterCompanyFormType::class, $formRequest = new RegisterCompanyRequest());
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
@@ -148,10 +146,10 @@ class SecurityController extends AbstractController
      * @Route("/admin/{slug}/nastaveni/zmenit-heslo", name="bo_settings_password")
      * @param Company $company
      * @param Request $request
-     * @param Change $handler
+     * @param ChangePassword $handler
      * @return Response
      */
-    public function changePassowrd(Company $company, Request $request, Change $handler): Response
+    public function changePassowrd(Company $company, Request $request, ChangePassword $handler): Response
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
@@ -186,10 +184,10 @@ class SecurityController extends AbstractController
     /**
      * @Route("/zapomenute-heslo", name="fo_renew_password")
      * @param Request $request
-     * @param Renew $handler
+     * @param RenewPassword $handler
      * @return RedirectResponse|Response
      */
-    public function renewPassword(Request $request, Renew $handler)
+    public function renewPassword(Request $request, RenewPassword $handler)
     {
         if($this->isGranted('ROLE_USER')){
             return $this->redirectToRoute('bo_home', [
@@ -227,11 +225,11 @@ class SecurityController extends AbstractController
      * @ParamConverter("company", options={"mapping": {"hash": "passwordRenewHash"}})
      * @param Company $company
      * @param Request $request
-     * @param SetForgotten $handler
+     * @param SetForgottenPassword $handler
      * @return Response
      * @throws \Exception
      */
-    public function setNewPassword(Company $company, Request $request, SetForgotten $handler)
+    public function setNewPassword(Company $company, Request $request, SetForgottenPassword $handler)
     {
         if($company->getPasswordHashValidUntil() < new \DateTime()){
 

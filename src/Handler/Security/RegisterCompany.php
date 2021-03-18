@@ -1,18 +1,18 @@
 <?php
 
 
-namespace App\Handler\Company;
+namespace App\Handler\Security;
 
 
 use App\Entity\Company;
 use App\Entity\Portal;
-use App\FormRequest\Security\RegisterRequest;
+use App\FormRequest\Security\RegisterCompanyRequest;
 use App\Service\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class Add
+class RegisterCompany
 {
     /**
      * @var EntityManagerInterface
@@ -37,7 +37,7 @@ class Add
         $this->slugService = $slugService;
     }
 
-    public function handle(RegisterRequest $request)
+    public function handle(RegisterCompanyRequest $request)
     {
         $company = new Company();
 
