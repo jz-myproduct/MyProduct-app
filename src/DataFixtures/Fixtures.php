@@ -50,7 +50,7 @@ class Fixtures extends Fixture
         $company->setEmail('h@h.hh');
         $company->setName('Honzova firma');
         $company->setSlug(
-            $this->slugService->createCompanySlug('Honzova firma')
+            $this->slugService->createInitialCompanySlug('Honzova firma')
         );
         $company->setCreatedAt($currentDateTime);
         $company->setUpdatedAt($currentDateTime);

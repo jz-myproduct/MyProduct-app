@@ -37,7 +37,21 @@ class CompanyRepository extends ServiceEntityRepository implements PasswordUpgra
         $this->_em->flush();
     }
 
-    public function getSimilarSlugsCount(String $slug): int
+    public function getSimilarSlugsCountForExistingCompany(String $slug, Company $company): int
+    {
+        $count = $this->createQueryBuilder('c')
+            ->select('count(c.id)')
+            ->where('c.slug LIKE :slug')
+            ->andWhere('c != :company')
+            ->setParameter('slug', $slug.'%')
+            ->setParameter('company', $company)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return (int)$count;
+    }
+
+    public function getSimilarSlugsCountForNewCompany(String $slug)
     {
         $count = $this->createQueryBuilder('c')
             ->select('count(c.id)')
