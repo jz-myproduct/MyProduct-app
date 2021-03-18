@@ -66,7 +66,12 @@ class RoadmapView
 
     private function prepareColumnWidth($states)
     {
-        return round(100 / count($states));
+        if($states)
+        {
+            return round(100 / count($states));
+        }
+
+        return 100;
     }
 
 }

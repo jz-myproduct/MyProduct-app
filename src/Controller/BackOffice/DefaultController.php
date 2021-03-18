@@ -6,6 +6,7 @@ use App\Entity\Company;
 
 use App\Entity\Feedback;
 use App\Entity\Portal;
+use App\Entity\PortalFeatureState;
 use App\Form\Settings\InfoType;
 use App\FormRequest\Settings\InfoRequest;
 use App\Handler\Settings\EditCompany;

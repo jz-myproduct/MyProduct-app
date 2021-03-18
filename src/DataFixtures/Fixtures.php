@@ -54,7 +54,7 @@ class Fixtures extends Fixture
         );
         $company->setCreatedAt($currentDateTime);
         $company->setUpdatedAt($currentDateTime);
-        $company->setRoles( [Company::ROLE_USER] );
+        $company->setRoles( [Company::getUserRole()] );
 
         $manager->persist($company);
 
@@ -83,7 +83,9 @@ class Fixtures extends Fixture
             $manager->persist($featureState);
         }
 
+
         /* DetailView features states */
+
         foreach ( $this->getPortalFeaturesData() as $portalFeatureStateData)
         {
             $portalFeatureState = new PortalFeatureState();
@@ -95,6 +97,7 @@ class Fixtures extends Fixture
 
             $manager->persist($portalFeatureState);
         }
+
 
         /* TODO vylepšit, abych nemusel 2x dělat flush */
         $manager->flush();

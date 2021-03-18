@@ -50,9 +50,8 @@ class PortalController extends AbstractController
      */
     public function detail(Portal $portal, ?PortalFeatureState $state, PortalDetail $view)
     {
-        if(! $portal->getDisplay()){
-            throw new NotFoundHttpException();
-        }
+
+        $this->isAllowToBeDisplayed($portal);
 
         return $this->render('front_office/portal/detail.html.twig',
             $view->create($portal->getCompany(), $state)
@@ -75,7 +74,8 @@ class PortalController extends AbstractController
         Request $request,
         \App\Handler\Insight\Add $handler)
     {
-        if(! $this->isAllowToBeDisplayed($portalFeature, $portal)){
+        if(! $this->isFeatureAllowToBeDisplayed($portalFeature, $portal))
+        {
             throw new NotFoundHttpException();
         }
 
@@ -112,9 +112,7 @@ class PortalController extends AbstractController
      */
     public function addFeedback(Portal $portal, Request $request, Add $handler)
     {
-        if (!$portal->getDisplay()) {
-            throw new NotFoundHttpException();
-        }
+        $this->isAllowToBeDisplayed($portal);
 
         $form = $this->createForm(AddEditType::class, $formRequest = new AddEditRequest());
         $form->handleRequest($request);
@@ -136,7 +134,22 @@ class PortalController extends AbstractController
         ]);
     }
 
-    private function isAllowToBeDisplayed(PortalFeature $portalFeature, Portal $portal)
+    private function isAllowToBeDisplayed(Portal $portal)
+    {
+
+        if (!$portal->getDisplay())
+        {
+            throw new NotFoundHttpException();
+        }
+
+        if(! $this->manager->getRepository(PortalFeatureState::class)->findAll())
+        {
+            throw new NotFoundHttpException();
+        }
+
+    }
+
+    private function isFeatureAllowToBeDisplayed(PortalFeature $portalFeature, Portal $portal)
     {
 
         if(! $portal->getDisplay())
@@ -150,6 +163,11 @@ class PortalController extends AbstractController
         }
 
         if($portalFeature->getFeature()->getCompany() !== $portal->getCompany())
+        {
+            return false;
+        }
+
+        if(! $this->manager->getRepository(PortalFeatureState::class)->findAll())
         {
             return false;
         }

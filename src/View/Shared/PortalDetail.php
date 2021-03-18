@@ -30,7 +30,7 @@ class PortalDetail
         $stateList = $this->manager->getRepository(PortalFeatureState::class)->findAll();
 
         $portalFeatureList = $this->manager->getRepository(PortalFeature::class)
-            ->findFeaturesForPortalByState($company, $currentState);
+                ->findFeaturesForPortalByState($company, $currentState);
 
         $array = [
             'currentState' => $currentState,
