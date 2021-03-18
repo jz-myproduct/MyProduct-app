@@ -7,6 +7,7 @@ namespace App\View\BackOffice\Insight;
 use App\Entity\Company;
 use App\Entity\Feedback;
 use App\Entity\Insight;
+use App\Handler\Insight\Redirect;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ListOnFeedbackView
@@ -33,7 +34,8 @@ class ListOnFeedbackView
             'feedback' => $feedback,
             'relatedFeatureList' => $this->prepareRelatedFeatures($feedback),
             'unrelatedFeatureList' => $unrelatedFeatureList,
-            'insightsCount' => $insightsCount
+            'insightsCount' => $insightsCount,
+            'redirectToFeedback' => Redirect::getRedirectToFeedback()
         ];
     }
 
