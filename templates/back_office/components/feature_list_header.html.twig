@@ -3,8 +3,30 @@
 <a href="{{ path('bo_feature_add', {'slug':app.user.slug}) }}" class="btn btn-primary mt-3" role="button">Přidat feature</a>
 <a href="{{ path('bo_feature_tag_list', {'slug':app.user.slug}) }}" class="btn btn-outline-secondary mt-3" role="button">Přehled tagů</a>
 
-<div class="mt-3" id="feature_state_filter">{{ form(form) }}</div>
+<div class="mt-3" id="feature_state_filter">
+    {% if app.request.get('_route') == 'bo_feature_list' %}
 
+        {{ form_start(form) }}
+
+        {{ form_row(form.state) }}
+
+        {%  if tagsExist %}
+            {{ form_row(form.tags) }}
+            {{ form_widget(form._token) }}
+            {{ form_row(form.save) }}
+            {{ form_end(form, {'render_rest':false}) }}
+        {% else %}
+            {{ form_widget(form._token) }}
+            {{ form_row(form.save) }}
+            {{ form_end(form, {'render_rest':false}) }}
+        {% endif %}
+
+    {% endif %}
+
+    {% if app.request.get('_route') == 'bo_feature_list_roadmap' and tagsExist %}
+        {{ form(form) }}
+    {% endif %}
+</div>
 
 <ul class="nav nav-tabs mt-4 justify-content-center">
     <li class="nav-item">

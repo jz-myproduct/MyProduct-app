@@ -5,6 +5,7 @@ namespace App\View\BackOffice\Feature;
 
 
 
+use App\Entity\Company;
 use App\Entity\FeatureState;
 use App\Entity\FeatureTag;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,12 +23,12 @@ class FilterFormView
         $this->manager = $manager;
     }
 
-    public function createTag()
+    public function createTags(Company $company)
     {
-        return $this->prepareTagChoices();
+        return $this->prepareTagChoices($company);
     }
 
-    public function createState()
+    public function createStates()
     {
         return $this->prepareStateChoices();
     }
@@ -46,12 +47,12 @@ class FilterFormView
         return $array;
     }
 
-    private function prepareTagChoices()
+    private function prepareTagChoices(Company $company)
     {
 
         $array = array();
 
-        foreach($this->manager->getRepository(FeatureTag::class)->findAll() as $tag)
+        foreach($this->manager->getRepository(FeatureTag::class)->findBy(['company' => $company]) as $tag)
         {
             $array[$tag->getName()] = $tag->getId();
         }

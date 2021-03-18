@@ -27,9 +27,18 @@ class Edit
         $feature->setDescription($request->description);
         $feature->setState($request->state);
 
-        foreach ($request->tags as $tag)
-        {
-            $feature->addTag($tag);
+        if($feature->getTags()){
+            foreach ($feature->getTags() as $tag)
+            {
+                $feature->removeTag($tag);
+            }
+        }
+
+        if($request->tags){
+            foreach ($request->tags as $tag)
+            {
+                $feature->addTag($tag);
+            }
         }
 
         $this->manager->flush();
