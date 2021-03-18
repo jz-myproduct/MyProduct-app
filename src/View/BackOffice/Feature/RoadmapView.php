@@ -31,7 +31,9 @@ class RoadmapView
         return [
             'features' => $this->prepareFeaturesData($company, $states, $tagsParam),
             'columnWidth' => $this->prepareColumnWidth($states),
-            'form' => $form
+            'form' => $form,
+            'tagsExist' => $company->getFeatureTags()->toArray() ? true : false
+
         ];
     }
 

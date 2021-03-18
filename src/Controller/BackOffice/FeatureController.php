@@ -155,8 +155,8 @@ class FeatureController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $company);
 
         $form = $this->createForm(ListFilterType::class, $formRequest = new ListFilterRequest(), [
-            'stateChoices' => $formView->createState(),
-            'tagChoices' => $formView->createTag(),
+            'stateChoices' => $formView->createStates(),
+            'tagChoices' => $formView->createTags($company),
             'currentStateChoice' => $state ? $state->getId() : null,
             'currentTagChoices' => $tagsParam = $request->get('tags')
         ]);
@@ -200,7 +200,7 @@ class FeatureController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $company);
 
         $form = $this->createForm(RoadmapFilterType::class, $formRequest = new RoadmapFilterRequest(), [
-            'tagChoices' => $formView->createTag(),
+            'tagChoices' => $formView->createTags($company),
             'currentTagChoices' => $tagsParam = $request->get('tags')
         ]);
 

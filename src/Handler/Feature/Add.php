@@ -28,9 +28,11 @@ class Add
         $feature->setDescription($request->description);
         $feature->setState($request->state);
 
-        foreach($request->tags as $tag)
-        {
-            $feature->addTag($tag);
+        if($request->tags){
+            foreach($request->tags as $tag)
+            {
+                $feature->addTag($tag);
+            }
         }
 
         $feature->setCompany($company);

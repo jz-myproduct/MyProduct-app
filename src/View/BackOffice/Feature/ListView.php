@@ -35,7 +35,8 @@ class ListView
 
         return [
             'featureList' => $featureList,
-            'form' => $form
+            'form' => $form,
+            'tagsExist' => $company->getFeatureTags()->toArray() ? true : false
         ];
     }
 
