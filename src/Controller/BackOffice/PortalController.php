@@ -57,6 +57,14 @@ class PortalController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
+        /*
+         * In case there is no state, portal cannot be displayed
+         */
+        if(! $this->manager->getRepository(PortalFeatureState::class)->findAll())
+        {
+            return $this->render('back_office/portal/denied.html.twig');
+        }
+
         $portal = $company->getPortal();
 
         $form = $this->createForm(SettingsFormType::class, $formRequest = SettingsRequest::fromPortal($portal));

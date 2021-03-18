@@ -50,7 +50,13 @@ class PortalController extends AbstractController
      */
     public function detail(Portal $portal, ?PortalFeatureState $state, PortalDetail $view)
     {
-        if(! $portal->getDisplay()){
+        if(! $this->manager->getRepository(PortalFeatureState::class)->findAll())
+        {
+            throw new NotFoundHttpException();
+        }
+
+        if(! $portal->getDisplay())
+        {
             throw new NotFoundHttpException();
         }
 
@@ -75,7 +81,8 @@ class PortalController extends AbstractController
         Request $request,
         \App\Handler\Insight\Add $handler)
     {
-        if(! $this->isAllowToBeDisplayed($portalFeature, $portal)){
+        if(! $this->isAllowToBeDisplayed($portalFeature, $portal))
+        {
             throw new NotFoundHttpException();
         }
 
@@ -112,7 +119,13 @@ class PortalController extends AbstractController
      */
     public function addFeedback(Portal $portal, Request $request, Add $handler)
     {
-        if (!$portal->getDisplay()) {
+        if (!$portal->getDisplay())
+        {
+            throw new NotFoundHttpException();
+        }
+
+        if(! $this->manager->getRepository(PortalFeatureState::class)->findAll())
+        {
             throw new NotFoundHttpException();
         }
 
@@ -150,6 +163,11 @@ class PortalController extends AbstractController
         }
 
         if($portalFeature->getFeature()->getCompany() !== $portal->getCompany())
+        {
+            return false;
+        }
+
+        if(! $this->manager->getRepository(PortalFeatureState::class)->findAll())
         {
             return false;
         }
