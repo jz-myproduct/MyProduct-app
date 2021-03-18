@@ -46,8 +46,7 @@ class CompanyFixtures extends Fixture
 
             $manager->persist($company);
 
-            $name = strtolower($data['name']);
-            $this->setReference("company-{$name}", $company);
+            $this->setReference('company-'.strtolower($data['name']), $company);
         }
 
         $manager->flush();
