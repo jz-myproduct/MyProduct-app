@@ -165,14 +165,16 @@ class InsightController extends AbstractController
      * @param Company $company
      * @param Insight $insight
      * @param Request $request
-     * @param Edit $handler
+     * @param Edit $editHandler
+     * @param Redirect $redirectHandler
      * @return RedirectResponse|Response
      */
     public function edit(
         Company $company,
         Insight $insight,
         Request $request,
-        Edit $handler)
+        Edit $editHandler,
+        Redirect $redirectHandler)
     {
         $this->denyAccessUnlessGranted('edit', $insight);
 
@@ -185,14 +187,17 @@ class InsightController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $handler->handle($formRequest, $insight);
+            $editHandler->handle($formRequest, $insight);
 
             $this->addFlash('success', 'Spojení upraveno.');
 
-            return $this->redirectToRoute('bo_insight_feedback_list',[
-                'company_slug' => $company->getSlug(),
-                'feedback_id' => $insight->getFeedback()->getId()
-            ]);
+            return new RedirectResponse(
+                $redirectHandler->handle(
+                    $request->query->get('p'),
+                    $insight,
+                    $company
+                )
+            );
         }
 
         return $this->render('back_office/insight/add_edit.html.twig', [
