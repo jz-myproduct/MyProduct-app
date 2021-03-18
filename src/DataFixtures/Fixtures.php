@@ -97,7 +97,7 @@ class Fixtures extends Fixture
 
             $manager->persist($portalFeatureState);
         }
-        
+
 
         /* TODO vylepšit, abych nemusel 2x dělat flush */
         $manager->flush();
