@@ -32,7 +32,7 @@ class ListFilterType extends AbstractType
                 'data' => $currentStateChoice
             ])
             ->add('tags', ChoiceType::class, [
-                'label' => 'Tagsdd',
+                'label' => 'Tags',
                 'choices' => $tagChoices,
                 'expanded' => true,
                 'multiple' => true,
