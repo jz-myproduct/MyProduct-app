@@ -9,9 +9,9 @@
     <p>
         {% for relatedFeature in relatedFeatureList %}
             <span class="p-1">
-                <a href="{{ path('bo_insight_edit', { 'company_slug': app.user.slug, 'insight_id':relatedFeature.insight.id, 'p':'feedback' } ) }}"
+                <a href="{{ path('bo_insight_edit', { 'company_slug': app.user.slug, 'insight_id':relatedFeature.insight.id, 'p':redirectToFeedback } ) }}"
                    class="badge badge-info">{{ relatedFeature.feature.name }} ({{ relatedFeature.insight.name }})</a>
-                <a href="{{ path('bo_insight_delete', {'company_slug': app.user.slug, 'insight_id':relatedFeature.insight.id, 'p':'feedback' } ) }}"
+                <a href="{{ path('bo_insight_delete', {'company_slug': app.user.slug, 'insight_id':relatedFeature.insight.id, 'p':redirectToFeedback } ) }}"
                    class="badge badge-danger font-weight-bold"><span aria-hidden="true">&times;</span></a>
             </span>
         {% endfor %}
@@ -23,11 +23,11 @@
     {% if unrelatedFeatureList %}
         {% for unrelatedFeature in unrelatedFeatureList %}
             <span class="p-1">
-            <a href="{{ path('bo_feature_detail', { 'company_slug': app.user.slug, 'feature_id': unrelatedFeature.id } ) }}"
-               class="badge badge-info">{{ unrelatedFeature.name }}</a>
-            <a href="{{ path('bo_insight_feedback_add', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'feature_id': unrelatedFeature.id, 'p':'feedback' } ) }}"
-               class="badge badge-success font-weight-bold">Přidat</a>
-        </span>
+                <a href="{{ path('bo_feature_detail', { 'company_slug': app.user.slug, 'feature_id': unrelatedFeature.id } ) }}"
+                   class="badge badge-info">{{ unrelatedFeature.name }}</a>
+                <a href="{{ path('bo_insight_feedback_add', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'feature_id': unrelatedFeature.id, 'p':redirectToFeedback } ) }}"
+                   class="badge badge-success font-weight-bold">Přidat</a>
+            </span>
         {% endfor %}
     {% else %}
         Žádné další featury k propojení.

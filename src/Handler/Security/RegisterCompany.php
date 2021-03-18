@@ -54,7 +54,7 @@ class RegisterCompany
         $currentDateTime = new \DateTime();
         $company->setCreatedAt($currentDateTime);
         $company->setCreatedAt($currentDateTime);
-        $company->setRoles([Company::ROLE_USER]);
+        $company->setRoles([Company::getUserRole()]);
 
         $this->manager->persist($company);
 

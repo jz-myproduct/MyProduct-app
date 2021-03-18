@@ -6,6 +6,7 @@ namespace App\Handler\Insight;
 
 use App\Entity\Company;
 use App\Entity\Insight;
+use phpDocumentor\Reflection\Types\Self_;
 use Symfony\Component\Routing\RouterInterface;
 
 class Redirect
@@ -14,6 +15,10 @@ class Redirect
      * @var RouterInterface
      */
     private $router;
+
+    private static $redirectToFeature = 'feature';
+
+    private static $redirectToFeedback = 'feedback';
 
     public function __construct(RouterInterface $router)
     {
@@ -26,9 +31,7 @@ class Redirect
         Company $company)
     {
 
-        // TODO ty stringy by měli být uloženy někde jako konstanty (ViewClass)
-
-        if ($param === 'feature') {
+        if ($param === self::$redirectToFeature) {
 
             return $this->router->generate('bo_insight_feature_list', [
                 'feature_id' => $insight->getFeature()->getId(),
@@ -37,7 +40,7 @@ class Redirect
 
         }
 
-        if ($param === 'feedback') {
+        if ($param === self::$redirectToFeedback) {
 
             return $this->router->generate('bo_insight_feedback_list', [
                 'feedback_id' => $insight->getFeedback()->getId(),
@@ -49,6 +52,16 @@ class Redirect
             'slug' => $company->getSlug()
         ]);
 
+    }
+
+    public static function getRedirectToFeature()
+    {
+        return self::$redirectToFeature;
+    }
+
+    public static function getRedirectToFeedback()
+    {
+        return self::$redirectToFeedback;
     }
 
 }

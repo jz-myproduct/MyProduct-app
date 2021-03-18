@@ -17,7 +17,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class Company implements UserInterface
 {
 
-    public const ROLE_USER = 'ROLE_USER';
+    private const ROLE_USER = 'ROLE_USER';
+
+    public static function getUserRole()
+    {
+        return self::ROLE_USER;
+    }
 
     /**
      * @ORM\Id

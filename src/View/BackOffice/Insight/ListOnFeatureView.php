@@ -7,6 +7,7 @@ namespace App\View\BackOffice\Insight;
 use App\Entity\Feature;
 use App\Entity\Feedback;
 use App\Entity\Insight;
+use App\Handler\Insight\Redirect;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormView;
 
@@ -33,7 +34,8 @@ class ListOnFeatureView
             'feature' => $feature,
             'insightList' => $insightList,
             'insightsCount' => $insighsCount,
-            'form' => $form
+            'form' => $form,
+            'redirectToFeature' => Redirect::getRedirectToFeature()
         ];
     }
 
