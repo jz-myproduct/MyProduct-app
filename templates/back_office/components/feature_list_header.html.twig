@@ -7,13 +7,19 @@
     {% if app.request.get('_route') == 'bo_feature_list' %}
 
         {{ form_start(form) }}
-                {{ form_row(form.state) }}
-                {% if tagsExist %}
-                    {{ form_row(form.tags) }}
-                {% else %}
-                    {{ form_row(form.save) }}
-                {% endif %}
-        {{ form_end(form, {'render_rest': false}) }}
+
+        {{ form_row(form.state) }}
+
+        {%  if tagsExist %}
+            {{ form_row(form.tags) }}
+            {{ form_widget(form._token) }}
+            {{ form_row(form.save) }}
+            {{ form_end(form, {'render_rest':false}) }}
+        {% else %}
+            {{ form_widget(form._token) }}
+            {{ form_row(form.save) }}
+            {{ form_end(form, {'render_rest':false}) }}
+        {% endif %}
 
     {% endif %}
 
