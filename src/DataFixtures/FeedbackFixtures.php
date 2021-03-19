@@ -50,7 +50,6 @@ class FeedbackFixtures extends Fixture
         ];
     }
 
-
     public function getData()
     {
         return [
