@@ -13,6 +13,17 @@ use Doctrine\Persistence\ObjectManager;
 class FeedbackFixtures extends Fixture implements DependentFixtureInterface
 {
 
+    private static $companies = ['Microsoft', 'Apple'];
+    private static $sources =
+        [
+            'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas aliquet accumsan leo. Morbi scelerisque luctus velit. Nunc tincidunt ante vitae massa',
+            'Filip',
+            'Honza',
+            'Marek',
+            'Tereza',
+            'Petra',
+            'Domonika'
+        ];
     private static $description
         = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi scelerisque ipsum mi, at 
     dapibus risus auctor in. Pellentesque ac facilisis dui, in dictum odio. Nunc ac tellus id erat feugiat blandit.
@@ -26,20 +37,24 @@ class FeedbackFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
 
-        foreach ($this->getData() as $data)
-        {
-            $feedback = new Feedback();
-            $feedback->setDescription(self::$description);
-            $feedback->setSource($data['source']);
-            $feedback->setCreatedAt(new \DateTime());
-            $feedback->setUpdatedAt(new \DateTime());
-            $feedback->setIsNew(rand(0,1));
-            $feedback->setFromPortal(rand(0,1));
-            $feedback->setCompany($this->getReference('company-'.strtolower($data['company'])));
+        foreach(self::$companies as $company) {
 
-            $manager->persist($feedback);
-            $this->setReference('feedback-'.strtolower($data['company']).'-'.strtolower($data['source']), $feedback);
+            for ($i = 0; $i <= 40; $i++) {
+
+                $feedback = new Feedback();
+                $feedback->setDescription(self::$description);
+                $feedback->setSource(self::$sources[rand(0, 6)]);
+                $feedback->setCreatedAt(new \DateTime());
+                $feedback->setUpdatedAt(new \DateTime());
+                $feedback->setIsNew(rand(0, 1));
+                $feedback->setFromPortal(rand(0, 1));
+                $feedback->setCompany($this->getReference('company-' . strtolower($company)));
+
+                $manager->persist($feedback);
+                $this->setReference('feedback-' . strtolower($company) . '-' . strtolower($i), $feedback);
+            }
         }
+
 
         $manager->flush();
     }
@@ -50,24 +65,4 @@ class FeedbackFixtures extends Fixture implements DependentFixtureInterface
             CompanyFixtures::class,
         ];
     }
-
-    public function getData()
-    {
-        return [
-            ['company' => 'Microsoft', 'source' => 'Honza'],
-            ['company' => 'Microsoft', 'source' => 'Marek'],
-            ['company' => 'Microsoft', 'source' => 'Filip'],
-            ['company' => 'Microsoft', 'source' => 'Lukas'],
-            ['company' => 'Microsoft', 'source' => 'Tereza'],
-            ['company' => 'Microsoft', 'source' => 'Dominika'],
-            ['company' => 'Apple', 'source' => 'Honza'],
-            ['company' => 'Apple', 'source' => 'Marek'],
-            ['company' => 'Apple', 'source' => 'Filip'],
-            ['company' => 'Apple', 'source' => 'Lukas'],
-            ['company' => 'Apple', 'source' => 'Tereza'],
-            ['company' => 'Apple', 'source' => 'Dominika'],
-        ];
-    }
-
-
 }

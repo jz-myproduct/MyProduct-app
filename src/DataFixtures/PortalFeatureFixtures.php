@@ -4,56 +4,81 @@
 namespace App\DataFixtures;
 
 
-use App\Entity\Company;
-use App\Entity\Feature;
-use App\Entity\FeatureState;
+use App\Entity\PortalFeature;
+use App\Entity\PortalFeatureState;
+use App\Service\SlugService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class FeatureFixtures extends Fixture implements DependentFixtureInterface
+class PortalFeatureFixtures extends Fixture implements DependentFixtureInterface
 {
+
     private static $companies = ['microsoft', 'apple'];
-    private static $states = ['Idea', 'Upcoming', 'In-progress', 'Done'];
-    private static $description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi scelerisque ipsum mi, at 
+    private static $states = ['Nápady', 'Připravujeme', 'Hotovo'];
+    private static $description
+        = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi scelerisque ipsum mi, at 
     dapibus risus auctor in. Pellentesque ac facilisis dui, in dictum odio. Nunc ac tellus id erat feugiat blandit.
      Nullam pharetra pellentesque ante at dapibus. Phasellus non luctus felis. Etiam vel mi auctor, hendrerit lacus aliquam, 
      feugiat nulla. Donec ut sem condimentum, rhoncus quam et, finibus quam. Aenean congue blandit gravida. Curabitur blandit 
      pellentesque commodo.';
 
     /**
+     * @var SlugService
+     */
+    private $slugService;
+
+    public function __construct(SlugService $slugService)
+    {
+        $this->slugService = $slugService;
+    }
+
+    /**
      * @inheritDoc
      */
     public function load(ObjectManager $manager)
     {
-
         foreach ($this->getDate() as $name)
         {
             foreach(self::$companies as $company)
             {
-                $feature = new Feature();
-                $feature->setName('Vylepšit '.$name);
-                $feature->setDescription(self::$description);
-                $feature->setCreatedAt(new \DateTime());
-                $feature->setUpdatedAt(new \DateTime());
-                $feature->setCompany($this->getReference('company-'.strtolower($company)));
-                $feature->setState($this->getReference('featureState-'.strtolower(self::$states[rand(0,3)])));
-                $feature->setInitialScore();
+                $portalFeature = new PortalFeature();
+                $portalFeature->setName($name);
+                $portalFeature->setDescription(self::$description);
+                $portalFeature->setSlug(
+                    $this->slugService->createCommonSlug($name)
+                );
+                $portalFeature->setState(
+                    $this->getReference(
+                        'portalFeatureState-'.strtolower(str_replace(' ', '-', self::$states[rand(0,2)]))
+                    )
+                );
+                $portalFeature->setCreatedAt(new \DateTime());
+                $portalFeature->setUpdatedAt(new \DateTime());
+                $portalFeature->setDisplay(rand(0,1));
+                $portalFeature->setFeature(
+                    $this->getReference('feature-'.strtolower($company).'-'.strtolower($name))
+                );
+                $portalFeature->setFeedbackCount(rand(0,3));
 
-                $manager->persist($feature);
+                $manager->persist($portalFeature);
 
-                $this->setReference('feature-'.strtolower($company).'-'.strtolower($name), $feature);
+                $this->setReference('portalFeature-'.strtolower($company).'-'.strtolower($name), $portalFeature);
             }
         }
 
         $manager->flush();
     }
 
-    public function getDependencies(): array
+    /**
+     * @inheritDoc
+     */
+    public function getDependencies()
     {
         return [
-            FeatureStateFixtures::class,
-            CompanyFixtures::class
+            CompanyFixtures::class,
+            FeatureFixtures::class,
+            PortalFeatureStateFixtures::class
         ];
     }
 

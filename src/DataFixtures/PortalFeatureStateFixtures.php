@@ -53,7 +53,7 @@ class PortalFeatureStateFixtures extends Fixture
     {
         return [
             ['name' => 'Nápady', 'position' => 1],
-            ['name' => 'Ve vývoji', 'position' => 2],
+            ['name' => 'Připravujeme', 'position' => 2],
             ['name' => 'Hotovo', 'position' => 3]
         ];
     }
