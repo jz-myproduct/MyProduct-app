@@ -7,9 +7,10 @@ namespace App\DataFixtures;
 use App\Entity\Company;
 use App\Entity\Feedback;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class FeedbackFixtures extends Fixture
+class FeedbackFixtures extends Fixture implements DependentFixtureInterface
 {
 
     private static $description
@@ -46,7 +47,7 @@ class FeedbackFixtures extends Fixture
     public function getDependencies(): array
     {
         return [
-            Company::class,
+            CompanyFixtures::class,
         ];
     }
 

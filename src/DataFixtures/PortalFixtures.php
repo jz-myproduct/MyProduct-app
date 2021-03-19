@@ -8,10 +8,11 @@ use App\Entity\Company;
 use App\Entity\Portal;
 use App\Service\SlugService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class PortalFixtures extends Fixture
+class PortalFixtures extends Fixture implements DependentFixtureInterface
 {
 
     private $passwordEncoder;
@@ -57,7 +58,7 @@ class PortalFixtures extends Fixture
     public function getDependencies(): array
     {
         return [
-            Company::class,
+            CompanyFixtures::class,
         ];
     }
 
