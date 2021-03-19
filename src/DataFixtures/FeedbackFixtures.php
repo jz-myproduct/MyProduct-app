@@ -39,7 +39,7 @@ class FeedbackFixtures extends Fixture implements DependentFixtureInterface
 
         foreach(self::$companies as $company) {
 
-            for ($i = 0; $i <= 40; $i++) {
+            for ($i = 1; $i <= 40; $i++) {
 
                 $feedback = new Feedback();
                 $feedback->setDescription(self::$description);
@@ -51,7 +51,7 @@ class FeedbackFixtures extends Fixture implements DependentFixtureInterface
                 $feedback->setCompany($this->getReference('company-' . strtolower($company)));
 
                 $manager->persist($feedback);
-                $this->setReference('feedback-' . strtolower($company) . '-' . strtolower($i), $feedback);
+                $this->setReference('feedback-' . strtolower($company) . '-' .$i, $feedback);
             }
         }
 
