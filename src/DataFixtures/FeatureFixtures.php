@@ -27,7 +27,7 @@ class FeatureFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
 
-        foreach ($this->getDate() as $name)
+        foreach ($this->getFeatureDate() as $name)
         {
             foreach(self::$companies as $company)
             {
@@ -39,6 +39,26 @@ class FeatureFixtures extends Fixture implements DependentFixtureInterface
                 $feature->setCompany($this->getReference('company-'.strtolower($company)));
                 $feature->setState($this->getReference('featureState-'.strtolower(self::$states[rand(0,3)])));
                 $feature->setInitialScore();
+
+                $addedTags = [];
+                $tagsCount = count($this->getTagData());
+
+                for($i = 0; $i < rand(0, $tagsCount); $i++)
+                {
+                    $tag = rand(0, $tagsCount-1);
+
+                    if (in_array($tag, $addedTags)) {
+                        continue;
+                    }
+
+                    array_push($addedTags, $tag);
+
+                    $feature->addTag(
+                        $this->getReference(
+                            'featureTag-'.strtolower($company).'-'.strtolower( ($this->getTagData())[$tag] )
+                        )
+                    );
+                }
 
                 $manager->persist($feature);
 
@@ -53,11 +73,12 @@ class FeatureFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             FeatureStateFixtures::class,
-            CompanyFixtures::class
+            CompanyFixtures::class,
+            FeatureTagFixtures::class
         ];
     }
 
-    private function getDate()
+    private function getFeatureDate()
     {
         return [
             'Přihlašování pro firmy',
@@ -97,7 +118,40 @@ class FeatureFixtures extends Fixture implements DependentFixtureInterface
             'Interní poznámky',
             'Testy znalostí',
             'Online manual',
-            'Nahrávání obrázků'
+            'Nahrávání obrázků',
+            'E2E testy',
+            'Unit testy',
+            'Dostupnost',
+            'Nová platební brána',
+            'Lepší profil',
+            'Public profil',
+            'Opravit překlady',
+            'Vylepšit cachování',
+            'B2B analytika',
+            'B2C analytika',
+            'Přihlašování pomocí Google',
+            'Přihlašování pomocí Facebook',
+            'Přihlašování pomocí Twitter',
+            'Přihlašování pomocí LinkedIn',
+            'Zjednodušená registrace'
+        ];
+    }
+
+    public function getTagData()
+    {
+        return [
+            'Back-office',
+            'Front-office',
+            'Refactoring',
+            'B2B',
+            'B2C',
+            'UX',
+            'Marketing',
+            'DevOps',
+            'Performance',
+            'Onboarding',
+            'Nové features',
+            'Vylepšení stávajích features'
         ];
     }
 }

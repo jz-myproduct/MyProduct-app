@@ -43,7 +43,7 @@ class PortalFeatureFixtures extends Fixture implements DependentFixtureInterface
             foreach(self::$companies as $company)
             {
                 $portalFeature = new PortalFeature();
-                $portalFeature->setName($name);
+                $portalFeature->setName('Vylepšit '.$name);
                 $portalFeature->setDescription(self::$description);
                 $portalFeature->setSlug(
                     $this->slugService->createCommonSlug($name)
@@ -122,7 +122,22 @@ class PortalFeatureFixtures extends Fixture implements DependentFixtureInterface
             'Interní poznámky',
             'Testy znalostí',
             'Online manual',
-            'Nahrávání obrázků'
+            'Nahrávání obrázků',
+            'E2E testy',
+            'Unit testy',
+            'Dostupnost',
+            'Nová platební brána',
+            'Lepší profil',
+            'Public profil',
+            'Opravit překlady',
+            'Vylepšit cachování',
+            'B2B analytika',
+            'B2C analytika',
+            'Přihlašování pomocí Google',
+            'Přihlašování pomocí Facebook',
+            'Přihlašování pomocí Twitter',
+            'Přihlašování pomocí LinkedIn',
+            'Zjednodušená registrace'
         ];
     }
 }
