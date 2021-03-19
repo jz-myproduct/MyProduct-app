@@ -4,6 +4,7 @@
 namespace App\DataFixtures;
 
 
+use App\Entity\Company;
 use App\Entity\Feedback;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -41,6 +42,14 @@ class FeedbackFixtures extends Fixture
 
         $manager->flush();
     }
+
+    public function getDependencies(): array
+    {
+        return [
+            Company::class,
+        ];
+    }
+
 
     public function getData()
     {
