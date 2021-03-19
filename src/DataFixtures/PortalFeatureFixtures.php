@@ -60,6 +60,7 @@ class PortalFeatureFixtures extends Fixture implements DependentFixtureInterface
                     $this->getReference('feature-'.strtolower($company).'-'.strtolower($name))
                 );
                 $portalFeature->setFeedbackCount(rand(0,3));
+                $portalFeature->setImage($this->getReference('image-'.strtolower($company).'-'.strtolower($name)));
 
                 $manager->persist($portalFeature);
 
@@ -78,7 +79,8 @@ class PortalFeatureFixtures extends Fixture implements DependentFixtureInterface
         return [
             CompanyFixtures::class,
             FeatureFixtures::class,
-            PortalFeatureStateFixtures::class
+            PortalFeatureStateFixtures::class,
+            FileFixtures::class
         ];
     }
 
