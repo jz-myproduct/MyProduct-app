@@ -7,20 +7,26 @@
     {% for stateWithFeatures in features %}
 
         <div class="flex-fill w-{{ columnWidth }}" style="min-width: 200px">
-            <div>{{ stateWithFeatures.state }}</div>
-            <div class="border p-3">
+            <div
+                    class="h5 text-center pb-2 mb-0 pt-3 bg-light"
+                    style="position: -webkit-sticky; position: sticky; top: 0;color:{{ stateWithFeatures.stateColor }}"
+            >{{ stateWithFeatures.state }}</div>
+            <div class="p-2">
                 {% for feature in stateWithFeatures.features %}
-                    <div class="border">
-                        <div>{{ feature.name }}</div>
+                    <div class="rounded my-3 p-2" id="feature">
+                        <div class="text-center pb-3">
+                            <a class="text-secondary" href="{{ path('bo_feature_detail', { 'company_slug':app.user.slug, 'feature_id':feature.id }) }}">{{ feature.name }}</a>
+                        </div>
 
-                        <div>
+                        <div class="pb-1" id="tags">
                         {% for tag in feature.tags %}
 
-                            {{ tag.name }}
+                            <div class="badge badge-info">{{ tag.name }}</div>
 
                         {% endfor %}
                         </div>
-                        <div>
+
+                        <div class="text-center pt-2 border-top">
                             {% if stateWithFeatures.isFirst == false  %}
                                 <a href="{{ path('bo_feature_status_move', {'company_slug':app.user.slug, 'feature_id':feature.id, 'direction':'predchozi'}) }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">

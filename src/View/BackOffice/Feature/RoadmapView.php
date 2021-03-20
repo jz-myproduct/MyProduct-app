@@ -49,6 +49,7 @@ class RoadmapView
             $features[] = [
 
                 'state' => $featureState->getName(),
+                'stateColor' => $featureState->getColor(),
                 'features' =>
                     $this->manager->getRepository(Feature::class)
                         ->findCompanyFeaturesByTag($tags, $company, $featureState),
