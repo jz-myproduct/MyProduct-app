@@ -4,38 +4,64 @@
 namespace App\Service;
 
 
+use App\Entity\Company;
 use App\Entity\Feedback;
-use App\Entity\Test;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use phpDocumentor\Reflection\Types\Null_;
+use Symfony\Component\Security\Core\Security;
 
 class FeedbackEventListener
 {
     /**
-     * @var FeatureScoreService
+     * @var FeatureUtils
      */
 
 
     private $scoreService;
     /**
-     * @var FeedbackCountService
+     * @var PortalFeatureUtils
      */
     private $countService;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $manager;
+    /**
+     * @var Security
+     */
+    private $security;
 
-    public function __construct(FeatureScoreService $scoreService, FeedbackCountService $countService)
+    public function __construct(
+        FeatureUtils $scoreService,
+        PortalFeatureUtils $countService,
+        EntityManagerInterface $manager,
+        Security $security)
     {
         $this->scoreService = $scoreService;
         $this->countService = $countService;
+        $this->manager = $manager;
+        $this->security = $security;
     }
 
     public function onFeedbackUpdatedEvent()
     {
-        $this->scoreService->recalculateScoreForFeatures();
-        $this->countService->recalculateFeedbackCountForPortalFeature();
+
+        if($company = $this->getCompany()){
+
+            $this->scoreService->recalculateScoreForFeatures($company);
+            $this->countService->recalculateFeedbackCountForPortalFeature($company);
+
+        }
+
     }
 
+    private function getCompany()
+    {
+        return $this->manager->getRepository(Company::class)->getCompanyByEmail(
+                    $this->security->getUser()->getUsername());
+    }
 
 }
