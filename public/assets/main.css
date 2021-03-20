@@ -24,3 +24,20 @@ label.required:before {
     background: orangered;
     border-radius: 5px;
 }
+
+#feature:hover #tags {
+    display:block;
+}
+
+#feature:hover {
+    border: 1px solid #007bff;
+    background: #f8f9fa;
+}
+
+#feature {
+    border: 1px solid #dee2e6;
+}
+
+#tags {
+    display:none;
+}
