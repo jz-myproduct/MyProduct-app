@@ -50,6 +50,10 @@ class InsightFixtures extends Fixture implements DependentFixtureInterface
                     $insight->setFeedback($this->getReference('feedback-'.strtolower($company).'-'.strtolower($feedback)));
                     $insight->setWeight($weight);
 
+                    if($feature->getPortalFeature()){
+                        $feature->getPortalFeature()->setFeedbackCountUpByOne();
+                    }
+
                     $manager->persist($insight);
                 }
             }
@@ -67,7 +71,8 @@ class InsightFixtures extends Fixture implements DependentFixtureInterface
         return [
             FeedbackFixtures::class,
             FeatureFixtures::class,
-            InsightWeightFixtures::class
+            InsightWeightFixtures::class,
+            PortalFeatureFixtures::class
         ];
     }
 

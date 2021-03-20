@@ -6,6 +6,7 @@ namespace App\DataFixtures;
 
 use App\Entity\PortalFeature;
 use App\Entity\PortalFeatureState;
+use App\Service\FeatureUtils;
 use App\Service\SlugService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -27,10 +28,15 @@ class PortalFeatureFixtures extends Fixture implements DependentFixtureInterface
      * @var SlugService
      */
     private $slugService;
+    /**
+     * @var FeatureUtils
+     */
+    private $portalFeatureUtils;
 
-    public function __construct(SlugService $slugService)
+    public function __construct(SlugService $slugService, FeatureUtils $portalFeatureUtils)
     {
         $this->slugService = $slugService;
+        $this->portalFeatureUtils = $portalFeatureUtils;
     }
 
     /**
@@ -59,7 +65,7 @@ class PortalFeatureFixtures extends Fixture implements DependentFixtureInterface
                 $portalFeature->setFeature(
                     $this->getReference('feature-'.strtolower($company).'-'.strtolower($name))
                 );
-                $portalFeature->setFeedbackCount(rand(0,3));
+                $portalFeature->setFeedbackCount(0);
                 $portalFeature->setImage($this->getReference('image-'.strtolower($company).'-'.strtolower($name)));
 
                 $manager->persist($portalFeature);
