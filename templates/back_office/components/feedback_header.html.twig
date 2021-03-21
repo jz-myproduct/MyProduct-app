@@ -1,5 +1,10 @@
 <h1 class="h3 text-center">
-    {% if feedback.isNew %}<span class="badge badge-danger">Nový</span>{% endif %}
+    {% if feedback.isNew %}
+        <span class="badge badge-danger">Nový</span>
+    {% endif %}
+    {% if feedback.fromPortal %}
+        <span class="badge badge-info">Portal</span>
+    {% endif %}
     Feedback
 </h1>
 <p class="text-center text-secondary">Přidáno {{ feedback.createdAt|date('d.m.y H:i') }}</p>

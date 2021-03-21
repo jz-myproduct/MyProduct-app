@@ -82,7 +82,7 @@ class SecurityController extends AbstractController
     {
         if ($this->isGranted('ROLE_USER'))
         {
-            return $this->redirectToRoute('back-office-home',[
+            return $this->redirectToRoute('bo_feedback_list',[
                 'slug' => $this->getUser()->getSlug()
             ]);
         }
@@ -116,7 +116,7 @@ class SecurityController extends AbstractController
     {
         if ($this->isGranted('ROLE_USER'))
         {
-            return $this->redirectToRoute('bo_home',[
+            return $this->redirectToRoute('bo_feedback_list',[
                 'slug' => $this->getUser()->getSlug()
             ]);
         }
@@ -137,7 +137,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('fo_login');
         }
 
-        return $this->redirectToRoute('bo_home', [
+        return $this->redirectToRoute('bo_feedback_list', [
             'slug' => $this->getUser()->getSlug()
         ]);
     }
@@ -190,7 +190,7 @@ class SecurityController extends AbstractController
     public function renewPassword(Request $request, RenewPassword $handler)
     {
         if($this->isGranted('ROLE_USER')){
-            return $this->redirectToRoute('bo_home', [
+            return $this->redirectToRoute('bo_feedback_list', [
                 'slug' => $this->getUser()->getSlug()
             ]);
         }
@@ -231,6 +231,12 @@ class SecurityController extends AbstractController
      */
     public function setNewPassword(Company $company, Request $request, SetForgottenPassword $handler)
     {
+        if($this->isGranted('ROLE_USER')){
+            return $this->redirectToRoute('bo_feedback_list', [
+                'slug' => $this->getUser()->getSlug()
+            ]);
+        }
+
         if($company->getPasswordHashValidUntil() < new \DateTime()){
 
             return $this->render('front_office/password/expired_hash.html.twig');

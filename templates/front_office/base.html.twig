@@ -22,7 +22,7 @@
                 {% if app.user %}
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
-                            <a class="nav-link text-light" href="{{ path('bo_home', {'slug':app.user.slug}) }}">{{ app.user.name }}</a>
+                            <a class="nav-link text-light" href="{{ path('bo_feedback_list', {'slug':app.user.slug}) }}">{{ app.user.name }}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" href="{{ path('fo_logout') }}">Odhlásit</a>
