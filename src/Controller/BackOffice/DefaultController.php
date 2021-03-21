@@ -38,18 +38,6 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{slug}", name="bo_home")
-     * @param Company $company
-     * @return Response
-     */
-    public function index(Company $company): Response
-    {
-        $this->denyAccessUnlessGranted('edit', $company);
-
-        return $this->render('back_office/home.html.twig');
-    }
-
-    /**
      * @Route("/admin/{slug}/nastaveni/info", name="bo_settings_info")
      * @param Company $company
      * @param Request $request
