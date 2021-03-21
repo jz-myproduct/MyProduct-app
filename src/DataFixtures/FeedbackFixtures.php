@@ -14,7 +14,7 @@ class FeedbackFixtures extends Fixture implements DependentFixtureInterface
 {
 
     private static $companies = ['Microsoft', 'Apple'];
-    private static $sources =
+    private static $text =
         [
             'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas aliquet accumsan leo. Morbi scelerisque luctus velit. Nunc tincidunt ante vitae massa',
             'Filip',
@@ -24,12 +24,6 @@ class FeedbackFixtures extends Fixture implements DependentFixtureInterface
             'Petra',
             'Domonika'
         ];
-    private static $description
-        = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi scelerisque ipsum mi, at 
-    dapibus risus auctor in. Pellentesque ac facilisis dui, in dictum odio. Nunc ac tellus id erat feugiat blandit.
-     Nullam pharetra pellentesque ante at dapibus. Phasellus non luctus felis. Etiam vel mi auctor, hendrerit lacus aliquam, 
-     feugiat nulla. Donec ut sem condimentum, rhoncus quam et, finibus quam. Aenean congue blandit gravida. Curabitur blandit 
-     pellentesque commodo.';
 
     /**
      * @inheritDoc
@@ -42,8 +36,8 @@ class FeedbackFixtures extends Fixture implements DependentFixtureInterface
             for ($i = 1; $i <= 40; $i++) {
 
                 $feedback = new Feedback();
-                $feedback->setDescription(self::$description);
-                $feedback->setSource(self::$sources[rand(0, 6)]);
+                $feedback->setDescription(self::$text[rand(0, 6)]);
+                $feedback->setSource(self::$text[rand(0, 6)]);
                 $feedback->setCreatedAt(new \DateTime());
                 $feedback->setUpdatedAt(new \DateTime());
                 $feedback->setIsNew(rand(0, 1));

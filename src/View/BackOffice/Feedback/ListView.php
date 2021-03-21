@@ -7,6 +7,7 @@ namespace App\View\BackOffice\Feedback;
 use App\Entity\Company;
 use App\Entity\Feedback;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormView;
 
 class ListView
 {
@@ -20,13 +21,14 @@ class ListView
         $this->manager = $manager;
     }
 
-    public function create(Company $company)
+    public function create(Company $company, FormView $form, $isNew, $fulltext)
     {
         $feedbackList = $this->manager->getRepository(Feedback::class)
-            ->findBy(['company' => $company], ['isNew' => 'DESC']);
+            ->findForFilteredList($company, $fulltext, $isNew);
 
         return [
-            'feedbackList' => $feedbackList
+            'feedbackList' => $feedbackList,
+            'form' => $form
         ];
     }
 
