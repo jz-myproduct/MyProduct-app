@@ -37,7 +37,9 @@ class FeatureRepository extends ServiceEntityRepository
     {
 
        $qb = $this->createQueryBuilder('f');
-       $qb->leftJoin('f.tags', 't');
+       $qb->select('f, t, p');
+       $qb->join('f.tags', 't');
+       $qb->join('f.portalFeature', 'p');
        $qb->where('f.company = :company');
        $qb->setParameter('company', $company);
 
