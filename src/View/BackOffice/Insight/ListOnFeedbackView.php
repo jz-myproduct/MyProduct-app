@@ -7,8 +7,10 @@ namespace App\View\BackOffice\Insight;
 use App\Entity\Company;
 use App\Entity\Feedback;
 use App\Entity\Insight;
+use App\FormRequest\Insight\FilterOnFeedbackRequest;
 use App\Handler\Insight\Redirect;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormView;
 
 class ListOnFeedbackView
 {
@@ -22,10 +24,10 @@ class ListOnFeedbackView
         $this->manager = $manager;
     }
 
-    public function create(Company $company, Feedback $feedback)
+    public function create(Company $company, Feedback $feedback, FormView $form, FilterOnFeedbackRequest $request)
     {
         $unrelatedFeatureList =  $this->manager->getRepository(Insight::class)
-            ->getUnUsedFeaturesForFeedback($feedback, $company);
+            ->getUnUsedFeaturesForFeedback($feedback, $company, $request->fulltext, $request->tags);
 
         $insightsCount = $this->manager->getRepository(Insight::class)
             ->getInsightsCountForFeedback($feedback);
@@ -35,7 +37,8 @@ class ListOnFeedbackView
             'relatedFeatureList' => $this->prepareRelatedFeatures($feedback),
             'unrelatedFeatureList' => $unrelatedFeatureList,
             'insightsCount' => $insightsCount,
-            'redirectToFeedback' => Redirect::getRedirectToFeedback()
+            'redirectToFeedback' => Redirect::getRedirectToFeedback(),
+            'form' => $form
         ];
     }
 
