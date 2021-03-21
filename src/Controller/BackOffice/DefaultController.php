@@ -3,7 +3,6 @@
 namespace App\Controller\BackOffice;
 
 use App\Entity\Company;
-
 use App\Entity\Feedback;
 use App\Entity\Portal;
 use App\Entity\PortalFeatureState;
@@ -20,7 +19,6 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\String\Slugger\AsciiSlugger;

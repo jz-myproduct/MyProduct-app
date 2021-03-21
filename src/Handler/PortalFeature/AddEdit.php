@@ -67,7 +67,7 @@ class AddEdit
         $portalFeature->setDisplay($request->display);
         $portalFeature->setState($request->state);
         $portalFeature->setSlug(
-            $this->slugService->createCompanySlug($request->name)
+            $this->slugService->createCommonSlug($request->name)
         );
 
         //handle new portal feature
