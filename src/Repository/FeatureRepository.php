@@ -22,15 +22,28 @@ class FeatureRepository extends ServiceEntityRepository
         parent::__construct($registry, Feature::class);
     }
 
-    public function findCompanyFeaturesByTag($tags, $company, $state)
+    public function findByName(String $string)
+    {
+        return $this->createQueryBuilder('f')
+             ->select('f.id, f.name')
+             ->where('f.name LIKE :string')
+             ->orWhere('f.description LIKE :string')
+             ->setParameter('string', '%'.$string.'%')
+             ->getQuery()
+             ->getResult();
+    }
+
+    public function findCompanyFeaturesByTag($tags, $company, $state, $fulltext)
     {
 
        $qb = $this->createQueryBuilder('f');
        $qb->leftJoin('f.tags', 't');
+       $qb->where('f.company = :company');
+       $qb->setParameter('company', $company);
 
        if($tags)
        {
-           $qb->where('t IN (:tags)');
+           $qb->andWhere('t IN (:tags)');
            $qb->setParameter('tags', $tags);
        }
 
@@ -40,9 +53,13 @@ class FeatureRepository extends ServiceEntityRepository
            $qb->setParameter('state', $state);
        }
 
-       $qb->andWhere('f.company = :company');
+       if($fulltext)
+       {
+           $qb->andWhere('f.name LIKE :fulltext OR f.description LIKE :fulltext');
+           $qb->setParameter('fulltext', '%'.$fulltext.'%');
+       }
+
        $qb->orderBy('f.score', 'DESC');
-       $qb->setParameter('company', $company);
 
        return $qb->getQuery()->getResult();
     }

@@ -23,14 +23,19 @@ class ListView
         $this->manager = $manager;
     }
 
-    public function create(Company $company, FormView $form, FeatureState $state = null, $tagsParam = [])
+    public function create(
+        Company $company,
+        FormView $form,
+        FeatureState $state = null,
+        $tagsParam = [],
+        String $fulltext = null)
     {
 
         $tags = $this->manager->getRepository(FeatureTag::class)
             ->findBy( ['id' => $tagsParam ] );
 
         $featureList = $this->manager->getRepository(Feature::class)
-            ->findCompanyFeaturesByTag($tags, $company, $state);
+            ->findCompanyFeaturesByTag($tags, $company, $state, $fulltext);
 
 
         return [

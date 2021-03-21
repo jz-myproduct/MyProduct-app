@@ -190,6 +190,8 @@ class FeedbackController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $feedback);
 
+        dump($this->manager->getRepository(Feature::class)->findByName('Vylepšit'));
+
         return $this->render('back_office/feedback/detail.html.twig', $view->create($feedback));
     }
 

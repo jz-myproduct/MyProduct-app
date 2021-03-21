@@ -10,9 +10,8 @@ use Symfony\Component\Validator\Constraints as Constraints;
 class RoadmapFilterRequest
 {
 
-    /**
-     * @Constraints\NotBlank
-     */
+    public $fulltext;
+
     public $tags;
 
 }

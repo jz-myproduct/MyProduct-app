@@ -37,7 +37,8 @@ class Search
         return $this->router->generate('bo_feature_list', [
             'slug' => $company->getSlug(),
             'state_slug' => $state ? $state->getSlug() : null,
-            'tags'=> $formRequest->tags
+            'tags'=> $formRequest->tags,
+            'fulltext' => $formRequest->fulltext
         ]);
 
     }
@@ -47,7 +48,8 @@ class Search
 
         return $this->router->generate('bo_feature_list_roadmap', [
             'slug' => $company->getSlug(),
-            'tags'=> $formRequest->tags
+            'tags'=> $formRequest->tags,
+            'fulltext' => $formRequest->fulltext
         ]);
 
     }
