@@ -22,6 +22,32 @@ class FeedbackRepository extends ServiceEntityRepository
         parent::__construct($registry, Feedback::class);
     }
 
+    public function findForFilteredList(Company $company, string $fulltext = null, bool $isNew = null)
+    {
+        $qb =
+             $this->createQueryBuilder('f')
+                  ->where('f.company = :company')
+                  ->setParameter('company', $company);
+
+        if($fulltext)
+        {
+            $qb->andWhere('f.description LIKE :fulltext OR f.source LIKE :fulltext')
+               ->setParameter('fulltext', '%'.$fulltext.'%');
+        }
+
+        if(!is_null($isNew))
+        {
+            $qb->andWhere('f.isNew = :isNew')
+               ->setParameter('isNew', $isNew);
+        }
+
+        return $qb
+                ->OrderBy('f.isNew', 'DESC')
+                ->addOrderBy('f.createdAt', 'DESC')
+                ->getQuery()
+                ->getResult();
+    }
+
     /*
     public function getFeedbackCountForFeature(Feature $feature)
     {

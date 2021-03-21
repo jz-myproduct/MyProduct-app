@@ -25,26 +25,21 @@ class InsightRepository extends ServiceEntityRepository
         parent::__construct($registry, Insight::class);
     }
 
-    public function getUnUsedFeaturesForFeedback(Feedback $feedback, Company $company)
+    public function getUnUsedFeaturesForFeedback(
+        Feedback $feedback,
+        Company $company,
+        String $name = null,
+        array $tags = null)
     {
-        $entityManager = $this->getEntityManager();
 
-        $sql = 'SELECT f.id, f.name
-                FROM feature f
-                WHERE 
-                f.company_id = ? AND
-                f.id NOT IN (SELECT feature_id
-                             FROM insight
-                             WHERE feedback_id = ?); ';
+        $queryBuilder = $this->prepareQueryBuilderForUnusedFeatures(
+                            $feedback,
+                            $company,
+                            $name,
+                            $tags);
 
-        $rsm = new ResultSetMappingBuilder( $entityManager );
-        $rsm->addRootEntityFromClassMetadata('App\Entity\Feature', 'f');
+        return $queryBuilder->getResult();
 
-        return $entityManager
-            ->createNativeQuery($sql, $rsm)
-            ->setParameter(1, $company)
-            ->setParameter(2, $feedback)
-            ->getResult();
     }
 
     public function getInsightsCountForFeedback(Feedback $feedback)
@@ -113,5 +108,64 @@ class InsightRepository extends ServiceEntityRepository
 
     }
 
+    private function prepareQueryBuilderForUnusedFeatures(
+        Feedback $feedback,
+        Company $company,
+        String $name = null,
+        array $tags = null
+    )
+    {
+        $entityManager = $this->getEntityManager();
 
+        $rsm = new ResultSetMappingBuilder( $entityManager );
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Feature', 'f');
+
+        $queryBuilder = $entityManager->createNativeQuery(
+            $this->prepareSQLForUnusedFeatures($tags, $name),
+            $rsm
+        );
+
+        if($tags){
+            $queryBuilder->setParameter('tags', $tags);
+        }
+        if($name){
+            $queryBuilder->setParameter('name', '%'.$name.'%');
+        }
+
+        $queryBuilder->setParameter('company', $company->getId())
+            ->setParameter('feedback', $feedback->getId());
+
+        return $queryBuilder;
+    }
+
+    private function prepareSQLForUnusedFeatures($tags, $name)
+    {
+        $sql = "SELECT f.id, f.name
+                FROM feature f\n";
+
+        if($tags)
+        {
+            $sql .= "JOIN feature_feature_tag t
+                     ON f.id = t.feature_id\n";
+        }
+
+        $sql .= "WHERE\n";
+
+        if($tags)
+        {
+            $sql .= "t.feature_tag_id IN (:tags) AND\n";
+        }
+
+        if($name)
+        {
+            $sql .= "(f.name LIKE :name OR f.description LIKE :name) AND\n";
+        }
+
+        $sql .= "f.company_id = :company AND
+                 f.id NOT IN (SELECT feature_id
+                              FROM insight
+                              WHERE feedback_id = :feedback)";
+
+        return $sql;
+    }
 }

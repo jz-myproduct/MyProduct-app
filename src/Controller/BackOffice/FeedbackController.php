@@ -7,10 +7,13 @@ use App\Entity\Feature;
 use App\Entity\Feedback;
 use App\Entity\Insight;
 use App\Form\Feedback\AddEditType;
+use App\Form\Feedback\ListFilterType;
 use App\FormRequest\Feedback\AddEditRequest;
+use App\FormRequest\Feedback\ListFilterRequest;
 use App\Handler\Feedback\Add;
 use App\Handler\Feedback\Delete;
 use App\Handler\Feedback\Edit;
+use App\Handler\Feedback\Search;
 use App\Handler\Feedback\SwitchStatus;
 use App\Handler\Feedback\SwitchStatusRedirect;
 use App\View\BackOffice\Feedback\DetailView;
@@ -104,7 +107,6 @@ class FeedbackController extends AbstractController
             ]);
         }
 
-
         return $this->render('back_office/feedback/add_edit.html.twig', [
             'form' => $form->createView()
         ]);
@@ -114,13 +116,33 @@ class FeedbackController extends AbstractController
      * @Route("/admin/{slug}/feedbacks", name="bo_feedback_list")
      * @param Company $company
      * @param ListView $view
+     * @param Request $request
+     * @param Search $handler
      * @return Response
      */
-    public function list(Company $company, ListView $view)
+    public function list(Company $company, ListView $view, Request $request, Search $handler)
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        return $this->render('back_office/feedback/list.html.twig', $view->create($company));
+        $form = $this->createForm(ListFilterType::class, $formRequest = ListFilterRequest::fromArray([
+            'isNew' => $isNew = !is_null($request->get('isNew')) ? (int)$request->get('isNew') : null,
+            'fulltext' => $fulltext = $request->get('fulltext')
+        ]));
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            return new RedirectResponse(
+                $handler->handle($formRequest, $company)
+            );
+
+        }
+
+        return $this->render(
+            'back_office/feedback/list.html.twig',
+            $view->create($company, $form->createView(), $isNew, $fulltext)
+        );
     }
 
     /**

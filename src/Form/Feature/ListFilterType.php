@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,7 +26,14 @@ class ListFilterType extends AbstractType
         $tagChoices = $options['tagChoices'] ? $options['tagChoices'] : null;
         $currentTagChoices = $options['currentTagChoices'] ? $options['currentTagChoices'] : null;
 
+        $fulltext = $options['fulltext'] ? $options['fulltext'] : null;
+
         $builder
+            ->add('fulltext', TextType::class, [
+                'label' => 'Název nebo popis',
+                'required' => false,
+                'data' => $fulltext
+            ])
             ->add('state', ChoiceType::class, [
                 'choices' => $stateChoices,
                 'label' => 'Stav',
@@ -47,7 +55,8 @@ class ListFilterType extends AbstractType
             'currentStateChoice' => null,
             'stateChoices' => null,
             'currentTagChoices' => null,
-            'tagChoices' => null
+            'tagChoices' => null,
+            'fulltext' => null
         ]);
     }
 

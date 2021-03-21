@@ -10,6 +10,8 @@
 
         {{ form_row(form.state) }}
 
+        {{ form_row(form.fulltext) }}
+
         {%  if tagsExist %}
             {{ form_row(form.tags) }}
             {{ form_widget(form._token) }}

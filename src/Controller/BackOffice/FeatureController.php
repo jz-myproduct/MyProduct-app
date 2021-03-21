@@ -158,7 +158,8 @@ class FeatureController extends AbstractController
             'stateChoices' => $formView->createStates(),
             'tagChoices' => $formView->createTags($company),
             'currentStateChoice' => $state ? $state->getId() : null,
-            'currentTagChoices' => $tagsParam = $request->get('tags')
+            'currentTagChoices' => $tagsParam = $request->get('tags'),
+            'fulltext' => $fulltext = $request->get('fulltext')
         ]);
 
         $form->handleRequest($request);
@@ -176,7 +177,8 @@ class FeatureController extends AbstractController
                 $company,
                 $form->createView(),
                 $state,
-                $tagsParam
+                $tagsParam,
+                $fulltext
             ));
     }
 
@@ -201,7 +203,8 @@ class FeatureController extends AbstractController
 
         $form = $this->createForm(RoadmapFilterType::class, $formRequest = new RoadmapFilterRequest(), [
             'tagChoices' => $formView->createTags($company),
-            'currentTagChoices' => $tagsParam = $request->get('tags')
+            'currentTagChoices' => $tagsParam = $request->get('tags'),
+            'fulltext' => $fulltext = $request->get('fulltext')
         ]);
 
         $form->handleRequest($request);
@@ -218,7 +221,8 @@ class FeatureController extends AbstractController
             $view->create(
                 $company,
                 $form->createView(),
-                $tagsParam
+                $tagsParam,
+                $fulltext
             )
         );
     }
@@ -285,9 +289,12 @@ class FeatureController extends AbstractController
 
         $handler->handle($feature, $direction);
 
+        $this->addFlash('success', 'Stav featury posunut.');
+
         return $this->redirectToRoute('bo_feature_list_roadmap', [
             'slug' => $company->getSlug(),
-            'tags' => $request->get('tags')
+            'tags' => $request->get('tags'),
+            'fulltext' => $request->get('fulltext')
         ]);
     }
 

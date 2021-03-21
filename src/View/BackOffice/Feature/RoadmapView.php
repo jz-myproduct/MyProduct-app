@@ -24,20 +24,21 @@ class RoadmapView
         $this->manager = $manager;
     }
 
-    public function create(Company $company, FormView $form, $tagsParam = [])
+    public function create(Company $company, FormView $form, $tagsParam = [], String $fulltext = null)
     {
         $states = $this->manager->getRepository(FeatureState::class)->findAll();
 
         return [
-            'features' => $this->prepareFeaturesData($company, $states, $tagsParam),
+            'features' => $this->prepareFeaturesData($company, $states, $tagsParam, $fulltext),
             'columnWidth' => $this->prepareColumnWidth($states),
             'form' => $form,
-            'tagsExist' => $company->getFeatureTags()->toArray() ? true : false
-
+            'tagsExist' => $company->getFeatureTags()->toArray() ? true : false,
+            'tags' => $tagsParam,
+            'fulltext' => $fulltext
         ];
     }
 
-    private function prepareFeaturesData(Company $company, $states, $tagsParam = [])
+    private function prepareFeaturesData(Company $company, $states, $tagsParam = [], String $fulltext = null)
     {
         $tags = $this->manager->getRepository(FeatureTag::class)
             ->findBy( ['id' => $tagsParam ] );
@@ -52,7 +53,7 @@ class RoadmapView
                 'stateColor' => $featureState->getColor(),
                 'features' =>
                     $this->manager->getRepository(Feature::class)
-                        ->findCompanyFeaturesByTag($tags, $company, $featureState),
+                        ->findCompanyFeaturesByTag($tags, $company, $featureState, $fulltext),
                 'isFirst' =>
                     $featureState === $this->manager->getRepository(FeatureState::class)->findInitialState() ?
                         true : false,

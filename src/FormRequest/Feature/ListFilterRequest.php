@@ -10,6 +10,8 @@ use App\Constraints as Custom;
 class ListFilterRequest
 {
 
+    public $fulltext;
+
     /**
      * @Constraints\NotBlank
      * @var string

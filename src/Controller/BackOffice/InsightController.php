@@ -6,19 +6,24 @@ namespace App\Controller\BackOffice;
 
 use App\Entity\Company;
 use App\Entity\Feature;
+use App\Entity\FeatureTag;
 use App\Entity\Feedback;
 use App\Entity\Insight;
 use App\Entity\InsightWeight;
 use App\Form\Insight\AddFromFeatureType;
 use App\Form\Insight\AddFromFeedbackType;
+use App\Form\Insight\FilterOnFeedback;
 use App\FormRequest\Insight\AddFromFeatureRequest;
 use App\FormRequest\Insight\AddFromFeedbackRequest;
+use App\FormRequest\Insight\FilterOnFeedbackRequest;
 use App\Handler\Insight\Add;
 use App\Handler\Insight\AddFromFeature;
 use App\Handler\Insight\AddFromFeedback;
 use App\Handler\Insight\Delete;
 use App\Handler\Insight\Edit;
 use App\Handler\Insight\Redirect;
+use App\Handler\Insight\Search;
+use App\View\BackOffice\Feature\FilterFormView;
 use App\View\BackOffice\Insight\ListOnFeatureView;
 use App\View\BackOffice\Insight\ListOnFeedbackView;
 use Doctrine\ORM\EntityManagerInterface;
@@ -149,13 +154,46 @@ class InsightController extends AbstractController
      * @param Company $company
      * @param Feedback $feedback
      * @param ListOnFeedbackView $view
+     * @param Request $request
+     * @param FilterFormView $formView
+     * @param Search $handler
      * @return Response
      */
-    public function listOnFeedback(Company $company, Feedback $feedback, ListOnFeedbackView $view)
+    public function listOnFeedback(
+        Company $company,
+        Feedback $feedback,
+        ListOnFeedbackView $view,
+        Request $request,
+        FilterFormView $formView,
+        Search $handler)
     {
         $this->denyAccessUnlessGranted('edit', $feedback);
 
-        return $this->render('back_office/insight/list_on_feedback.html.twig' , $view->create($company, $feedback));
+        $formRequest = FilterOnFeedbackRequest::fromArray([
+          'fulltext' => $request->get('fulltext'),
+          'tags' => $request->get('tags')
+        ]);
+
+        $form = $this->createForm(FilterOnFeedback::class, $formRequest, [
+            'tags' => $formView->createTags($company)
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            return new RedirectResponse(
+                $handler->handle($formRequest, $company, $feedback)
+            );
+
+        }
+
+        return $this->render('back_office/insight/list_on_feedback.html.twig' ,
+            $view->create(
+                $company,
+                $feedback, $form->createView(),
+                $formRequest
+            )
+        );
     }
 
     /**
