@@ -25,15 +25,13 @@ class ListOnFeatureView
 
     public function create(Feature $feature, FormView $form)
     {
-        $insighsCount = $this->manager->getRepository(Insight::class)
-            ->getInsightsCountForFeature($feature);
 
-        $insightList = $this->manager->getRepository(Insight::class)->findBy(['feature' => $feature]);
+        $insightList = $this->manager->getRepository(Insight::class)->findInsightsForFeature($feature);
 
         return [
             'feature' => $feature,
             'insightList' => $insightList,
-            'insightsCount' => $insighsCount,
+            'insightsCount' => sizeof($insightList),
             'form' => $form,
             'redirectToFeature' => Redirect::getRedirectToFeature()
         ];

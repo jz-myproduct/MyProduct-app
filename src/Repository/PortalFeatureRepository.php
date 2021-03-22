@@ -22,23 +22,13 @@ class PortalFeatureRepository extends ServiceEntityRepository
         parent::__construct($registry, PortalFeature::class);
     }
 
-    public function findFeaturesForPortal(Company $company)
-    {
-
-        return $this->createQueryBuilder('p')
-            ->innerJoin('p.feature', 'f')
-            ->where('f.company = :company')
-            ->andWhere('p.display = 1')
-            ->setParameter('company', $company)
-            ->getQuery()
-            ->getResult();
-    }
-
     public function findFeaturesForPortalByState(Company $company, PortalFeatureState $state)
     {
 
         return $this->createQueryBuilder('p')
-            ->innerJoin('p.feature', 'f')
+            ->select('p, i, f')
+            ->leftJoin('p.image', 'i')
+            ->join('p.feature', 'f')
             ->where('f.company = :company')
             ->andWhere('p.display = 1')
             ->andWhere('p.state = :state')

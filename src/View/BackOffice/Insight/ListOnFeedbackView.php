@@ -5,10 +5,13 @@ namespace App\View\BackOffice\Insight;
 
 
 use App\Entity\Company;
+use App\Entity\Feature;
+use App\Entity\FeatureTag;
 use App\Entity\Feedback;
 use App\Entity\Insight;
 use App\FormRequest\Insight\FilterOnFeedbackRequest;
 use App\Handler\Insight\Redirect;
+use App\Repository\FeatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormView;
 
@@ -26,37 +29,25 @@ class ListOnFeedbackView
 
     public function create(Company $company, Feedback $feedback, FormView $form, FilterOnFeedbackRequest $request)
     {
-        $unrelatedFeatureList =  $this->manager->getRepository(Insight::class)
-            ->getUnUsedFeaturesForFeedback($feedback, $company, $request->fulltext, $request->tags);
 
-        $insightsCount = $this->manager->getRepository(Insight::class)
-            ->getInsightsCountForFeedback($feedback);
+        $unrelatedFeatures = $this->manager->getRepository(Feature::class)
+            ->findUnsedFeaturesForFeedback(
+                $company,
+                $this->manager->getRepository(FeatureTag::class)->findBy(['id' => $request->tags ]),
+                $this->manager->getRepository(Feature::class)->findUsedFeaturesForFeedback($feedback),
+                $request->fulltext
+            );
+
+        $insights = $this->manager->getRepository(Insight::class)->findInsightsForFeedback($feedback);
 
         return [
             'feedback' => $feedback,
-            'relatedFeatureList' => $this->prepareRelatedFeatures($feedback),
-            'unrelatedFeatureList' => $unrelatedFeatureList,
-            'insightsCount' => $insightsCount,
+            'insights' => $insights,
+            'unrelatedFeatureList' => $unrelatedFeatures,
+            'insightsCount' => sizeof($insights),
             'redirectToFeedback' => Redirect::getRedirectToFeedback(),
             'form' => $form
         ];
     }
 
-    private function prepareRelatedFeatures(Feedback $feedback)
-    {
-        $relatedFeatureList = array();
-
-        foreach ($feedback->getInsights() as $insight)
-        {
-            array_push($relatedFeatureList, [
-
-                'insight' => [ 'id' => $insight->getId(), 'name' => $insight->getWeight()->getName() ],
-                'feature' => [ 'id' => $insight->getFeature()->getId(), 'name' => $insight->getFeature()->getName()]
-
-            ]);
-        }
-
-        return $relatedFeatureList;
-
-    }
 }

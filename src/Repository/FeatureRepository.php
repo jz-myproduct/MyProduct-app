@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\FeatureTag;
 use App\Entity\Feedback;
@@ -36,10 +37,12 @@ class FeatureRepository extends ServiceEntityRepository
     public function findCompanyFeaturesByTag($tags, $company, $state, $fulltext)
     {
 
-       $qb = $this->createQueryBuilder('f');
-       $qb->leftJoin('f.tags', 't');
-       $qb->where('f.company = :company');
-       $qb->setParameter('company', $company);
+       $qb = $this->createQueryBuilder('f')
+                  ->select('f, p, t')
+                  ->leftJoin('f.tags', 't')
+                  ->leftjoin('f.portalFeature', 'p')
+                  ->where('f.company = :company')
+                  ->setParameter('company', $company);
 
        if($tags)
        {
@@ -63,6 +66,53 @@ class FeatureRepository extends ServiceEntityRepository
 
        return $qb->getQuery()->getResult();
     }
+
+    public function findUnsedFeaturesForFeedback(Company $company, $tags, $features, $fulltext = null)
+    {
+
+        $qb = $this->createQueryBuilder('f')
+                   ->leftJoin('f.portalFeature', 'pf')
+                   ->leftJoin('f.tags', 'ta')
+                   ->addSelect('pf')
+                   ->where('f.company = :company')
+                   ->setParameter('company', $company);
+
+
+        if($fulltext)
+        {
+            $qb->andWhere('f.name LIKE :fulltext OR f.description LIKE :fulltext')
+               ->setParameter('fulltext', '%'.$fulltext.'%');
+        }
+
+        if($features)
+        {
+            $qb->andWhere('f NOT IN (:features)')
+                ->setParameter('features', $features);
+        }
+
+        if($tags)
+        {
+            $qb->andWhere('ta IN (:tags)')
+               ->setParameter('tags', $tags);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findUsedFeaturesForFeedback($feedback)
+    {
+        return $this->createQueryBuilder('f')
+                     ->leftJoin('f.insights', 'i')
+                     ->leftJoin('i.feedback', 'fee')
+                     ->leftJoin('f.portalFeature', 'pf')
+                     ->addSelect('pf')
+                     ->where('fee = :feedback')
+                     ->setParameter('feedback', $feedback)
+                     ->getQuery()
+                     ->getResult();
+    }
+
+
 
 
     // /**
