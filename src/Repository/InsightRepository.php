@@ -105,4 +105,17 @@ class InsightRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findInsightsForFeature(Feature $feature)
+    {
+        return $this->createQueryBuilder('i')
+                    ->select('i, fea, fee, w')
+                    ->join('i.feature', 'fea')
+                    ->join('i.feedback', 'fee')
+                    ->join('i.weight', 'w')
+                    ->where('fea = :feature')
+                    ->setParameter('feature', $feature)
+                    ->getQuery()
+                    ->getResult();
+    }
 }
