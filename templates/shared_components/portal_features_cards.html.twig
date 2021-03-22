@@ -1,28 +1,124 @@
-<div class="d-flex flex-nowrap mt-4">
+<div class="d-flex flex-row flex-wrap p-4 bg-light">
     {% if portalFeatureList %}
+
         {% for feature in portalFeatureList %}
-        <div class="border border-secondary p-3 m-1 rounded">
-            <strong>
-                <a href="
 
-                {% if app.request.get('_route') == 'bo_portal_detail' %}
-                    {{ path('bo_feature_portal', {'company_slug':app.user.slug, 'feature_id':feature.feature.id}) }}
+        <div class="p-3 m-2 rounded border bg-white portal-card">
+            <div class="d-flex flex-row">
+                <div class="flex-grow-1" style="height:60px">
+                    <a class="text-dark font-weight-bold" href="
+                            {% if app.request.get('_route') == 'bo_portal_detail' %}
+                                {{ path('bo_feature_portal', {'company_slug':app.user.slug, 'feature_id':feature.feature.id}) }}
+                            {% endif %}
+
+                            {% if app.request.get('_route') == 'fo_portal_detail' %}
+                                {{ path('fo_portal_insight_add', {'portal_slug':portal.slug, 'feature_id':feature.id}) }}
+                            {% endif %}
+                            ">
+                            {{ feature.name|length > 60 ?
+                               feature.name|slice(0, 60) ~ '...'
+                             : feature.name }}
+                            </a>
+                </div>
+                <div class="px-3">
+                    <span class="badge badge-warning">{{ feature.feedbackCount }}</span>
+                </div>
+            </div>
+            <div>
+                {% if feature.image %}
+                    <img src="{{ asset(upload_directory ~ '/' ~ feature.image.name) }}"
+                         alt="{{ feature.name }}" style="max-width:100%" />
+                {% else %}
+                    <p>
+                    {{ feature.description|length > 250 ?
+                    feature.description|slice(0, 250) ~ '...'
+                    : feature.description }}
+                    </p>
                 {% endif %}
+            </div>
+        </div>
 
-                {% if app.request.get('_route') == 'fo_portal_detail' %}
-                    {{ path('fo_portal_insight_add', {'portal_slug':portal.slug, 'feature_id':feature.id}) }}
-                {% endif %}
+        {% endfor %}
 
-                ">{{ feature.name }}</a>
-                <span class="badge badge-warning">{{ feature.feedbackCount }}</span>
-            </strong><br />
-            {% if feature.image %}
-                <p><img src="{{ asset(upload_directory ~ '/' ~ feature.image.name) }}"
-                        alt="{{ feature.name }}" style="max-width:500px" /></p>
-            {% endif %}
-            {{ feature.description }}
+
+
+            {#
+        {% set rows = (portalFeatureList|length / 4)|round(0, 'ceil') %}
+
+            {% for i in 0..(rows) %}
+
+                    {{ dump(portalFeatureList|length - i*4) }}
+
+                    {#
+                {% for k in 0..(portalFeatureList|length - i*4) %}
+
+                        {{ dump(i*4 + k) }}
+
+                {% endfor %}
+
+
+            {% endfor %}
+        #}
+        {#
+        {% for feature in portalFeatureList %}
+        <div class="d-flex flex-column" style="max-width: calc(25% - 1rem); min-width: 150px">
+                <div>
+                        {{ feature.name }}
+                </div>
         </div>
         {% endfor %}
+
+        {% for feature in portalFeatureList %}
+                <div class="d-flex flex-column" style="max-width: calc(25% - 1rem); min-width: 150px">
+                        <div>
+                            {% if feature.image %}
+                                <img src="{{ asset(upload_directory ~ '/' ~ feature.image.name) }}"
+                                     alt="{{ feature.name }}" style="max-width:100%" />
+                            {% endif %}
+                        </div>
+                </div>
+        {% endfor %}
+        #}
+
+            {#
+            <div class="p-3 m-2 rounded border bg-white" style="max-width: calc(25% - 1rem); min-width: 150px">
+                <div>
+                    <a href="
+
+                    {% if app.request.get('_route') == 'bo_portal_detail' %}
+                        {{ path('bo_feature_portal', {'company_slug':app.user.slug, 'feature_id':feature.feature.id}) }}
+                    {% endif %}
+
+                    {% if app.request.get('_route') == 'fo_portal_detail' %}
+                        {{ path('fo_portal_insight_add', {'portal_slug':portal.slug, 'feature_id':feature.id}) }}
+                    {% endif %}
+
+                    ">{{ feature.name }}</a>
+                </div>
+                <div>
+                    {% if feature.image %}
+                        <img src="{{ asset(upload_directory ~ '/' ~ feature.image.name) }}"
+                                alt="{{ feature.name }}" style="max-width:100%" />
+                    {% endif %}
+                </div>
+
+                <strong>
+                    <a href="
+
+                    {% if app.request.get('_route') == 'bo_portal_detail' %}
+                        {{ path('bo_feature_portal', {'company_slug':app.user.slug, 'feature_id':feature.feature.id}) }}
+                    {% endif %}
+
+                    {% if app.request.get('_route') == 'fo_portal_detail' %}
+                        {{ path('fo_portal_insight_add', {'portal_slug':portal.slug, 'feature_id':feature.id}) }}
+                    {% endif %}
+
+                    ">{{ feature.name }}</a>
+                    <span class="badge badge-warning">{{ feature.feedbackCount }}</span>
+                </strong><br />
+
+            </div>
+            #}
     {% else %}
         <div>Žádné featury.</div>
     {% endif %}
