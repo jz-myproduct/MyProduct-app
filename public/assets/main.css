@@ -41,3 +41,22 @@ label.required:before {
 #tags {
     display:none;
 }
+
+
+@media screen and (max-width: 979px) {
+    .portal-card {
+        width:100%;
+    }
+}
+
+@media screen and (min-width: 980px) {
+    .portal-card {
+        width: calc(50% - 1rem);
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .portal-card {
+        width: calc(33% - 1rem);
+    }
+}
