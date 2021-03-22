@@ -37,7 +37,6 @@ class ListView
         $featureList = $this->manager->getRepository(Feature::class)
             ->findCompanyFeaturesByTag($tags, $company, $state, $fulltext);
 
-
         return [
             'featureList' => $featureList,
             'form' => $form,

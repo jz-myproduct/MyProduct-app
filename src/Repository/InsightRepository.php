@@ -11,6 +11,7 @@ use Doctrine\ORM\Query\Expr\Select;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use MongoDB\Driver\Query;
 
 /**
  * @method Insight|null find($id, $lockMode = null, $lockVersion = null)
@@ -23,23 +24,6 @@ class InsightRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Insight::class);
-    }
-
-    public function getUnUsedFeaturesForFeedback(
-        Feedback $feedback,
-        Company $company,
-        String $name = null,
-        array $tags = null)
-    {
-
-        $queryBuilder = $this->prepareQueryBuilderForUnusedFeatures(
-                            $feedback,
-                            $company,
-                            $name,
-                            $tags);
-
-        return $queryBuilder->getResult();
-
     }
 
     public function getInsightsCountForFeedback(Feedback $feedback)
@@ -87,6 +71,7 @@ class InsightRepository extends ServiceEntityRepository
 
     public function getFeedbackCountForPortalFeature(Feature $feature)
     {
+
         $conn = $this->getEntityManager()
             ->getConnection();
 
@@ -108,64 +93,16 @@ class InsightRepository extends ServiceEntityRepository
 
     }
 
-    private function prepareQueryBuilderForUnusedFeatures(
-        Feedback $feedback,
-        Company $company,
-        String $name = null,
-        array $tags = null
-    )
+    public function findInsightsForFeedback(Feedback $feedback)
     {
-        $entityManager = $this->getEntityManager();
-
-        $rsm = new ResultSetMappingBuilder( $entityManager );
-        $rsm->addRootEntityFromClassMetadata('App\Entity\Feature', 'f');
-
-        $queryBuilder = $entityManager->createNativeQuery(
-            $this->prepareSQLForUnusedFeatures($tags, $name),
-            $rsm
-        );
-
-        if($tags){
-            $queryBuilder->setParameter('tags', $tags);
-        }
-        if($name){
-            $queryBuilder->setParameter('name', '%'.$name.'%');
-        }
-
-        $queryBuilder->setParameter('company', $company->getId())
-            ->setParameter('feedback', $feedback->getId());
-
-        return $queryBuilder;
-    }
-
-    private function prepareSQLForUnusedFeatures($tags, $name)
-    {
-        $sql = "SELECT f.id, f.name
-                FROM feature f\n";
-
-        if($tags)
-        {
-            $sql .= "JOIN feature_feature_tag t
-                     ON f.id = t.feature_id\n";
-        }
-
-        $sql .= "WHERE\n";
-
-        if($tags)
-        {
-            $sql .= "t.feature_tag_id IN (:tags) AND\n";
-        }
-
-        if($name)
-        {
-            $sql .= "(f.name LIKE :name OR f.description LIKE :name) AND\n";
-        }
-
-        $sql .= "f.company_id = :company AND
-                 f.id NOT IN (SELECT feature_id
-                              FROM insight
-                              WHERE feedback_id = :feedback)";
-
-        return $sql;
+        return $this->createQueryBuilder('i')
+            ->select('i, fea, fee, w')
+            ->join('i.feature', 'fea')
+            ->join('i.feedback', 'fee')
+            ->join('i.weight', 'w')
+            ->where('fee = :feedback')
+            ->setParameter('feedback', $feedback)
+            ->getQuery()
+            ->getResult();
     }
 }

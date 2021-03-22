@@ -5,13 +5,14 @@
 
     {% include('back_office/components/feedback_tabs.html.twig') %}
 
-    {% if relatedFeatureList %}
+
+    {% if insights %}
     <p>
-        {% for relatedFeature in relatedFeatureList %}
+        {% for insight in insights %}
             <span class="p-1">
-                <a href="{{ path('bo_insight_edit', { 'company_slug': app.user.slug, 'insight_id':relatedFeature.insight.id, 'p':redirectToFeedback } ) }}"
-                   class="badge badge-info">{{ relatedFeature.feature.name }} ({{ relatedFeature.insight.name }})</a>
-                <a href="{{ path('bo_insight_delete', {'company_slug': app.user.slug, 'insight_id':relatedFeature.insight.id, 'p':redirectToFeedback } ) }}"
+                <a href="{{ path('bo_insight_edit', { 'company_slug': app.user.slug, 'insight_id':insight.id, 'p':redirectToFeedback } ) }}"
+                   class="badge badge-info">{{ insight.feature.name }} ({{ insight.weight.name }})</a>
+                <a href="{{ path('bo_insight_delete', {'company_slug': app.user.slug, 'insight_id':insight.id, 'p':redirectToFeedback } ) }}"
                    class="badge badge-danger font-weight-bold"><span aria-hidden="true">&times;</span></a>
             </span>
         {% endfor %}
