@@ -27,12 +27,13 @@ class ListView
         Company $company,
         FormView $form,
         FeatureState $state = null,
-        $tagsParam = [],
+        $tagsParam = null,
         String $fulltext = null)
     {
 
+
         $tags = $this->manager->getRepository(FeatureTag::class)
-            ->findBy( ['id' => $tagsParam ] );
+            ->findBy( ['id' => $tagsParam, 'company' => $company ] );
 
         $featureList = $this->manager->getRepository(Feature::class)
             ->findCompanyFeaturesByTag($tags, $company, $state, $fulltext);

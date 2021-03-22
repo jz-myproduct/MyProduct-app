@@ -37,12 +37,12 @@ class FeatureRepository extends ServiceEntityRepository
     public function findCompanyFeaturesByTag($tags, $company, $state, $fulltext)
     {
 
-       $qb = $this->createQueryBuilder('f');
-       $qb->select('f, t, p');
-       $qb->join('f.tags', 't');
-       $qb->join('f.portalFeature', 'p');
-       $qb->where('f.company = :company');
-       $qb->setParameter('company', $company);
+       $qb = $this->createQueryBuilder('f')
+                  ->select('f, p, t')
+                  ->leftJoin('f.tags', 't')
+                  ->leftjoin('f.portalFeature', 'p')
+                  ->where('f.company = :company')
+                  ->setParameter('company', $company);
 
        if($tags)
        {
@@ -71,17 +71,11 @@ class FeatureRepository extends ServiceEntityRepository
     {
 
         $qb = $this->createQueryBuilder('f')
-                   ->join('f.insights', 'i')
-                   ->join('f.portalFeature', 'pf');
-
-        if($tags)
-        {
-            $qb->join('f.tags', 'ta');
-        }
-
-        $qb->addSelect('pf')
-           ->where('f.company = :company')
-           ->setParameter('company', $company);
+                   ->leftJoin('f.portalFeature', 'pf')
+                   ->leftJoin('f.tags', 'ta')
+                   ->addSelect('pf')
+                   ->where('f.company = :company')
+                   ->setParameter('company', $company);
 
 
         if($fulltext)
@@ -108,16 +102,16 @@ class FeatureRepository extends ServiceEntityRepository
     public function findUsedFeaturesForFeedback($feedback)
     {
         return $this->createQueryBuilder('f')
-                     ->join('f.insights', 'i')
-                     ->join('i.feedback', 'fee')
-                     ->join('f.portalFeature', 'pf')
+                     ->leftJoin('f.insights', 'i')
+                     ->leftJoin('i.feedback', 'fee')
+                     ->leftJoin('f.portalFeature', 'pf')
                      ->addSelect('pf')
                      ->where('fee = :feedback')
                      ->setParameter('feedback', $feedback)
                      ->getQuery()
                      ->getResult();
     }
-    
+
 
 
 
