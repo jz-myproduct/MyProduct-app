@@ -9,11 +9,6 @@
         <table class="table table-striped mt-5">
             {% for insight in insightList %}
                 <tr>
-                    {% if insight.feedback.isNew %}
-                        <td class="text-danger font-weight-bold">Nový</td>
-                    {% else %}
-                        <td></td>
-                    {% endif %}
                     {% if insight.feedback.fromPortal %}
                         <td class="text-info">Portal</td>
                     {% else %}
@@ -26,10 +21,16 @@
                             </svg>
                         </a>
                     </td>
-                    <td>{{ insight.weight.name }}</td>
-                    <td>{{ insight.feedback.createdAt|date('d.m.y H:i') }}</td>
-                    <td><a href="{{ path('bo_insight_edit', {'company_slug':app.user.slug, 'insight_id':insight.id, 'p':redirectToFeature}) }}">Upravit</a></td>
-                    <td><a href="{{ path('bo_insight_delete', {'company_slug':app.user.slug, 'insight_id':insight.id, 'p':redirectToFeature}) }}">Odebrat</a></td>
+                    <td>
+                        {% include 'back_office/components/weights_printer.html.twig'
+                            with {'weight':insight.weight.number, 'weightName':insight.weight.name } %}
+                    </td>
+                    <td><a href="{{ path('bo_insight_edit', {'company_slug':app.user.slug, 'insight_id':insight.id, 'p':redirectToFeature}) }}">
+                            <i class="bi bi-pencil-square"></i> Změnit
+                        </a></td>
+                    <td><a href="{{ path('bo_insight_delete', {'company_slug':app.user.slug, 'insight_id':insight.id, 'p':redirectToFeature}) }}">
+                            <i class="bi bi-x-square"></i> Odebrat
+                        </a></td>
                 </tr>
             {% endfor %}
         </table>
