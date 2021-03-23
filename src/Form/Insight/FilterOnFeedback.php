@@ -27,7 +27,10 @@ class FilterOnFeedback extends AbstractType
                 'label' => 'Tags',
                 'choices' => $tags,
                 'expanded' => true,
-                'multiple' => true
+                'multiple' => true,
+                'label_attr' => [
+                    'class' => 'checkbox-inline'
+                ]
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Filtrovat',

@@ -7,3 +7,4 @@ twig:
         domain_url: '%domain.url%'
         author: '%author%'
         assets_directory_name: '%assets.directory.name%'
+        weightsCount: '%weightsCount%'
