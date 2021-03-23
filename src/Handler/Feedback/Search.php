@@ -6,6 +6,7 @@ namespace App\Handler\Feedback;
 
 use App\Entity\Company;
 use App\FormRequest\Feedback\ListFilterRequest;
+use App\View\BackOffice\Feedback\ListView;
 use Symfony\Component\Routing\RouterInterface;
 
 class Search
@@ -27,7 +28,8 @@ class Search
         return $this->router->generate('bo_feedback_list', [
             'slug' => $company->getSlug(),
             'fulltext' => $request->fulltext,
-            'isNew' => $request->isNew
+            'isNew' => $request->isNew,
+            '_fragment' => ListView::$scrollTo
         ]);
 
     }

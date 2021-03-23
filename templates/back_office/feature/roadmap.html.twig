@@ -3,7 +3,7 @@
 {% block content %}
     {% include('back_office/components/feature_list_header.html.twig') %}
 
-    <div class="d-flex flex-row w-100 flex-wrap mt-4">
+    <div class="d-flex flex-row w-100 flex-wrap mt-4" id="{{ scrollTo }}">
     {% for stateWithFeatures in features %}
 
         <div class="flex-fill w-{{ columnWidth }}" style="min-width: 200px">

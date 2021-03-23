@@ -19,6 +19,8 @@ class RoadmapView
      */
     private $manager;
 
+    public static $scrollTo = 'roadmapScroll';
+
     public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;
@@ -34,7 +36,9 @@ class RoadmapView
             'form' => $form,
             'tagsExist' => $company->getFeatureTags()->toArray() ? true : false,
             'tags' => $tagsParam,
-            'fulltext' => $fulltext
+            'fulltext' => $fulltext,
+            'isFiltered' => is_null($tagsParam) && is_null($fulltext) ? false : true,
+            'scrollTo' => self::$scrollTo
         ];
     }
 
