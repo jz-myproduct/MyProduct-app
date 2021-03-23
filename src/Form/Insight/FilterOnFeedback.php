@@ -29,7 +29,10 @@ class FilterOnFeedback extends AbstractType
                 'expanded' => true,
                 'multiple' => true
             ])
-            ->add('save', SubmitType::class, ['label' => 'Filtrovat']) ;
+            ->add('save', SubmitType::class, [
+                'label' => 'Filtrovat',
+                'attr' => ['class' => 'btn-outline-primary']
+            ]) ;
 
     }
 
