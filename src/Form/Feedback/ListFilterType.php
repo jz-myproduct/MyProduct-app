@@ -32,7 +32,10 @@ class ListFilterType extends AbstractType
                 'label' => 'Hledat feedback',
                 'required' => false
             ])
-            ->add('save', SubmitType::class, ['label' => 'Filtrovat']) ;
+            ->add('save', SubmitType::class, [
+                'label' => 'Filtrovat',
+                'attr' => ['class' => 'btn-outline-primary']
+            ]) ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

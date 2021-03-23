@@ -16,6 +16,8 @@ class ListView
      */
     private $manager;
 
+    public static $scrollTo = 'listScroll';
+
     public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;
@@ -28,7 +30,9 @@ class ListView
 
         return [
             'feedbackList' => $feedbackList,
-            'form' => $form
+            'form' => $form,
+            'isFiltered' => is_null($isNew) && is_null($fulltext) ? false : true,
+            'scrollTo' => self::$scrollTo
         ];
     }
 

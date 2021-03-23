@@ -18,6 +18,8 @@ class ListView
      */
     private $manager;
 
+    public static $scrollTo = 'listScroll';
+
     public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;
@@ -41,7 +43,9 @@ class ListView
         return [
             'featureList' => $featureList,
             'form' => $form,
-            'tagsExist' => $company->getFeatureTags()->toArray() ? true : false
+            'tagsExist' => $company->getFeatureTags()->toArray() ? true : false,
+            'isFiltered' => is_null($state) && is_null($tagsParam) && is_null($fulltext) ? false : true,
+            'scrollTo' => self::$scrollTo
         ];
     }
 

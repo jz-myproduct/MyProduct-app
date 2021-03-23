@@ -20,3 +20,7 @@ $("#roadmap_filter input").change(function() {
         $('#feature_state_filter form').submit();
     }, 1500);
 });
+
+$('#list_filter_isNew').change(function () {
+    $('#filters form').submit();
+});

@@ -22,6 +22,8 @@ class ListOnFeedbackView
      */
     private $manager;
 
+    public static $scrollTo = 'featuresScroll';
+
     public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;
@@ -46,7 +48,9 @@ class ListOnFeedbackView
             'unrelatedFeatureList' => $unrelatedFeatures,
             'insightsCount' => sizeof($insights),
             'redirectToFeedback' => Redirect::getRedirectToFeedback(),
-            'form' => $form
+            'form' => $form,
+            'isFiltered' => is_null($request->fulltext) && is_null($request->tags) ? false : true,
+            'scrollTo' => self::$scrollTo
         ];
     }
 

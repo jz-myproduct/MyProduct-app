@@ -7,6 +7,7 @@ namespace App\Handler\Insight;
 use App\Entity\Company;
 use App\Entity\Feedback;
 use App\FormRequest\Insight\FilterOnFeedbackRequest;
+use App\View\BackOffice\Insight\ListOnFeedbackView;
 use Symfony\Component\Routing\RouterInterface;
 
 class Search
@@ -28,7 +29,8 @@ class Search
             'company_slug' => $company->getSlug(),
             'feedback_id' => $feedback->getId(),
             'tags' => $request->tags,
-            'fulltext' => $request->fulltext
+            'fulltext' => $request->fulltext,
+            '_fragment' => ListOnFeedbackView::$scrollTo
         ]);
 
     }

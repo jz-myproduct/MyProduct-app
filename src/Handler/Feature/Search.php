@@ -8,6 +8,8 @@ use App\Entity\Company;
 use App\Entity\FeatureState;
 use App\FormRequest\Feature\ListFilterRequest;
 use App\FormRequest\Feature\RoadmapFilterRequest;
+use App\View\BackOffice\Feature\ListView;
+use App\View\BackOffice\Feature\RoadmapView;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -38,7 +40,8 @@ class Search
             'slug' => $company->getSlug(),
             'state_slug' => $state ? $state->getSlug() : null,
             'tags'=> $formRequest->tags,
-            'fulltext' => $formRequest->fulltext
+            'fulltext' => $formRequest->fulltext,
+            '_fragment' => ListView::$scrollTo
         ]);
 
     }
@@ -49,7 +52,8 @@ class Search
         return $this->router->generate('bo_feature_list_roadmap', [
             'slug' => $company->getSlug(),
             'tags'=> $formRequest->tags,
-            'fulltext' => $formRequest->fulltext
+            'fulltext' => $formRequest->fulltext,
+            '_fragment' => RoadmapView::$scrollTo
         ]);
 
     }

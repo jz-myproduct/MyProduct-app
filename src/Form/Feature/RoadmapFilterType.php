@@ -33,9 +33,15 @@ class RoadmapFilterType extends AbstractType
                 'choices' => $tagChoices,
                 'expanded' => true,
                 'multiple' => true,
-                'data' => $currentTagChoices
+                'data' => $currentTagChoices,
+                'label_attr' => [
+                    'class' => 'checkbox-inline'
+                ]
             ])
-            ->add('save', SubmitType::class, ['label' => 'Filtrovat']) ;
+            ->add('save', SubmitType::class, [
+                'label' => 'Filtrovat',
+                'attr' => ['class' => 'btn-outline-primary']
+            ]) ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
