@@ -17,13 +17,12 @@ use App\FormRequest\Insight\AddFromFeatureRequest;
 use App\FormRequest\Insight\AddFromFeedbackRequest;
 use App\FormRequest\Insight\FilterOnFeedbackRequest;
 use App\Handler\Insight\Add;
-use App\Handler\Insight\AddFromFeature;
-use App\Handler\Insight\AddFromFeedback;
 use App\Handler\Insight\Delete;
 use App\Handler\Insight\Edit;
 use App\Handler\Insight\Redirect;
 use App\Handler\Insight\Search;
 use App\View\BackOffice\Feature\FilterFormView;
+use App\View\BackOffice\Insight\AddEditView;
 use App\View\BackOffice\Insight\ListOnFeatureView;
 use App\View\BackOffice\Insight\ListOnFeedbackView;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,6 +33,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 class InsightController extends AbstractController
 {
@@ -58,6 +59,7 @@ class InsightController extends AbstractController
      * @param Feature $feature
      * @param Request $request
      * @param Add $handler
+     * @param AddEditView $view
      * @return RedirectResponse|Response
      */
     public function addFromFeedback(
@@ -65,7 +67,8 @@ class InsightController extends AbstractController
         Feedback $feedback,
         Feature $feature,
         Request $request,
-        Add $handler)
+        Add $handler,
+        AddEditView $view)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
         $this->denyAccessUnlessGranted('edit', $feedback);
@@ -100,9 +103,9 @@ class InsightController extends AbstractController
             ]);
         }
 
-        return $this->render('back_office/insight/add_edit.html.twig', [
-            'form' => $form->createView()
-        ]);
+        return $this->render('back_office/insight/add_edit.html.twig',
+            $view->add($feedback, $feature, $form->createView())
+        );
     }
 
     /**
@@ -205,6 +208,7 @@ class InsightController extends AbstractController
      * @param Request $request
      * @param Edit $editHandler
      * @param Redirect $redirectHandler
+     * @param AddEditView $view
      * @return RedirectResponse|Response
      */
     public function edit(
@@ -212,7 +216,8 @@ class InsightController extends AbstractController
         Insight $insight,
         Request $request,
         Edit $editHandler,
-        Redirect $redirectHandler)
+        Redirect $redirectHandler,
+        AddEditView $view)
     {
         $this->denyAccessUnlessGranted('edit', $insight);
 
@@ -238,9 +243,9 @@ class InsightController extends AbstractController
             );
         }
 
-        return $this->render('back_office/insight/add_edit.html.twig', [
-            'form' => $form->createView()
-        ]);
+        return $this->render('back_office/insight/add_edit.html.twig',
+            $view->edit($insight->getFeedback(), $insight->getFeature(), $form->createView())
+        );
     }
 
     /**
