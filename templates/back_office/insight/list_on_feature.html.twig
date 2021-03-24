@@ -10,24 +10,24 @@
             {% for insight in insightList %}
                 <tr>
                     {% if insight.feedback.fromPortal %}
-                        <td class="text-info">Portal</td>
+                        <td class="text-info align-middle">Portal</td>
                     {% else %}
                         <td></td>
                     {% endif %}
-                    <td><a href="{{ path('bo_feedback_detail', {'company_slug': app.user.slug, 'feedback_id': insight.feedback.id}) }}">
+                    <td class="align-middle"><a href="{{ path('bo_feedback_detail', {'company_slug': app.user.slug, 'feedback_id': insight.feedback.id}) }}">
                             {{ insight.feedback.description|length > 60 ? insight.feedback.description|slice(0, 60) ~ '...' : insight.feedback.description  }}
                             <i class="bi bi-arrow-right-square-fill"></i>
                         </a>
                     </td>
-                    <td>
+                    <td class="align-middle">
                         {% include 'back_office/components/weights_printer.html.twig'
                             with {'weight':insight.weight.number, 'weightName':insight.weight.name } %}
                     </td>
-                    <td><a href="{{ path('bo_insight_edit', {'company_slug':app.user.slug, 'insight_id':insight.id, 'p':redirectToFeature}) }}">
-                            <i class="bi bi-pencil-square"></i> Změnit
+                    <td class="align-middle"><a class="btn btn-outline-primary" href="{{ path('bo_insight_edit', {'company_slug':app.user.slug, 'insight_id':insight.id, 'p':redirectToFeature}) }}">
+                            <i class="bi bi-pencil-square"></i>
                         </a></td>
-                    <td><a href="{{ path('bo_insight_delete', {'company_slug':app.user.slug, 'insight_id':insight.id, 'p':redirectToFeature}) }}">
-                            <i class="bi bi-x-square"></i> Odebrat
+                    <td class="align-middle"><a class="btn btn-outline-primary" href="{{ path('bo_insight_delete', {'company_slug':app.user.slug, 'insight_id':insight.id, 'p':redirectToFeature}) }}">
+                            <i class="bi bi-x-square"></i>
                         </a></td>
                 </tr>
             {% endfor %}

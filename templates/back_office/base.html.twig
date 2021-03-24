@@ -22,8 +22,8 @@
                 </ul>
                 <span class="navbar-text">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item"><a href="{{ path('bo_settings_info', {'slug':app.user.slug}) }}" class="nav-link text-light">Nastavení</a></li>
-                        <li class="nav-item"><a href="{{ path('fo_logout') }}" class="nav-link text-light">Odhlásit</a></li>
+                        <li class="nav-item"><a href="{{ path('bo_settings_info', {'slug':app.user.slug}) }}" class="nav-link text-light"><i class="bi bi-gear"></i> Nastavení</a></li>
+                        <li class="nav-item"><a href="{{ path('fo_logout') }}" class="nav-link text-light"><i class="bi bi-box-arrow-right"></i> Odhlásit</a></li>
                     </ul>
                 </span>
             </div>
@@ -35,10 +35,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('bo_feedback_add', {'slug':app.user.slug}) }}">Přidat feedback</a>
+                        <a class="nav-link" href="{{ path('bo_feedback_add', {'slug':app.user.slug}) }}"><i class="bi bi-plus"></i> Přidat feedback</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('bo_feature_add', {'slug':app.user.slug}) }}">Přidat feature</a>
+                        <a class="nav-link" href="{{ path('bo_feature_add', {'slug':app.user.slug}) }}"><i class="bi bi-plus"></i> Přidat feature</a>
                     </li>
                 </ul>
             </div>

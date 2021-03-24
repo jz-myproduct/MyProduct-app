@@ -9,6 +9,8 @@ use App\Entity\PortalFeature;
 use App\Entity\PortalFeatureState;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 class PortalDetail
 {
@@ -16,10 +18,15 @@ class PortalDetail
      * @var EntityManagerInterface
      */
     private $manager;
+    /**
+     * @var RouterInterface
+     */
+    private $router;
 
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager, RouterInterface $router)
     {
         $this->manager = $manager;
+        $this->router = $router;
     }
 
     public function create(Company $company, $state = null, FormView $form = null)
@@ -37,6 +44,9 @@ class PortalDetail
             'stateList' => $stateList,
             'portalFeatureList' => $portalFeatureList,
             'portal' => $company->getPortal(),
+            'portalPublicUrl' => $this->router->generate('fo_portal_detail', [
+                'slug' => $company->getPortal()->getSlug()
+            ], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
 
         if($form){
