@@ -21,12 +21,37 @@ class RoadmapView
 
     public static $scrollTo = 'roadmapScroll';
 
+    public static $previousDirection =
+        [
+            'int' => -1,
+            'slug' => 'predchozi'
+        ];
+
+    public static $nextDirection =
+        [
+            'int' => 1,
+            'slug' => 'nasledujici'
+        ];
+
+    public static function getDirectionsSlugs()
+    {
+        return [
+          self::$previousDirection['slug'],
+          self::$nextDirection['slug']
+        ];
+    }
+
     public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;
     }
 
-    public function create(Company $company, FormView $form, $tagsParam = [], String $fulltext = null)
+    public function create(
+        Company $company,
+        FormView $form,
+        $tagsParam = [],
+        String $fulltext = null,
+        Int $movedFeature = null)
     {
         $states = $this->manager->getRepository(FeatureState::class)->findAll();
 
@@ -38,7 +63,10 @@ class RoadmapView
             'tags' => $tagsParam,
             'fulltext' => $fulltext,
             'isFiltered' => is_null($tagsParam) && is_null($fulltext) ? false : true,
-            'scrollTo' => self::$scrollTo
+            'scrollTo' => self::$scrollTo,
+            'previousDirection' => self::$previousDirection['slug'],
+            'nextDirection' => self::$nextDirection['slug'],
+            'movedFeatureId' => $movedFeature
         ];
     }
 

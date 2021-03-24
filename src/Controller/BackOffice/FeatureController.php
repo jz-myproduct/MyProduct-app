@@ -224,7 +224,8 @@ class FeatureController extends AbstractController
                 $company,
                 $form->createView(),
                 $tagsParam,
-                $fulltext
+                $fulltext,
+                 $request->get('id') ? (int)$request->get('id') : null
             )
         );
     }
@@ -285,7 +286,7 @@ class FeatureController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $feature);
 
-        if (! in_array($direction, FeatureState::getDirectionSlugs() )){
+        if (! in_array($direction, RoadmapView::getDirectionsSlugs() )){
             throw new NotFoundHttpException();
         }
 
@@ -296,7 +297,9 @@ class FeatureController extends AbstractController
         return $this->redirectToRoute('bo_feature_list_roadmap', [
             'slug' => $company->getSlug(),
             'tags' => $request->get('tags'),
-            'fulltext' => $request->get('fulltext')
+            'fulltext' => $request->get('fulltext'),
+            'id' => $feature->getId(),
+            '_fragment' => RoadmapView::$scrollTo
         ]);
     }
 
