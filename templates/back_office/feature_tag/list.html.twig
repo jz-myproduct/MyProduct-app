@@ -9,9 +9,11 @@
         <table class="table table-striped mt-5">
             {% for tag in tags %}
                 <tr>
-                    <td>{{ tag.name }}</td>
-                    <td><a href="{{ path('bo_feature_tag_edit', {'company_slug': app.user.slug, 'tag_id':tag.id }) }}">Upravit</a></td>
-                    <td><a href="{{ path('bo_feature_tag_delete', {'company_slug': app.user.slug, 'tag_id':tag.id }) }}">Smazat</a></td>
+                    <td class="align-middle">{{ tag.name }}</td>
+                    <td class="align-middle"><a class="btn btn-outline-primary" href="{{ path('bo_feature_tag_edit', {'company_slug': app.user.slug, 'tag_id':tag.id }) }}">
+                            <i class="bi bi-pencil-square"></i></a></td>
+                    <td class="align-middle"><a class="btn btn-outline-danger" href="{{ path('bo_feature_tag_delete', {'company_slug': app.user.slug, 'tag_id':tag.id }) }}">
+                            <i class="bi bi-x-square"></i></a></td>
                 </tr>
             {% endfor %}
         </table>

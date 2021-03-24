@@ -7,7 +7,10 @@
 
     <p class="font-weight-bold">Co uživatelé říkají?</p>
     <p>{{ feedback.description }}</p>
-    <p class="font-weight-bold">Od koho feedback máte?</p>
-    <p>{{ feedback.source }}</p>
+
+    {% if feedback.source %}
+        <p class="font-weight-bold">Od koho feedback máte?</p>
+        <p>{{ feedback.source }}</p>
+    {% endif %}
 
 {% endblock %}

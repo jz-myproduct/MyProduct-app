@@ -174,11 +174,13 @@ class InsightController extends AbstractController
 
         $formRequest = FilterOnFeedbackRequest::fromArray([
           'fulltext' => $request->get('fulltext'),
-          'tags' => $request->get('tags')
+          'tags' => $request->get('tags'),
+          'state' => $request->get('state')
         ]);
 
         $form = $this->createForm(FilterOnFeedback::class, $formRequest, [
-            'tags' => $formView->createTags($company)
+            'tags' => $formView->createTags($company),
+            'states' => $formView->createStates()
         ]);
         $form->handleRequest($request);
 

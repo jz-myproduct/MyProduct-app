@@ -1,21 +1,31 @@
-<h1 class="h3 text-center">
-    {% if feedback.isNew %}
-        <span class="badge badge-danger">Nový</span>
-    {% endif %}
-    {% if feedback.fromPortal %}
-        <span class="badge badge-info">Portal</span>
-    {% endif %}
-    Feedback
-</h1>
-<p class="text-center text-secondary">Přidáno {{ feedback.createdAt|date('d.m.y H:i') }}</p>
-<p class="text-right">
-    <a href="{{ path('bo_feedback_edit', {'company_slug':app.user.slug, 'feedback_id': feedback.id}) }}" class="btn btn-outline-primary">Upravit</a>
-    <a href="{{ path('bo_feedback_change_status', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'p':app.request.get('_route')}) }}" class="btn btn-outline-secondary">Označit jako
-        {% if feedback.isNew %}
-            přečtený
-        {% else %}
-            nový
-        {% endif %}
-    </a>
-    <a href="{{ path('bo_feedback_delete', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}" class="btn btn-outline-danger">Smazat</a>
-</p>
+<div class="d-flex flex-row flex-wrap">
+    <div class="flex-grow-1">
+        <h1 class="h3 text-center">
+            {% if feedback.isNew %}
+                <span class="badge badge-danger">Nový</span>
+            {% endif %}
+            {% if feedback.fromPortal %}
+                <span class="badge badge-info">Portal</span>
+            {% endif %}
+            Feedback
+        </h1>
+        <p class="text-center text-secondary">Přidáno {{ feedback.createdAt|date('d.m.y H:i') }}</p>
+    </div>
+    <div style="font-size: 16px">
+        <a style="font-size: 20px" href="{{ path('bo_feedback_edit', {'company_slug':app.user.slug, 'feedback_id': feedback.id}) }}"
+           class="btn btn-outline-primary"
+           data-toggle="tooltip" data-placement="top" title="Upravit"><i class="bi bi-pencil-square"></i></a>
+        <a style="font-size: 20px" href="{{ path('bo_feedback_change_status', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'p':redirectTo}) }}"
+           class="btn btn-outline-secondary"
+           data-toggle="tooltip" data-placement="top"
+           title="Označit za {% if feedback.isNew %}zpracovaný{% else %}nový{% endif %}">
+            {% if feedback.isNew %}
+                <i class="bi bi-check-square-fill"></i>
+            {% else %}
+                <i class="bi bi-exclamation-square-fill"></i>
+            {% endif %}
+        </a>
+        <a data-toggle="tooltip" data-placement="top" title="Smazat" style="font-size: 20px"
+           href="{{ path('bo_feedback_delete', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}" class="btn btn-outline-danger"><i class="bi bi-trash-fill"></i></a>
+    </div>
+</div>

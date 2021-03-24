@@ -193,9 +193,11 @@ class FeedbackController extends AbstractController
 
         return new RedirectResponse(
           $redirectHandler->handle(
-              $request->query->get('p'),
               $feedback,
-              $company)
+              $company,
+              $request->query->get('p'),
+              $request->query->get('isNew'),
+              $request->query->get('fulltext'))
         );
     }
 

@@ -6,9 +6,9 @@ namespace App\Handler\Feature;
 
 use App\Entity\Feature;
 use App\Entity\FeatureState;
+use App\View\BackOffice\Feature\RoadmapView;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Types\Self_;
-use phpDocumentor\Reflection\Types\This;
+
 
 class MoveState
 {
@@ -43,14 +43,14 @@ class MoveState
     private function movePositionsBy($direction)
     {
 
-        if($direction === FeatureState::getPreviousDirectionSlug())
+        if($direction === RoadmapView::$previousDirection['slug'])
         {
-            return FeatureState::getPreviousDirectionInt();
+            return RoadmapView::$previousDirection['int'];
         }
 
-        if($direction === FeatureState::getNextDirectionSlug())
+        if($direction === RoadmapView::$nextDirection['slug'])
         {
-            return FeatureState::getNextDirectionInt();
+            return RoadmapView::$nextDirection['int'];
         }
 
         return 0;

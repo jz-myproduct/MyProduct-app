@@ -1,11 +1,11 @@
 <div class="mb-5 border-bottom pb-2">
-    <h2 class="h4">
+    <h2 class="h4 pb-2">
         {{ feature.name }}
-        <span class="badge badge-warning">{{ feature.feedbackCount }}</span>
+        <span class="badge badge-warning"><i class="bi bi-person"></i> {{ feature.feedbackCount }}</span>
     </h2>
     {% if feature.image %}
         <p><img src="{{ asset(upload_directory ~ '/' ~ feature.image.name) }}"
-                alt="{{ feature.name }}" style="max-width:500px" /></p>
+                alt="{{ feature.name }}" style="width:100%" /></p>
     {% endif %}
     <p>{{ feature.description }}</p>
 </div>

@@ -20,33 +20,30 @@ class SwitchStatusRedirect
         $this->router = $router;
     }
 
+    public static $list = 'l';
+    public static $detail = 'd';
+
     public function handle(
-        String $param,
         Feedback $feedback,
-        Company $company)
+        Company $company,
+        String $pageRedirect = null,
+        String $isNew = null,
+        String $fulltext = null)
     {
 
-        // TODO ty stringy by měli být uloženy někde jako konstanty (ViewClass)
-
-        if ($param === 'bo_feedback_list') {
+        if ($pageRedirect === self::$list) {
 
             return $this->router->generate('bo_feedback_list', [
-               'slug' => $company->getSlug()
+               'slug' => $company->getSlug(),
+                'fulltext' => $fulltext,
+                'isNew' => $isNew
             ]);
 
         }
 
-        if ($param === 'bo_feedback_detail') {
+        if ($pageRedirect === self::$detail) {
 
             return $this->router->generate('bo_feedback_detail', [
-                'company_slug' => $company->getSlug(),
-                'feedback_id' => $feedback->getId()
-            ]);
-        }
-
-        if ($param === 'bo_feedback_features') {
-
-            return $this->router->generate('bo_feedback_features', [
                 'company_slug' => $company->getSlug(),
                 'feedback_id' => $feedback->getId()
             ]);
