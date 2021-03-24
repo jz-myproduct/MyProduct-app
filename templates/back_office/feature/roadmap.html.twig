@@ -17,14 +17,17 @@
                          id="feature"
                          {% if movedFeatureId == feature.id %}style="background: lightgoldenrodyellow"{% endif %} >
                         <div class="text-center pb-3">
-                            <a class="text-secondary" href="{{ path('bo_feature_detail', { 'company_slug':app.user.slug, 'feature_id':feature.id }) }}">{{ feature.name }}</a>
+                            <a class="text-secondary"
+                               href="{{ path('bo_feature_detail', { 'company_slug':app.user.slug, 'feature_id':feature.id }) }}">
+                                {{ feature.name }}
+                            </a><br />
+                            <span class="badge badge-warning" data-toggle="tooltip" data-placement="top"
+                                  title="Prioritizační skóre"><i class="bi bi-heart"></i> {{ feature.score }}</span>
                         </div>
 
                         <div class="pb-1" id="tags">
                         {% for tag in feature.tags %}
-
                             <div class="badge badge-info">{{ tag.name }}</div>
-
                         {% endfor %}
                         </div>
 
