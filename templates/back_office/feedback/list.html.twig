@@ -19,33 +19,42 @@
         <table class="table table-striped mt-3" id="{{ scrollTo }}">
             {% for feedback in feedbackList %}
                 <tr>
-                    {% if feedback.isNew %}
-                        <td class="text-danger font-weight-bold">Nový</td>
-                    {% else %}
-                        <td></td>
-                    {% endif %}
-                    {% if feedback.fromPortal %}
-                        <td class="text-info">Portal</td>
-                    {% else %}
-                        <td></td>
-                    {% endif %}
-                    <td><a href="{{ path('bo_feedback_detail', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}">
-                            {{ feedback.description|length > 40 ? feedback.description|slice(0, 40) ~ '...' : feedback.description  }}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
-                                <path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z"/>
-                            </svg>
+                    <td class="px-4 text-center pt-3" style="font-size: 12px">
+                        <a href="{{ path('bo_feedback_change_status', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'p':redirectTo, 'isNew':isNew, 'fulltext':fulltext}) }}"
+                        {% if feedback.isNew %}
+                               class="text-danger" data-toggle="tooltip" data-placement="top" title="Označit za zpracovaný">
+                               <i class="bi bi-circle-fill"></i>
+                        {% else %}
+                               class="text-dark" data-toggle="tooltip" data-placement="top" title="Označit za nový">
+                               <i class="bi bi-circle"></i>
+                        {% endif %}
                         </a>
                     </td>
-                    <td>{{ feedback.createdAt|date('d.m.y H:i') }}</td>
-                    <td><a href="{{ path('bo_feedback_change_status', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'p':redirectTo, 'isNew':isNew, 'fulltext':fulltext}) }}">
-                            {% if feedback.isNew %}
-                                Přečtený
-                            {% else %}
-                                Nový
+                    <td>
+                        <div class="pb-4" style="font-size:18px">
+                            <a href="{{ path('bo_feedback_detail', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}">
+                                {{ feedback.description|length > 100 ? feedback.description|slice(0, 100) ~ '...' : feedback.description  }}
+                                <i class="bi bi-arrow-right-square-fill"></i>
+                            </a>
+                        </div>
+                        <div class="text-secondary align-middle" style="font-size: 14px">
+                            {{ feedback.createdAt|date('d.m.y') }}
+                            {% if feedback.source %}
+                                <i class="bi bi-dot text-dark"></i>
+                                {{ feedback.source|length > 100 ? feedback.source|slice(0, 100) ~ '...' : feedback.source  }}
                             {% endif %}
+                            {% if feedback.fromPortal %}
+                                <i class="bi bi-dot text-dark"></i>
+                                <span class="badge-info badge">Portal</span>
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td class="align-middle"><a href="{{ path('bo_feedback_edit', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}" class="btn btn-outline-primary">
+                            <i class="bi bi-pencil-square"></i>
                         </a></td>
-                    <td><a href="{{ path('bo_feedback_edit', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}">Upravit</a></td>
-                    <td><a href="{{ path('bo_feedback_delete', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}">Smazat</a></td>
+                    <td class="align-middle"><a href="{{ path('bo_feedback_delete', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}" class="btn btn-outline-primary">
+                            <i class="bi bi-trash-fill"></i>
+                        </a></td>
                 </tr>
             {% endfor %}
         </table>
