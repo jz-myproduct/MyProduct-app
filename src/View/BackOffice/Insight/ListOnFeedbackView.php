@@ -11,6 +11,7 @@ use App\Entity\FeatureTag;
 use App\Entity\Feedback;
 use App\Entity\Insight;
 use App\FormRequest\Insight\FilterOnFeedbackRequest;
+use App\Handler\Feedback\SwitchStatusRedirect;
 use App\Handler\Insight\Redirect;
 use App\Repository\FeatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -58,7 +59,8 @@ class ListOnFeedbackView
             'form' => $form,
             'isFiltered' =>
                 is_null($request->fulltext) && is_null($request->tags) && is_null($request->state) ? false : true,
-            'scrollTo' => self::$scrollTo
+            'scrollTo' => self::$scrollTo,
+            'redirectTo' => SwitchStatusRedirect::$detail
         ];
     }
 

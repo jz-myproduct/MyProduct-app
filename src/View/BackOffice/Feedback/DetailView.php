@@ -6,6 +6,7 @@ namespace App\View\BackOffice\Feedback;
 
 use App\Entity\Feedback;
 use App\Entity\Insight;
+use App\Handler\Feedback\SwitchStatusRedirect;
 use Doctrine\ORM\EntityManagerInterface;
 
 class DetailView
@@ -28,7 +29,8 @@ class DetailView
 
         return [
             'feedback' => $feedback,
-            'insightsCount' => $insightsCount
+            'insightsCount' => $insightsCount,
+            'redirectTo' => SwitchStatusRedirect::$detail
         ];
     }
 
