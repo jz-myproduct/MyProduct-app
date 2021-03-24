@@ -31,7 +31,7 @@
                     <td>
                         <div class="pb-4" style="font-size:18px">
                             <a href="{{ path('bo_feedback_detail', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}">
-                                {{ feedback.description|length > 100 ? feedback.description|slice(0, 100) ~ '...' : feedback.description  }}
+                                {{ feedback.description|length > 80 ? feedback.description|slice(0, 80) ~ '...' : feedback.description  }}
                                 <i class="bi bi-arrow-right-square-fill"></i>
                             </a>
                         </div>
@@ -39,7 +39,7 @@
                             {{ feedback.createdAt|date('d.m.y') }}
                             {% if feedback.source %}
                                 <i class="bi bi-dot text-dark"></i>
-                                {{ feedback.source|length > 100 ? feedback.source|slice(0, 100) ~ '...' : feedback.source  }}
+                                {{ feedback.source|length > 80 ? feedback.source|slice(0, 80) ~ '...' : feedback.source  }}
                             {% endif %}
                             {% if feedback.fromPortal %}
                                 <i class="bi bi-dot text-dark"></i>
