@@ -24,7 +24,7 @@ class AddFromFeedbackType extends AbstractType
                 'choices' => $weights,
                 'choice_value' => 'id',
                 'choice_label' => 'name',
-                'label' => 'Feature je'
+                'label' => false
             ])
             ->add('save', SubmitType::class, ['label' => 'Uložit']);
         ;

@@ -7,6 +7,7 @@ namespace App\Handler\Insight;
 use App\Entity\Company;
 use App\Entity\Insight;
 use phpDocumentor\Reflection\Types\Self_;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class Redirect
@@ -26,16 +27,16 @@ class Redirect
     }
 
     public function handle(
-        String $param,
         Insight $insight,
-        Company $company)
+        Company $company,
+        String $param = null)
     {
 
         if ($param === self::$redirectToFeature) {
 
             return $this->router->generate('bo_insight_feature_list', [
                 'feature_id' => $insight->getFeature()->getId(),
-                'company_slug' => $company->getSlug()
+                'company_slug' => $company->getSlug(),
             ]);
 
         }
@@ -49,7 +50,7 @@ class Redirect
         }
 
         return $this->router->generate('bo_home', [
-            'slug' => $company->getSlug()
+            'slug' => $company->getSlug(),
         ]);
 
     }

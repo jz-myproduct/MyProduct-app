@@ -24,3 +24,7 @@ $("#roadmap_filter input").change(function() {
 $('#list_filter_isNew').change(function () {
     $('#filters form').submit();
 });
+
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})

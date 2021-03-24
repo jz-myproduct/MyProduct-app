@@ -6,42 +6,71 @@
     {% include('back_office/components/feedback_tabs.html.twig') %}
 
     {% if insights %}
-    <p>
+
+    <table class="table table-striped">
         {% for insight in insights %}
-            <span class="p-1">
-                <a href="{{ path('bo_insight_edit', { 'company_slug': app.user.slug, 'insight_id':insight.id, 'p':redirectToFeedback } ) }}"
-                   class="badge badge-info">{{ insight.feature.name }} ({{ insight.weight.name }})</a>
-                <a href="{{ path('bo_insight_delete', {'company_slug': app.user.slug, 'insight_id':insight.id, 'p':redirectToFeedback } ) }}"
-                   class="badge badge-danger font-weight-bold"><span aria-hidden="true">&times;</span></a>
-            </span>
+            <tr>
+                <td style="color:{{ insight.feature.state.color }}" class="font-weight-bold">{{ insight.feature.state.name }}</td>
+                <td>
+                    <a href="{{ path('bo_feature_detail', {'company_slug':app.user.slug, 'feature_id':insight.feature.id}) }}">
+                        {{ insight.feature.name }}
+                        <i class="bi bi-arrow-right-square-fill"></i>
+                    </a>
+                </td>
+                <td>
+                    {% include 'back_office/components/weights_printer.html.twig'
+                        with {'weight':insight.weight.number, 'weightName':insight.weight.name } %}
+                </td>
+                <td>
+                    <a href="{{ path('bo_insight_edit', {'company_slug':app.user.slug, 'insight_id':insight.id, 'p':redirectToFeedback}) }}">
+                        <i class="bi bi-pencil-square"></i> Změnit
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('bo_insight_delete', {'company_slug':app.user.slug, 'insight_id':insight.id, 'p':redirectToFeedback}) }}">
+                        <i class="bi bi-x-square"></i> Odebrat
+                    </a>
+                </td>
+            </tr>
         {% endfor %}
-    </p>
+    </table>
+
     {% endif %}
 
-    <h2 class="h4 mt-4">Přidat</h2>
-
-    <p class="mb-0 pb-0 mt-3"><a data-toggle="collapse" href="#filters" aria-expanded="false" aria-controls="filters"
+    <h2 class="h4 mt-5">Přidat features</h2>
+    <p class="mb-0 pb-0 mt-3">
+            <a data-toggle="collapse" href="#filters" aria-expanded="false" aria-controls="filters"
                                  class="font-weight-bold">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-            </svg>
-            &nbsp;Rozšířené vyhledávání</a></p>
+            <i class="bi bi-search"></i>
+            &nbspRozšířené vyhledávání</a>
+    </p>
     <div class="collapse card mt-4 p-4 {% if isFiltered %}show{% endif %}" id="filters">
         {{ form(form) }}
     </div>
 
-    <p id="{{ scrollTo }}">
     {% if unrelatedFeatureList %}
+        <table id="{{ scrollTo }}" class="table table-striped mt-3" id="{{ scrollTo }}">
         {% for unrelatedFeature in unrelatedFeatureList %}
-            <span class="p-1">
-                <a href="{{ path('bo_feature_detail', { 'company_slug': app.user.slug, 'feature_id': unrelatedFeature.id } ) }}"
-                   class="badge badge-info">{{ unrelatedFeature.name }}</a>
-                <a href="{{ path('bo_insight_feedback_add', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'feature_id': unrelatedFeature.id, 'p':redirectToFeedback } ) }}"
-                   class="badge badge-success font-weight-bold">Přidat</a>
-            </span>
+            <tr>
+                <td class="w-25 font-weight-bold" style="color: {{ unrelatedFeature.state.color }}">{{ unrelatedFeature.state.name }}</td>
+                <td class="w-50">
+                    <a class="text-dark" href="{{ path('bo_feature_detail', {'company_slug':app.user.slug, 'feature_id':unrelatedFeature.id}) }}">
+                        {{ unrelatedFeature.name }}
+                        <i class="bi bi-arrow-right-square-fill"></i>
+                    </a>
+                </td>
+                <td class="text-left w-25">
+                    <a class="btn btn-primary"
+                       href="{{ path('bo_insight_feedback_add', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'feature_id': unrelatedFeature.id, 'p':redirectToFeedback } ) }}"
+                       role="button">
+                       <i class="bi bi-plus"></i>
+                       Přidat
+                    </a>
+                </td>
+            </tr>
         {% endfor %}
+        </table>
     {% else %}
-        Žádné další featury k propojení.
+        <p class="lead mt-3">Žádné další featury k propojení.</p>
     {% endif %}
-    </p>
 {% endblock %}

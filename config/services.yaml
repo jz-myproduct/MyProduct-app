@@ -11,6 +11,7 @@ parameters:
     app.name: 'Product tool'
     domain.url: 'http://127.0.0.1:8000'
     author: 'Jan Zabloudil'
+    weightsCount: 4
 
 
 services:
