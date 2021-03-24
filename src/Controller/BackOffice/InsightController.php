@@ -104,7 +104,7 @@ class InsightController extends AbstractController
         }
 
         return $this->render('back_office/insight/add_edit.html.twig',
-            $view->add($feedback, $feature, $form->createView())
+            $view->addFromFeedback($feedback, $feature, $form->createView())
         );
     }
 
@@ -236,15 +236,15 @@ class InsightController extends AbstractController
 
             return new RedirectResponse(
                 $redirectHandler->handle(
-                    $request->query->get('p'),
                     $insight,
-                    $company
+                    $company,
+                    $request->query->get('p')
                 )
             );
         }
 
         return $this->render('back_office/insight/add_edit.html.twig',
-            $view->edit($insight->getFeedback(), $insight->getFeature(), $form->createView())
+            $view->edit($insight, $form->createView(), $request->query->get('p'))
         );
     }
 
@@ -274,9 +274,9 @@ class InsightController extends AbstractController
 
         return new RedirectResponse(
             $redirectHandler->handle(
-                $request->query->get('p'),
                 $insight,
-                $company
+                $company,
+                $request->query->get('p')
             )
         );
     }

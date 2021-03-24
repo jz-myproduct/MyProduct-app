@@ -19,44 +19,51 @@ class AddEditView
      * @var RouterInterface
      */
     private $router;
+    /**
+     * @var Redirect
+     */
+    private $redirect;
 
-    public function __construct(RouterInterface $router)
+    public function __construct(RouterInterface $router, Redirect $redirect)
     {
         $this->router = $router;
+        $this->redirect = $redirect;
     }
 
-    public function addFromFeature(Feedback $feedback, Feature $feature, FormView $formView)
+
+    public function addFromFeedback(Feedback $feedback, Feature $feature, FormView $formView)
     {
 
         $array = $this->prepareArray($feedback, $feature, $formView);
 
-
-        // TODO get absolute URL
-
-        return $array;
-
-    }
-
-    public function editFromFeedback(Insight $insight, FormView $formView, Redirect $handler)
-    {
-
-        $array = $this->prepareArray($insight->getFeedback(), $insight->getFeature(), $formView);
-
-        // TODO get absolute URL
+        $array['backUrl'] = $this->generateBackURLForFeedback($feedback);
 
         return $array;
 
     }
 
-    public function editFromFeature(Insight $insight, FormView $formView, Redirect $handler)
+    public function edit(Insight $insight, FormView $formView, string $param = null)
     {
 
         $array = $this->prepareArray($insight->getFeedback(), $insight->getFeature(), $formView);
 
-        // TODO get absolute URL
+        $array['backUrl'] = $this->redirect->handle(
+            $insight,
+            $insight->getFeedback()->getCompany(),
+            $param
+        );
 
         return $array;
 
+    }
+
+    private function generateBackURLForFeedback(Feedback $feedback)
+    {
+        return
+            $this->router->generate('bo_insight_feedback_list', [
+               'company_slug' => $feedback->getCompany()->getSlug(),
+                'feedback_id' => $feedback->getId()
+            ]);
     }
 
     private function prepareArray(Feedback $feedback, Feature $feature, FormView $formView)

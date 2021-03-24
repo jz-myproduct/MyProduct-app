@@ -27,9 +27,9 @@ class Redirect
     }
 
     public function handle(
-        String $param,
         Insight $insight,
-        Company $company)
+        Company $company,
+        String $param = null)
     {
 
         if ($param === self::$redirectToFeature) {
