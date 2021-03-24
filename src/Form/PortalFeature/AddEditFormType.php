@@ -27,18 +27,18 @@ class AddEditFormType extends AbstractType
         $states = $options['states'] ? $options['states'] : null;
 
         $builder
-            ->add('name', TextType::class, ['label' => 'Jméno'])
-            ->add('description', TextareaType::class, ['required' => false, 'label' => 'Popis'])
-            ->add('state', ChoiceType::class, [
-                'choices' => $states,
-                'choice_value' => 'id',
-                'choice_label' => 'name',
-                'label' => 'Stav'
-            ])
             ->add('display', CheckboxType::class, [
                 'label' => 'Zobrazit na portále',
                 'required' => false
             ])
+            ->add('state', ChoiceType::class, [
+                'choices' => $states,
+                'choice_value' => 'id',
+                'choice_label' => 'name',
+                'label' => 'Zobrazit v sekci'
+            ])
+            ->add('name', TextType::class, ['label' => 'Jméno'])
+            ->add('description', TextareaType::class, ['required' => false, 'label' => 'Popis'])
             ->add('image', FileType::class, [
                 'label' => false,
                 'mapped' => false,

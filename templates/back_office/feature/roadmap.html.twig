@@ -3,53 +3,59 @@
 {% block content %}
     {% include('back_office/components/feature_list_header.html.twig') %}
 
-    <div class="d-flex flex-row w-100 flex-wrap mt-4" id="{{ scrollTo }}">
-    {% for stateWithFeatures in features %}
+    {% if features %}
 
-        <div class="flex-fill w-{{ columnWidth }}" style="min-width: 200px">
-            <div
-                    class="h5 text-center pb-2 mb-0 pt-3 bg-light"
-                    style="position: -webkit-sticky; position: sticky; top: 0;color:{{ stateWithFeatures.stateColor }}"
-            >{{ stateWithFeatures.state }}</div>
-            <div class="p-2">
-                {% for feature in stateWithFeatures.features %}
-                    <div class="rounded my-3 p-2"
-                         id="feature"
-                         {% if movedFeatureId == feature.id %}style="background: lightgoldenrodyellow"{% endif %} >
-                        <div class="text-center pb-3">
-                            <a class="text-secondary"
-                               href="{{ path('bo_feature_detail', { 'company_slug':app.user.slug, 'feature_id':feature.id }) }}">
-                                {{ feature.name }}
-                            </a><br />
-                            <span class="badge badge-warning" data-toggle="tooltip" data-placement="top"
-                                  title="Prioritizační skóre"><i class="bi bi-heart"></i> {{ feature.score }}</span>
+        <div class="d-flex flex-row w-100 flex-wrap mt-4" id="{{ scrollTo }}">
+        {% for stateWithFeatures in features %}
+
+            <div class="flex-fill w-{{ columnWidth }}" style="min-width: 200px">
+                <div
+                        class="h5 text-center pb-2 mb-0 pt-3 bg-light"
+                        style="position: -webkit-sticky; position: sticky; top: 0;color:{{ stateWithFeatures.stateColor }}"
+                >{{ stateWithFeatures.state }}</div>
+                <div class="p-2">
+                    {% for feature in stateWithFeatures.features %}
+                        <div class="rounded my-3 p-2"
+                             id="feature"
+                             {% if movedFeatureId == feature.id %}style="background: lightgoldenrodyellow"{% endif %} >
+                            <div class="text-center pb-3">
+                                <a class="text-secondary"
+                                   href="{{ path('bo_feature_detail', { 'company_slug':app.user.slug, 'feature_id':feature.id }) }}">
+                                    {{ feature.name }}
+                                </a><br />
+                                <span class="badge badge-warning" data-toggle="tooltip" data-placement="top"
+                                      title="Prioritizační skóre"><i class="bi bi-heart"></i> {{ feature.score }}</span>
+                            </div>
+
+                            <div class="pb-1" id="tags">
+                            {% for tag in feature.tags %}
+                                <div class="badge badge-info">{{ tag.name }}</div>
+                            {% endfor %}
+                            </div>
+
+                            <div class="text-center pt-2 border-top">
+                                {% if stateWithFeatures.isFirst == false  %}
+                                    <a href="{{ path('bo_feature_status_move', {'company_slug':app.user.slug, 'feature_id':feature.id, 'tags':tags, 'fulltext':fulltext, 'direction':previousDirection}) }}">
+                                        <i class="bi bi-arrow-left-circle-fill"></i>
+                                    </a>
+                                {% endif %}
+
+                                {% if stateWithFeatures.isLast == false %}
+                                    <a href="{{ path('bo_feature_status_move', {'company_slug':app.user.slug, 'feature_id':feature.id, 'tags':tags, 'fulltext':fulltext, 'direction':nextDirection}) }}">
+                                        <i class="bi bi-arrow-right-circle-fill"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
                         </div>
-
-                        <div class="pb-1" id="tags">
-                        {% for tag in feature.tags %}
-                            <div class="badge badge-info">{{ tag.name }}</div>
-                        {% endfor %}
-                        </div>
-
-                        <div class="text-center pt-2 border-top">
-                            {% if stateWithFeatures.isFirst == false  %}
-                                <a href="{{ path('bo_feature_status_move', {'company_slug':app.user.slug, 'feature_id':feature.id, 'tags':tags, 'fulltext':fulltext, 'direction':previousDirection}) }}">
-                                    <i class="bi bi-arrow-left-circle-fill"></i>
-                                </a>
-                            {% endif %}
-
-                            {% if stateWithFeatures.isLast == false %}
-                                <a href="{{ path('bo_feature_status_move', {'company_slug':app.user.slug, 'feature_id':feature.id, 'tags':tags, 'fulltext':fulltext, 'direction':nextDirection}) }}">
-                                    <i class="bi bi-arrow-right-circle-fill"></i>
-                                </a>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
+
+        {% endfor %}
         </div>
 
-    {% endfor %}
-    </div>
+    {% else %}
+        <p class="lead mt-2">Zatím nemáte žádné featury.</p>
+    {% endif %}
 
 {% endblock %}

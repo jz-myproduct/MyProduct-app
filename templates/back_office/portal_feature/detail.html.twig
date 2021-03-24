@@ -7,17 +7,17 @@
 
     {{ form_start(form) }}
 
+      {{ form_row(form.display) }}
+      {{ form_row(form.state) }}
       {{ form_row(form.name) }}
       {{ form_row(form.description) }}
-      {{ form_row(form.state) }}
-      {{ form_row(form.display) }}
 
       <p class="font-weight-bold">Obrázek</p>
       {% if portalFeature.image is defined and portalFeature.image is not null %}
-          <p><img src="{{ asset(upload_directory ~ '/' ~ portalFeature.image.name) }}"
+          <p class="pb-0 mb-1"><img src="{{ asset(upload_directory ~ '/' ~ portalFeature.image.name) }}"
                   alt="{{ portalFeature.name }}" style="max-width:500px" /></p>
           <p class="pt-0">
-              <a href="{{ path('bo_feature_portal_image_delete', {'company_slug':app.user.slug, 'feature_id':feature.id, 'file_id':portalFeature.image.id}) }}">smazat</a>
+              <a href="{{ path('bo_feature_portal_image_delete', {'company_slug':app.user.slug, 'feature_id':feature.id, 'file_id':portalFeature.image.id}) }}">Smazat aktuální obrázek</a>
           </p>
 
           <label>Nahrát jiný obrázek</label>

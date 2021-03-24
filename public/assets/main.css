@@ -61,3 +61,7 @@ label.required:before {
         width: calc(33% - 1rem);
     }
 }
+
+textarea.form-control {
+    min-height: 100px;
+}
