@@ -5,6 +5,12 @@
     
     {%  include('back_office/components/feature_tabs.html.twig') %}
 
+    {% if portalFeature %}
+        <p class="font-weight-bold text-secondary mb-0 pb-1">Počet feedbacků od uživatelů</p>
+        <p style="font-size:20px"><span class="badge badge-warning"><i class="bi bi-person"></i>{{ portalFeature.feedbackCount }}</span></p>
+    {% endif %}
+
+    <h2 class="h6 mb-3 mt-4">Nastavit zobrazení na portále</h2>
     {{ form_start(form) }}
 
       {{ form_row(form.display) }}
