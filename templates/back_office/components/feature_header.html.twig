@@ -1,14 +1,26 @@
-<h1 class="h3 text-center">
-    <span class="badge text-light" style="background:{{ feature.state.color }}">{{ feature.state.name }}</span>
-    {{ feature.name }}
-</h1>
-<p class="text-center">
-    {% for tag in feature.tags %}
-        <span class="badge badge-info">{{ tag.name }}</span>
-    {% endfor %}
-</p>
-<p class="text-center text-secondary">Přidáno {{ feature.createdAt|date('d.m.y H:i') }}</p>
-<p class="text-right">
-    <a href="{{ path('bo_feature_edit', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}" class="btn btn-outline-primary">Upravit</a>
-    <a href="{{ path('bo_feature_delete', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}" class="btn btn-outline-danger">Smazat</a>
-</p>
+<div class="d-flex flex-row flex-wrap">
+    <div class="flex-grow-1">
+        <h1 class="h3 text-center">
+            <span class="badge text-light" style="background:{{ feature.state.color }}">{{ feature.state.name }}</span>
+            {{ feature.name }}
+        </h1>
+        <p class="text-center">
+            {% for tag in feature.tags %}
+                <span class="badge badge-info">{{ tag.name }}</span>
+            {% endfor %}
+        </p>
+        <p class="text-center text-secondary">Přidáno {{ feature.createdAt|date('d.m.y H:i') }}</p>
+    </div>
+    <div>
+        <p class="text-right">
+            <a style="font-size: 20px" href="{{ path('bo_feature_edit', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}"
+               class="btn btn-outline-primary"
+               data-toggle="tooltip" data-placement="top" title="Upravit">
+                <i class="bi bi-pencil-square"></i></a>
+            <a style="font-size: 20px" href="{{ path('bo_feature_delete', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}" c
+               class="btn btn-outline-danger"
+               data-toggle="tooltip" data-placement="top" title="Smazat"
+            ><i class="bi bi-trash-fill"></i></a>
+        </p>
+    </div>
+</div>
