@@ -67,7 +67,7 @@ class FeatureRepository extends ServiceEntityRepository
        return $qb->getQuery()->getResult();
     }
 
-    public function findUnsedFeaturesForFeedback(Company $company, $tags, $features, $fulltext = null)
+    public function findUnsedFeaturesForFeedback(Company $company, $tags, $features, $state, $fulltext = null)
     {
 
         $qb = $this->createQueryBuilder('f')
@@ -95,6 +95,12 @@ class FeatureRepository extends ServiceEntityRepository
         {
             $qb->andWhere('ta IN (:tags)')
                ->setParameter('tags', $tags);
+        }
+
+        if($state)
+        {
+            $qb->andWhere('st = :state')
+               ->setParameter('state', $state);
         }
 
         return $qb->getQuery()->getResult();

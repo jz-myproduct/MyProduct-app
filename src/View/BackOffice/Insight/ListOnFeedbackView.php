@@ -6,6 +6,7 @@ namespace App\View\BackOffice\Insight;
 
 use App\Entity\Company;
 use App\Entity\Feature;
+use App\Entity\FeatureState;
 use App\Entity\FeatureTag;
 use App\Entity\Feedback;
 use App\Entity\Insight;
@@ -35,8 +36,14 @@ class ListOnFeedbackView
         $unrelatedFeatures = $this->manager->getRepository(Feature::class)
             ->findUnsedFeaturesForFeedback(
                 $company,
-                $this->manager->getRepository(FeatureTag::class)->findBy(['id' => $request->tags ]),
+                $this->manager->getRepository(FeatureTag::class)->findBy([
+                    'id' => $request->tags,
+                    'company' => $company
+                ]),
                 $this->manager->getRepository(Feature::class)->findUsedFeaturesForFeedback($feedback),
+                $this->manager->getRepository(FeatureState::class)->findBy([
+                    'id' => $request->state
+                ]),
                 $request->fulltext
             );
 
@@ -49,7 +56,8 @@ class ListOnFeedbackView
             'insightsCount' => sizeof($insights),
             'redirectToFeedback' => Redirect::getRedirectToFeedback(),
             'form' => $form,
-            'isFiltered' => is_null($request->fulltext) && is_null($request->tags) ? false : true,
+            'isFiltered' =>
+                is_null($request->fulltext) && is_null($request->tags) && is_null($request->state) ? false : true,
             'scrollTo' => self::$scrollTo
         ];
     }

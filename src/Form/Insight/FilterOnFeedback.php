@@ -17,10 +17,16 @@ class FilterOnFeedback extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $tags = $options['tags'] ? $options['tags'] : null;
+        $states = $options['states'] ? $options['states'] : null;
 
         $builder
             ->add('fulltext', TextType::class, [
                 'label' => 'Název nebo popis',
+                'required' => false
+            ])
+            ->add('state', ChoiceType::class, [
+                'choices' => $states,
+                'label' => 'Stav',
                 'required' => false
             ])
             ->add('tags', ChoiceType::class, [
@@ -42,7 +48,8 @@ class FilterOnFeedback extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'tags' => null
+            'tags' => null,
+            'states' => null
         ]);
     }
 

@@ -30,6 +30,7 @@ class Search
             'feedback_id' => $feedback->getId(),
             'tags' => $request->tags,
             'fulltext' => $request->fulltext,
+            'state' => $request->state,
             '_fragment' => ListOnFeedbackView::$scrollTo
         ]);
 
