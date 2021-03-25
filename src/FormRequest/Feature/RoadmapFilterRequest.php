@@ -14,4 +14,13 @@ class RoadmapFilterRequest
 
     public $tags;
 
+    public static function fromArray(array $array)
+    {
+        $request = new self();
+        $request->fulltext = $array['fulltext'];
+        $request->tags = $array['tags'];
+
+        return $request;
+    }
+
 }

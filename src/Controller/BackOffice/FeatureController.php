@@ -156,14 +156,14 @@ class FeatureController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $company);
 
 
-        $form = $this->createForm(ListFilterType::class, $formRequest = new ListFilterRequest(), [
+        $form = $this->createForm(ListFilterType::class, $formRequest = ListFilterRequest::fromArray([
+            'state' => $state ? $state->getId() : null,
+            'fulltext' => $fulltext = $request->get('fulltext'),
+            'tags' => $tagsParam = $request->get('tags')
+        ]), [
             'stateChoices' => $formView->createStates(),
             'tagChoices' => $formView->createTags($company),
-            'currentStateChoice' => $state ? $state->getId() : null,
-            'currentTagChoices' => $tagsParam = $request->get('tags'),
-            'fulltext' => $fulltext = $request->get('fulltext')
         ]);
-
 
         $form->handleRequest($request);
 
@@ -204,10 +204,11 @@ class FeatureController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
-        $form = $this->createForm(RoadmapFilterType::class, $formRequest = new RoadmapFilterRequest(), [
-            'tagChoices' => $formView->createTags($company),
-            'currentTagChoices' => $tagsParam = $request->get('tags'),
-            'fulltext' => $fulltext = $request->get('fulltext')
+        $form = $this->createForm(RoadmapFilterType::class, $formRequest = RoadmapFilterRequest::fromArray([
+            'fulltext' => $fulltext = $request->get('fulltext'),
+            'tags' => $tagsParam = $request->get('tags')
+        ]), [
+            'tagChoices' => $formView->createTags($company)
         ]);
 
         $form->handleRequest($request);

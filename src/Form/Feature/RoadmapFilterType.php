@@ -19,21 +19,16 @@ class RoadmapFilterType extends AbstractType
     {
 
         $tagChoices = $options['tagChoices'] ? $options['tagChoices'] : null;
-        $currentTagChoices = $options['currentTagChoices'] ? $options['currentTagChoices'] : null;
-
-        $fulltext = $options['fulltext'] ? $options['fulltext'] : null;
 
         $builder
             ->add('fulltext', TextType::class, [
                 'label' => 'Název nebo popis',
-                'required' => false,
-                'data' => $fulltext
+                'required' => false
             ])
             ->add('tags', ChoiceType::class, [
                 'choices' => $tagChoices,
                 'expanded' => true,
                 'multiple' => true,
-                'data' => $currentTagChoices,
                 'label_attr' => [
                     'class' => 'checkbox-inline'
                 ]
@@ -47,9 +42,7 @@ class RoadmapFilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'currentTagChoices' => null,
-            'tagChoices' => null,
-            'fulltext' => null
+            'tagChoices' => null
         ]);
     }
 
