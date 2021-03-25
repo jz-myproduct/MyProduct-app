@@ -66,7 +66,6 @@ class InsightRepository extends ServiceEntityRepository
             'id' => $feature->getId()
         ]);
         return (int)$stmt->fetchOne();
-
     }
 
     public function getFeedbackCountForPortalFeature(Feature $feature)
