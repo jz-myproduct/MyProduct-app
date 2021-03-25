@@ -21,30 +21,22 @@ class ListFilterType extends AbstractType
     {
 
         $stateChoices = $options['stateChoices'] ? $options['stateChoices'] : null;
-        $currentStateChoice = $options['currentStateChoice'] ? $options['currentStateChoice'] : null;
-
         $tagChoices = $options['tagChoices'] ? $options['tagChoices'] : null;
-        $currentTagChoices = $options['currentTagChoices'] ? $options['currentTagChoices'] : null;
-
-        $fulltext = $options['fulltext'] ? $options['fulltext'] : null;
 
         $builder
             ->add('fulltext', TextType::class, [
                 'label' => 'Název nebo popis',
-                'required' => false,
-                'data' => $fulltext
+                'required' => false
             ])
             ->add('state', ChoiceType::class, [
                 'choices' => $stateChoices,
-                'label' => 'Stav',
-                'data' => $currentStateChoice
+                'label' => 'Stav'
             ])
             ->add('tags', ChoiceType::class, [
                 'label' => 'Tags',
                 'choices' => $tagChoices,
                 'expanded' => true,
                 'multiple' => true,
-                'data' => $currentTagChoices,
                 'label_attr' => [
                     'class' => 'checkbox-inline'
                 ]
@@ -58,11 +50,8 @@ class ListFilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'currentStateChoice' => null,
             'stateChoices' => null,
-            'currentTagChoices' => null,
             'tagChoices' => null,
-            'fulltext' => null
         ]);
     }
 

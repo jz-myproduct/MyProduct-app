@@ -8,16 +8,13 @@
     <div style="background: #e9ecef">
         <nav class="navbar navbar-expand-lg navbar-light container shadow-sm">
             <a class="navbar-brand text-dark font-weight-bold ml-5" href="{{ path('fo_portal_detail', {'slug':portal.slug}) }}">{{ portal.name }}</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-
-            </div>
-            <span class="navbar-text mr-5">
-                <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link btn btn-primary text-light" href="{{ path('fo_portal_feedback_add', {'slug':portal.slug}) }}"><i class="bi bi-journal-plus"></i> Přidat feedback</a>
-                        </li>
+            <div class="navbar" id="navbarNav">
+                <ul class="navbar-nav mr-auto ml-4">
+                    <li class="nav-item active">
+                        <a class="nav-link btn btn-primary text-light" href="{{ path('fo_portal_feedback_add', {'slug':portal.slug}) }}"><i class="bi bi-journal-plus"></i> Přidat feedback</a>
+                    </li>
                 </ul>
-            </span>
+            </div>
         </nav>
     </div>
 

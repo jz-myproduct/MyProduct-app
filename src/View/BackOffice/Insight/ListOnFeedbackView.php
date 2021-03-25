@@ -60,7 +60,8 @@ class ListOnFeedbackView
             'isFiltered' =>
                 is_null($request->fulltext) && is_null($request->tags) && is_null($request->state) ? false : true,
             'scrollTo' => self::$scrollTo,
-            'redirectTo' => SwitchStatusRedirect::$detail
+            'redirectTo' => SwitchStatusRedirect::$detail,
+            'tagsExist' => $company->getFeatureTags()->toArray() ? true : false
         ];
     }
 

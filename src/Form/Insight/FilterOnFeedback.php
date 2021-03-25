@@ -26,8 +26,7 @@ class FilterOnFeedback extends AbstractType
             ])
             ->add('state', ChoiceType::class, [
                 'choices' => $states,
-                'label' => 'Stav',
-                'required' => false
+                'label' => 'Stav'
             ])
             ->add('tags', ChoiceType::class, [
                 'label' => 'Tags',

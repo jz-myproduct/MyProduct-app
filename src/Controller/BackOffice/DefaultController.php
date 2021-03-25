@@ -63,7 +63,7 @@ class DefaultController extends AbstractController
             ]);
         }
 
-        return $this->render('back_office/company/settings.html.twig', [
+        return $this->render('back_office/settings/settings.html.twig', [
             'form' => $form->createView()
         ]);
     }

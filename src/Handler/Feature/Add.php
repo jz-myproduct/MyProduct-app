@@ -44,6 +44,8 @@ class Add
 
         $this->manager->persist($feature);
         $this->manager->flush();
+
+        return $feature;
     }
 
 }

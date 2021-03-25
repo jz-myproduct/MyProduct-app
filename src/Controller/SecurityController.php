@@ -176,7 +176,7 @@ class SecurityController extends AbstractController
             }
         }
 
-        return $this->render('back_office/company/change_password.html.twig', [
+        return $this->render('back_office/settings/change_password.html.twig', [
             'form' => $form->createView()
         ]);
     }

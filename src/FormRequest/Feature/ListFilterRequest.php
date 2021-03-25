@@ -12,12 +12,18 @@ class ListFilterRequest
 
     public $fulltext;
 
-    /**
-     * @Constraints\NotBlank
-     * @var string
-     */
     public $state;
 
     public $tags;
+
+    public static function fromArray(array $array)
+    {
+        $request = new self();
+        $request->state = $array['state'];
+        $request->tags = $array['tags'];
+        $request->fulltext = $array['fulltext'];
+
+        return $request;
+    }
 
 }
