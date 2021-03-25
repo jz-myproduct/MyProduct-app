@@ -63,7 +63,7 @@ class CompanyRepository extends ServiceEntityRepository implements PasswordUpgra
         return (int)$count;
     }
 
-    public function getCompanyByEmail(string $email)
+    public function findCompanyByEmail(string $email)
     {
         $entityManager = $this->getEntityManager();
 
@@ -75,34 +75,4 @@ class CompanyRepository extends ServiceEntityRepository implements PasswordUpgra
             ->setParameter('query', $email)
             ->getOneOrNullResult();
     }
-
-
-    // /**
-    //  * @return Company[] Returns an array of Company objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Company
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

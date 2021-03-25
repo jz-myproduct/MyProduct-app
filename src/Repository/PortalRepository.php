@@ -24,17 +24,17 @@ class PortalRepository extends ServiceEntityRepository
 
     public function getSimilarSlugsCountForExistingCompany(String $slug, Portal $portal)
     {
-        $conn = $this->getEntityManager()->getConnection();
 
-        $sql = "SELECT count(id)
-                FROM portal
-                WHERE slug LIKE ? AND id != ?";
+        $count = $this->createQueryBuilder('p')
+                      ->select('count(p.id)')
+                      ->where('p.slug LIKE :slug')
+                      ->andWhere('p != :portal')
+                      ->setParameter('slug', $slug.'%')
+                      ->setParameter('portal', $portal)
+                      ->getQuery()
+                      ->getSingleScalarResult();
 
-        // TODO vylepšit exception
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$slug . '%', $portal->getId()]);
-
-        return (int)$stmt->fetchOne();
+        return (int)$count;
     }
 
     public function getSimilarSlugsCountForNewPortal(String $slug)
@@ -48,35 +48,4 @@ class PortalRepository extends ServiceEntityRepository
 
         return (int)$count;
     }
-
-
-
-    // /**
-    //  * @return DetailView[] Returns an array of DetailView objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?DetailView
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

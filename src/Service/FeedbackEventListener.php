@@ -60,7 +60,7 @@ class FeedbackEventListener
 
     private function getCompany()
     {
-        return $this->manager->getRepository(Company::class)->getCompanyByEmail(
+        return $this->manager->getRepository(Company::class)->findCompanyByEmail(
                     $this->security->getUser()->getUsername());
     }
 

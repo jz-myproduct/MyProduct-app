@@ -37,7 +37,7 @@ class CompanyEmailUniqueValidator extends ConstraintValidator
 
         if($this->security->getUser()){
 
-            $loggedInCompany = $this->manager->getRepository(Company::class)->getCompanyByEmail(
+            $loggedInCompany = $this->manager->getRepository(Company::class)->findCompanyByEmail(
                 $this->security->getUser()->getUsername());
 
             if($loggedInCompany === $companyByEmail) {
