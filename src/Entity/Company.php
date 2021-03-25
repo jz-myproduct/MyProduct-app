@@ -79,17 +79,17 @@ class Company implements UserInterface
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Feedback::class, mappedBy="company")
+     * @ORM\OneToMany(targetEntity=Feedback::class, mappedBy="company", cascade={"remove"})
      */
     private $feedback;
 
     /**
-     * @ORM\OneToMany(targetEntity=Feature::class, mappedBy="company")
+     * @ORM\OneToMany(targetEntity=Feature::class, mappedBy="company", cascade={"remove"})
      */
     private $features;
 
     /**
-     * @ORM\OneToMany(targetEntity=FeatureTag::class, mappedBy="company")
+     * @ORM\OneToMany(targetEntity=FeatureTag::class, mappedBy="company", cascade={"remove"})
      */
     private $featureTags;
 
