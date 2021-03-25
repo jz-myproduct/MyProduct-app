@@ -50,7 +50,8 @@
                     <td class="align-middle"><a href="{{ path('bo_feedback_edit', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}" class="btn btn-outline-primary">
                             <i class="bi bi-pencil-square"></i>
                         </a></td>
-                    <td class="align-middle"><a href="{{ path('bo_feedback_delete', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}" class="btn btn-outline-danger">
+                    <td class="align-middle"><a href="{{ path('bo_feedback_delete', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}" class="btn btn-outline-danger"
+                                {% include('back_office/components/delete_confirmation.html.twig') %}>
                             <i class="bi bi-trash-fill"></i>
                         </a></td>
                 </tr>

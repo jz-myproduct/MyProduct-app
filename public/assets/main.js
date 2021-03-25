@@ -27,4 +27,9 @@ $('#list_filter_isNew').change(function () {
 
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
-})
+});
+
+$('[data-toggle=confirmation]').confirmation({
+    rootSelector: '[data-toggle=confirmation]',
+    // other options
+});
