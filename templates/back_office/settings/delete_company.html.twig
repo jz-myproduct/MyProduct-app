@@ -1,0 +1,9 @@
+{% extends "back_office/base.html.twig" %}
+
+{% block content %}
+    {% include('back_office/components/settings_tabs.html.twig') %}
+
+    <p class="pb-3">Dojde ke smazání všech dat firmy, akce je nevratná.</p>
+    {{ form(form) }}
+{% endblock %}
+

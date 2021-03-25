@@ -9,13 +9,16 @@ use App\Form\Settings\ChangePasswordType;
 use App\Form\Security\RegisterCompanyFormType;
 use App\Form\Security\RenewPassword;
 use App\Form\Security\SetNewPassword;
+use App\Form\Settings\DeleteCompanyType;
 use App\FormRequest\Settings\ChangePasswordRequest;
 use App\FormRequest\Security\RenewPasswordRequest;
 use App\FormRequest\Security\RegisterCompanyRequest;
 use App\FormRequest\Security\SetNewPasswordRequest;
+use App\FormRequest\Settings\DeleteCompanyRequest;
 use App\Handler\Security\RegisterCompany;
 use App\Handler\Settings\ChangePassword;
 use App\Handler\Security\SetForgottenPassword;
+use App\Handler\Settings\DeleteCompany;
 use App\Security\LoginFormAuthenticator;
 use App\Service\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -260,6 +263,41 @@ class SecurityController extends AbstractController
 
         return $this->render('front_office/password/set_new.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/{slug}/nastaveni/smazat-firmu", name="bo_settings_delete")
+     * @param Company $company
+     * @param Request $request
+     * @return Response
+     */
+    public function delete(Company $company, Request $request, DeleteCompany $handler)
+    {
+        $this->denyAccessUnlessGranted('edit', $company);
+
+        $form = $this->createForm(DeleteCompanyType::class, $formRequest = new DeleteCompanyRequest());
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            if(! $this->passwordEncoder->isPasswordValid(
+                $company,
+                $formRequest->password))
+            {
+                $this->addFlash('error', 'Zadejte správné současné heslo.');
+
+            } else {
+                $handler->handle($company);
+
+                $this->addFlash('success','Firma úspěšně smazána.');
+                return $this->redirectToRoute('fo_home');
+            }
+        }
+
+        return $this->render('back_office/settings/delete_company.html.twig',[
+           'form'=> $form->createView()
         ]);
     }
 

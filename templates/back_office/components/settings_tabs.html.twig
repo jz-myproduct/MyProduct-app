@@ -7,4 +7,8 @@
         <a class="nav-link {% if app.request.get('_route') == 'bo_settings_password' %}active{% endif %}"
            href="{{ path('bo_settings_password', {'slug':app.user.slug}) }}">Změnit heslo</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link {% if app.request.get('_route') == 'bo_settings_delete' %}active{% endif %}"
+           href="{{ path('bo_settings_delete', {'slug':app.user.slug}) }}">Smazat firmu</a>
+    </li>
 </ul>
