@@ -11,29 +11,25 @@
         &nbsp;Rozšířené vyhledávání</a></p>
 
 <div class="collapse card mt-4 p-4 {% if isFiltered %}show{% endif %}" id="feature_state_filter">
-    {% if app.request.get('_route') == 'bo_feature_list' %}
+    {{ form_start(form) }}
 
-        {{ form_start(form) }}
+    {% if app.request.get('_route') == 'bo_feature_list' %}
 
         {{ form_row(form.state) }}
 
-        {{ form_row(form.fulltext) }}
-
-        {%  if tagsExist %}
-            {{ form_row(form.tags) }}
-            {{ form_widget(form._token) }}
-            {{ form_row(form.save) }}
-            {{ form_end(form, {'render_rest':false}) }}
-        {% else %}
-            {{ form_widget(form._token) }}
-            {{ form_row(form.save) }}
-            {{ form_end(form, {'render_rest':false}) }}
-        {% endif %}
-
     {% endif %}
 
-    {% if app.request.get('_route') == 'bo_feature_list_roadmap' and tagsExist %}
-        {{ form(form) }}
+    {{ form_row(form.fulltext) }}
+
+    {%  if tagsExist %}
+        {{ form_row(form.tags) }}
+        {{ form_widget(form._token) }}
+        {{ form_row(form.save) }}
+        {{ form_end(form, {'render_rest':false}) }}
+    {% else %}
+        {{ form_widget(form._token) }}
+        {{ form_row(form.save) }}
+        {{ form_end(form, {'render_rest':false}) }}
     {% endif %}
 </div>
 

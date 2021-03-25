@@ -8,28 +8,31 @@
     <div class="bg-primary">
         <nav class="navbar navbar-expand-lg navbar-light container">
             <a class="navbar-brand text-light font-weight-bold" href="#">{{ app_name }}</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                {% if not app.user %}
+            <div class="navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link text-light" href="{{ path('fo_login') }}">Přihlásit</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-light" href="{{ path('fo_register') }}">Registrovat</a>
-                    </li>
-                </ul>
-                {% endif %}
-                {% if app.user %}
-                    <ul class="navbar-nav mr-auto">
+                    {% if not app.user %}
+                        <li class="nav-item p-2">
+                            <a class="nav-link text-light btn btn-outline-light" href="{{ path('fo_login') }}">Přihlásit</a>
+                        </li>
+                        <li class="nav-item p-2">
+                            <a class="nav-link btn-light btn text-primary" href="{{ path('fo_register') }}">Registrovat</a>
+                        </li>
+                    {% else %}
                         <li class="nav-item active">
-                            <a class="nav-link text-light" href="{{ path('bo_feedback_list', {'slug':app.user.slug}) }}">{{ app.user.name }}</a>
+                            <a class="nav-link btn btn-outline-light text-light" href="{{ path('bo_feedback_list', {'slug':app.user.slug}) }}">
+                                Přejít do firmy <span class="font-weight-bold">{{ app.user.name }}</span> <i class="bi bi-arrow-bar-right"></i></a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="{{ path('fo_logout') }}">Odhlásit</a>
-                        </li>
-                    </ul>
+                    {% endif %}
+                </ul>
+                {% if app.user %}
+                    <span class="navbar-text">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item"><a href="{{ path('fo_logout') }}" class="nav-link text-light"><i class="bi bi-box-arrow-right"></i> Odhlásit</a></li>
+                        </ul>
+                    </span>
                 {% endif %}
             </div>
+
         </nav>
     </div>
 
@@ -40,7 +43,7 @@
     </main>
 
     <footer class="footer">
-        <div class="container">
+        <div class="container text-right">
             <span class="text-muted">{{ app_name }} &copy; 2021 {{ author }}</span>
         </div>
     </footer>

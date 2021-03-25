@@ -45,7 +45,23 @@
             &nbspRozšířené vyhledávání</a>
     </p>
     <div class="collapse card mt-4 p-4 {% if isFiltered %}show{% endif %}" id="filters">
-        {{ form(form) }}
+        {{ form_start(form) }}
+
+        {{ form_row(form.fulltext) }}
+
+        {{ form_row(form.state) }}
+
+        {%  if tagsExist %}
+            {{ form_row(form.tags) }}
+            {{ form_widget(form._token) }}
+            {{ form_row(form.save) }}
+            {{ form_end(form, {'render_rest':false}) }}
+        {% else %}
+            {{ form_widget(form._token) }}
+            {{ form_row(form.save) }}
+            {{ form_end(form, {'render_rest':false}) }}
+        {% endif %}
+
     </div>
 
     {% if unrelatedFeatureList %}
