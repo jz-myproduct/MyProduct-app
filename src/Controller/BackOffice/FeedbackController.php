@@ -62,12 +62,14 @@ class FeedbackController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $handler->add($formRequest, $company);
+            $feedback = $handler->add($formRequest, $company);
 
             $this->addFlash('success', 'Feedback přidán.');
 
-            return $this->redirectToRoute('bo_feedback_list', [
-                'slug' => $company->getSlug()
+            return $this->redirectToRoute('bo_feedback_detail', [
+                'company_slug' => $company->getSlug(),
+                'feedback_id' => $feedback->getId()
+
             ]);
         }
 

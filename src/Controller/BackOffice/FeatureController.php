@@ -80,12 +80,13 @@ class FeatureController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $handler->handle($formRequest, $company);
+            $feature = $handler->handle($formRequest, $company);
 
             $this->addFlash('success', 'Feature přidána.');
 
-            return $this->redirectToRoute('bo_feature_list', [
-                'slug' => $company->getSlug()
+            return $this->redirectToRoute('bo_feature_detail', [
+                'company_slug' => $company->getSlug(),
+                'feature_id' => $feature->getId()
             ]);
         }
 
