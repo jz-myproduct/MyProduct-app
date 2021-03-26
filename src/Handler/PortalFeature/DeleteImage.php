@@ -33,6 +33,8 @@ class DeleteImage
 
         // for some reason delete cascade={"remove"} doesn't work here
         $feature->getPortalFeature()->setImage(null);
+        $feature->setUpdatedAt(new \DateTime());
+        $feature->getPortalFeature()->setUpdatedAt(new \DateTime());
 
         $this->manager->remove($file);
 

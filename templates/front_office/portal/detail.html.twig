@@ -1,5 +1,9 @@
 {% extends "front_office/portal/base.html.twig" %}
 
+{% block title %}
+    {{ portal.name }}
+{% endblock %}
+
 {% block content %}
 
     {% include('shared_components/portal_tabs.html.twig') %}

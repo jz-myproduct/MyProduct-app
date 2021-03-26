@@ -29,6 +29,7 @@ class SwitchStatus
     public function handle(Feedback $feedback)
     {
         $feedback->switchIsNew();
+        $feedback->setUpdatedAt(new \DateTime());
 
         $this->manager->flush();
     }

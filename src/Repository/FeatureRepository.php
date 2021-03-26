@@ -34,7 +34,7 @@ class FeatureRepository extends ServiceEntityRepository
              ->getResult();
     }
 
-    public function findCompanyFeaturesByTag($tags, $company, $state, $fulltext)
+    public function findCompanyFeaturesByTagAndState($tags, $company, $state, $fulltext)
     {
 
        $qb = $this->createQueryBuilder('f')
@@ -62,7 +62,8 @@ class FeatureRepository extends ServiceEntityRepository
            $qb->setParameter('fulltext', '%'.$fulltext.'%');
        }
 
-       $qb->orderBy('f.score', 'DESC');
+       $qb->addOrderBy('f.score', 'DESC')
+          ->addOrderBy('f.updatedAt', 'DESC');
 
        return $qb->getQuery()->getResult();
     }
@@ -102,6 +103,9 @@ class FeatureRepository extends ServiceEntityRepository
             $qb->andWhere('st = :state')
                ->setParameter('state', $state);
         }
+
+        $qb->addOrderBy('f.state', 'ASC')
+           ->addOrderBy('f.score', 'DESC');
 
         return $qb->getQuery()->getResult();
     }

@@ -7,8 +7,8 @@ use App\Entity\Feature;
 use App\Entity\Portal;
 use App\Form\Settings\ChangePasswordType;
 use App\Form\Security\RegisterCompanyFormType;
-use App\Form\Security\RenewPassword;
-use App\Form\Security\SetNewPassword;
+use App\Form\Security\RenewPasswordType;
+use App\Form\Security\SetNewPasswordType;
 use App\Form\Settings\DeleteCompanyType;
 use App\FormRequest\Settings\ChangePasswordRequest;
 use App\FormRequest\Security\RenewPasswordRequest;
@@ -16,6 +16,7 @@ use App\FormRequest\Security\RegisterCompanyRequest;
 use App\FormRequest\Security\SetNewPasswordRequest;
 use App\FormRequest\Settings\DeleteCompanyRequest;
 use App\Handler\Security\RegisterCompany;
+use App\Handler\Security\RenewPassword;
 use App\Handler\Settings\ChangePassword;
 use App\Handler\Security\SetForgottenPassword;
 use App\Handler\Settings\DeleteCompany;
@@ -198,7 +199,7 @@ class SecurityController extends AbstractController
             ]);
         }
 
-        $form = $this->createForm(RenewPassword::class, $formRequest = new RenewPasswordRequest());
+        $form = $this->createForm(RenewPasswordType::class, $formRequest = new RenewPasswordRequest());
 
         $form->handleRequest($request);
 
@@ -245,7 +246,7 @@ class SecurityController extends AbstractController
             return $this->render('front_office/password/expired_hash.html.twig');
         }
 
-        $form = $this->createForm(SetNewPassword::class, $formRequest = new SetNewPasswordRequest());
+        $form = $this->createForm(SetNewPasswordType::class, $formRequest = new SetNewPasswordRequest());
 
         $form->handleRequest($request);
 

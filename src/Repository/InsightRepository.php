@@ -103,6 +103,7 @@ class InsightRepository extends ServiceEntityRepository
             ->leftJoin('fea.tags', 'ta')
             ->where('fee = :feedback')
             ->setParameter('feedback', $feedback)
+            ->orderBy('fea.score', 'DESC')
             ->getQuery()
             ->getResult();
     }
@@ -116,6 +117,7 @@ class InsightRepository extends ServiceEntityRepository
                     ->join('i.weight', 'w')
                     ->where('fea = :feature')
                     ->setParameter('feature', $feature)
+                    ->orderBy('i.weight', 'DESC')
                     ->getQuery()
                     ->getResult();
     }

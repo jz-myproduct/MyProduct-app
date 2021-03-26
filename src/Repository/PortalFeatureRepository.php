@@ -34,6 +34,7 @@ class PortalFeatureRepository extends ServiceEntityRepository
             ->andWhere('p.state = :state')
             ->setParameter('company', $company)
             ->setParameter('state', $state)
+            ->orderBy('p.feedbackCount', 'DESC')
             ->getQuery()
             ->getResult();
 

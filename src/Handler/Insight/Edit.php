@@ -31,6 +31,9 @@ class Edit
     {
         $insight->setWeight($request->weight);
 
+        $insight->getFeedback()->setUpdatedAt(new \DateTime());
+        $insight->getFeature()->setUpdatedAt(new \DateTime());
+
         $this->manager->flush();
 
         $this->dispatcher->dispatch(

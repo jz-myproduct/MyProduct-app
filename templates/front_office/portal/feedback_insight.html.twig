@@ -1,5 +1,9 @@
 {% extends "front_office/portal/base.html.twig" %}
 
+{% block title %}
+    {{ portal.name }}
+{% endblock %}
+
 {% block content %}
     <div style="max-width:600px" class="mx-auto mt-5">
         <p><a href="{{ path('fo_portal_detail', {'slug':portal.slug}) }}">
@@ -7,7 +11,7 @@
                 Zpět
             </a>
         </p>
-        <div class="border border-secondary p-4 rounded">
+        <div class="border p-4 rounded">
 
             {% if app.request.get('_route') == 'fo_portal_insight_add' %}
 

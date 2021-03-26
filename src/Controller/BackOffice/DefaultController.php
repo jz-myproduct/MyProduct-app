@@ -28,16 +28,6 @@ class DefaultController extends AbstractController
 {
 
     /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
-
-    public function __construct(EventDispatcherInterface $dispatcher)
-    {
-        $this->dispatcher = $dispatcher;
-    }
-
-    /**
      * @Route("/admin/{slug}/nastaveni/info", name="bo_settings_info")
      * @param Company $company
      * @param Request $request

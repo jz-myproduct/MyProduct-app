@@ -5,10 +5,20 @@
     </li>
     <li class="nav-item">
         <a class="nav-link {% if app.request.get('_route') == 'bo_insight_feature_list' %}active{% endif %}"
-           href="{{ path('bo_insight_feature_list', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Insights <span class="badge badge-secondary">{{ insightsCount }}</span></a>
+           href="{{ path('bo_insight_feature_list', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Insights <span class="badge badge-warning">{{ insightsCount }}</span></a>
     </li>
     <li class="nav-item">
         <a class="nav-link {% if app.request.get('_route') == 'bo_feature_portal' %}active{% endif %}"
-           href="{{ path('bo_feature_portal', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Portal</a>
+           href="{{ path('bo_feature_portal', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Portal
+           {% if feature.portalFeature %}
+               {% if feature.portalFeature.display %}
+                   <span class="badge-success badge">nezobrazeno</span>
+               {% else %}
+                   <span class="badge-secondary badge">nezobrazeno</span>
+               {% endif %}
+           {% else %}
+               <span class="badge-secondary badge">nezobrazeno</span>
+           {% endif %}
+        </a>
     </li>
 </ul>

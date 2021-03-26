@@ -1,13 +1,9 @@
 {% extends "base.html.twig" %}
 
-{% block base_title %}
-    {% block title %}{% endblock %}
-{% endblock %}
-
 {% block body %}
     <div class="bg-primary">
         <nav class="navbar navbar-expand-lg navbar-light container">
-            <a class="navbar-brand text-light font-weight-bold" href="#">{{ app_name }}</a>
+            <a class="navbar-brand text-light font-weight-bold" href="{{ path('fo_home') }}"><i class="bi bi-front"></i> {{ app_name }}</a>
             <div class="navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
                     {% if not app.user %}

@@ -1,12 +1,20 @@
 {% extends "back_office/base.html.twig" %}
 
+{% if app.request.get('_route') == 'bo_insight_feedback_add' %}
+    {% set title_start = 'Přidat' %}
+{% else %}
+    {% set title_start = 'Upravit' %}
+{% endif %}
+
+{% block title %}{{ title_start }} insight{% endblock %}
+
 {% block content %}
 
     <div style="max-width: 800px;" class="mx-auto">
 
         <p><a href="{{ backUrl }}"><i class="bi bi-arrow-bar-left"></i> zpět</a></p>
         <div class="border rounded pt-4">
-            <h1 class="h5 mb-2 text-center">Přidat / upravit propojení</h1>
+            <h1 class="h5 mb-2 text-center">{{ title_start }} propojení</h1>
 
             <div class="d-flex flex-row flex-wrap align-items-center mt-3">
                 <div style="width:45%" class="p-3">
@@ -14,7 +22,7 @@
                     {{ feedback.description|length > 80 ? feedback.description|slice(0, 80) ~ '...' : feedback.description }}
                     </p>
                     <p class="text-center text-secondary">
-                        {{ feedback.source }}
+                        {{ feedback.source|length > 80 ? feedback.source|slice(0, 80) ~ '...' : feedback.source }}
                     </p>
                 </div>
                 <div class="p-3">
