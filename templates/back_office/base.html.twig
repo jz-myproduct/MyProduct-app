@@ -6,7 +6,7 @@
             <button class="navbar-toggler border-light" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon" style="color: white"></span>
             </button>
-            <a class="navbar-brand text-light font-weight-bold" href="{{ path('bo_feedback_list', {'slug':app.user.slug}) }}">{{ app.user.name }}</a>
+            <a class="navbar-brand text-light font-weight-bold" href="{{ path('bo_feedback_list', {'slug':app.user.slug}) }}"><i class="bi bi-front"></i> {{ app.user.name }}</a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
