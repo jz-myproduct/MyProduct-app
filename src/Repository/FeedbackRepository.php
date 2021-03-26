@@ -42,8 +42,8 @@ class FeedbackRepository extends ServiceEntityRepository
         }
 
         return $qb
-                ->OrderBy('f.isNew', 'DESC')
-                ->addOrderBy('f.createdAt', 'DESC')
+                ->addOrderBy('f.isNew', 'DESC')
+                ->addOrderBy('f.updatedAt', 'DESC')
                 ->getQuery()
                 ->getResult();
     }

@@ -20,6 +20,9 @@
                     </a>
                 </td>
                 <td class="align-middle">
+                    <span class="badge badge-warning">{{ insight.feature.score }}</span>
+                </td>
+                <td class="align-middle">
                     {% include 'back_office/components/weights_printer.html.twig'
                         with {'weight':insight.weight.number, 'weightName':insight.weight.name } %}
                 </td>
@@ -76,6 +79,9 @@
                         {{ unrelatedFeature.name }}
                         <i class="bi bi-arrow-right-square-fill"></i>
                     </a>
+                </td>
+                <td class="align-middle">
+                    <span class="badge badge-warning">{{ unrelatedFeature.score }}</span>
                 </td>
                 <td class="text-left w-25">
                     <a class="btn btn-primary"

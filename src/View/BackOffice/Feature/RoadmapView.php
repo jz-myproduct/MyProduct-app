@@ -85,7 +85,7 @@ class RoadmapView
                 'stateColor' => $featureState->getColor(),
                 'features' =>
                     $this->manager->getRepository(Feature::class)
-                        ->findCompanyFeaturesByTag($tags, $company, $featureState, $fulltext),
+                        ->findCompanyFeaturesByTagAndState($tags, $company, $featureState, $fulltext),
                 'isFirst' =>
                     $featureState === $this->manager->getRepository(FeatureState::class)->findInitialState() ?
                         true : false,
