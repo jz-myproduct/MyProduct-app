@@ -137,7 +137,7 @@ class InsightController extends AbstractController
 
             $handler->addFromFeature($formRequest, $feature);
 
-            $this->addFlash('success', 'Feedback přidán');
+            $this->addFlash('success', 'Insight přidán.');
 
             return $this->redirectToRoute('bo_insight_feature_list', [
                 'company_slug' => $company->getSlug(),
@@ -234,7 +234,7 @@ class InsightController extends AbstractController
 
             $editHandler->handle($formRequest, $insight);
 
-            $this->addFlash('success', 'Spojení upraveno.');
+            $this->addFlash('success', 'Upraveno.');
 
             return new RedirectResponse(
                 $redirectHandler->handle(
@@ -272,7 +272,7 @@ class InsightController extends AbstractController
 
         $deleteHandler->handle($insight);
 
-        $this->addFlash('success', 'Spojení odebráno.');
+        $this->addFlash('success', 'Smazáno.');
 
         return new RedirectResponse(
             $redirectHandler->handle(

@@ -7,6 +7,7 @@ parameters:
     upload.directory.name: 'uploads'
     upload.directory: '%kernel.project_dir%/public/%upload.directory.name%'
     assets.directory.name: 'assets'
+    favicon.directory.name: 'assets/favicon'
     fromMail: 'ja@janzabloudil.cz'
     app.name: 'Product tool'
     domain.url: 'http://127.0.0.1:8000'

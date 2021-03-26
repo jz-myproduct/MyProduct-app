@@ -9,3 +9,4 @@ twig:
         assets_directory_name: '%assets.directory.name%'
         weightsCount: '%weightsCount%'
         supportMail: '%supportMail%'
+        favicon_directory_name: '%favicon.directory.name%'
