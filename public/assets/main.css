@@ -43,7 +43,6 @@ label.required:before {
     display:none;
 }
 
-
 @media screen and (max-width: 979px) {
     .portal-card {
         width:100%;

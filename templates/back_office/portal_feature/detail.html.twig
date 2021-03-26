@@ -1,5 +1,9 @@
 {% extends "back_office/base.html.twig" %}
 
+{% block title %}
+    {{ feature.name }}
+{% endblock %}
+
 {% block content %}
     {% include('back_office/components/feature_header.html.twig') %}
     
