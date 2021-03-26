@@ -33,6 +33,7 @@ class MoveState
 
         if($newState){
 
+            $feature->setUpdatedAt(new \DateTime());
             $feature->setState($newState);
 
             $this->manager->flush();

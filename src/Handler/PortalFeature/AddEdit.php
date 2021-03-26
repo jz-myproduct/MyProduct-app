@@ -69,6 +69,7 @@ class AddEdit
         $portalFeature->setSlug(
             $this->slugService->createCommonSlug($request->name)
         );
+        $feature->setUpdatedAt(new \DateTime());
 
         //handle new portal feature
         if(! $portalFeature->getFeature())

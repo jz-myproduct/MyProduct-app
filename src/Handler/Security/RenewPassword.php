@@ -60,6 +60,8 @@ class RenewPassword
             (new \DateTime())->add( new \DateInterval('PT1H'))
         );
 
+        $company->setUpdatedAt(new \DateTime());
+
         if(! $this->sendMail($company)){
             return false;
         }

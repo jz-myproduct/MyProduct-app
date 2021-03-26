@@ -35,6 +35,8 @@ class EditCompany
         );
         $company->setEmail($request->username);
 
+        $company->setUpdatedAt(new \DateTime());
+
         $this->manager->flush();
 
         return $company;

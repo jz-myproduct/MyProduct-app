@@ -82,15 +82,22 @@ class Add
         $this->manager->persist($insight);
 
         $this->updateFeatureScore($feature, $weight);
+        $this->setUpdatedAt($feature, $feedback);
 
         return $insight;
     }
 
     private function updateFeatureScore(Feature $feature, InsightWeight $weight)
     {
-        return $feature->setScoreUpBy(
+        $feature->setScoreUpBy(
             $weight->getNumber()
         );
+    }
+
+    private function setUpdatedAt(Feature $feature, Feedback $feedback)
+    {
+        $feature->setUpdatedAt(new \DateTime());
+        $feedback->setUpdatedAt(new \DateTime());
     }
 
 }

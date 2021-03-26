@@ -34,6 +34,8 @@ class ChangePassword
             )
         );
 
+        $company->setUpdatedAt(new \DateTime());
+
         $this->manager->flush();
 
     }

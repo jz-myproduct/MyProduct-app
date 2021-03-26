@@ -26,16 +26,16 @@ label.required:before {
     border-radius: 5px;
 }
 
-#feature:hover #tags {
+.feature:hover #tags {
     display:block;
 }
 
-#feature:hover {
+.feature:hover {
     border: 1px solid #007bff;
     background: #f8f9fa;
 }
 
-#feature {
+.feature {
     border: 1px solid #dee2e6;
 }
 

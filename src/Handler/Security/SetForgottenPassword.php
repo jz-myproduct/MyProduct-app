@@ -36,6 +36,7 @@ class SetForgottenPassword
             )
         );
 
+        $company->setUpdatedAt(new \DateTime());
         $company->setPasswordRenewHash(null);
         $company->setPasswordHashValidUntil(null);
 
