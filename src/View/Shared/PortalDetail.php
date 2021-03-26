@@ -40,6 +40,7 @@ class PortalDetail
                 ->findFeaturesForPortalByState($company, $currentState);
 
         $array = [
+            'scrollTo' => 'portalScroll',
             'currentState' => $currentState,
             'stateList' => $stateList,
             'portalFeatureList' => $portalFeatureList,

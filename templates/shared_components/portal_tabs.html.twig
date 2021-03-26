@@ -4,17 +4,16 @@
     {% set slugState = currentState.slug %}
 {% endif %}
 
-<ul class="nav nav-tabs justify-content-center mt-5">
+<ul class="nav nav-tabs justify-content-center mt-5" id="{{ scrollTo }}">
     {% for state in stateList %}
         <li>
             <a href="
                 {% if app.request.get('_route') == 'bo_portal_detail' %}
-                    {{ path('bo_portal_detail', {'slug':app.user.slug, 'state':state.slug}) }}
+                    {{ path('bo_portal_detail', {'slug':app.user.slug, 'state':state.slug}) }}#{{ scrollTo }}
                 {% endif %}
                 {% if app.request.get('_route') == 'fo_portal_detail' %}
-                    {{ path('fo_portal_detail', {'slug':portal.slug, 'state':state.slug}) }}
-                {% endif %}
-               "
+                    {{ path('fo_portal_detail', {'slug':portal.slug, 'state':state.slug}) }}#{{ scrollTo }}
+                {% endif %}"
                class="nav-link {% if slugState == state.slug %}active{% endif %} }">{{ state.name }}</a>
         </li>
     {% endfor %}

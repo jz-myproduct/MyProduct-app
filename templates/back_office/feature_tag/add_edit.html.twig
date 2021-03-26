@@ -1,6 +1,12 @@
 {% extends "back_office/base.html.twig" %}
 
-{% block title %}Přidat / upravit feature tag{% endblock %}
+{% if app.request.get('_route') == 'bo_feature_tag_add' %}
+    {% set title_start = 'Přidat' %}
+{% else %}
+    {% set title_start = 'Upravit' %}
+{% endif %}
+
+{% block title %}{{ title_start }} feature tag{% endblock %}
 
 {% block content %}
         <p class="mb-4"><a href="{{ path('bo_feature_tag_list', {'slug':app.user.slug}) }}" class="text-dark"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-square-fill" viewBox="0 0 16 16">
@@ -8,7 +14,7 @@
                       </svg> Zpět na přehled
            </a>
         </p>
-        <h1 class="h3 mb-5">Přidat/upravit tag</h1>
+        <h1 class="h3 mb-5">{{ title_start }} tag</h1>
 
         {{ form(form) }}
 {% endblock %}

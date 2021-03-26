@@ -5,6 +5,6 @@
     </li>
     <li class="nav-item">
         <a class="nav-link {% if app.request.get('_route') == 'bo_insight_feedback_list' %}active{% endif %}"
-           href="{{ path('bo_insight_feedback_list', {'company_slug':app.user.slug, 'feedback_id': feedback.id}) }}">Features <span class="badge badge-secondary">{{ insightsCount }}</span></a>
+           href="{{ path('bo_insight_feedback_list', {'company_slug':app.user.slug, 'feedback_id': feedback.id}) }}">Features <span class="badge badge-warning">{{ insightsCount }}</span></a>
     </li>
 </ul>

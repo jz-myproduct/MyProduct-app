@@ -1,9 +1,15 @@
 {% extends "back_office/base.html.twig" %}
 
-{% block title %}Přidat / upravit feature{% endblock %}
+{% if app.request.get('_route') == 'bo_feature_add' %}
+    {% set title_start = 'Přidat' %}
+{% else %}
+    {% set title_start = 'Upravit' %}
+{% endif %}
+
+{% block title %}{{ title_start }} feature{% endblock %}
 
 {% block content %}
-        <h1 class="h3 mb-4">Přidat / upravit feature</h1>
+        <h1 class="h3 mb-4">{{ title_start }} feature</h1>
 
         {{ form_start(form) }}
 
