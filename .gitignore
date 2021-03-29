@@ -9,6 +9,9 @@
 /var/
 /vendor/
 /.idea
+/.env
+/.env.test
+/db.sh
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
