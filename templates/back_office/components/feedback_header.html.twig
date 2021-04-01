@@ -19,14 +19,14 @@
             <a style="font-size: 20px" href="{{ path('bo_feedback_change_status', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'p':redirectTo}) }}"
                class="btn btn-outline-secondary"
                data-toggle="tooltip" data-placement="top"
-               title="Označit za {% if feedback.isNew %}zpracovaný{% else %}new{% endif %}">
+               title="Mark as {% if feedback.isNew %}processed{% else %}new{% endif %}">
                 {% if feedback.isNew %}
                     <i class="bi bi-check-square-fill"></i>
                 {% else %}
                     <i class="bi bi-exclamation-square-fill"></i>
                 {% endif %}
             </a>
-            <a title="Smazat" style="font-size: 20px" href="{{ path('bo_feedback_delete', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}"
+            <a style="font-size: 20px" href="{{ path('bo_feedback_delete', {'company_slug': app.user.slug, 'feedback_id': feedback.id}) }}"
                class="btn btn-outline-danger" {% include('back_office/components/delete_confirmation.html.twig') %}><i class="bi bi-trash-fill"></i></a>
         </p>
     </div>

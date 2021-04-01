@@ -37,7 +37,7 @@ class FilterFormView
     {
 
         // add default value
-        $array['Všechny'] = 0;
+        $array['All'] = 0;
 
         foreach ($this->manager->getRepository(FeatureState::class)->findAll() as $state)
         {

@@ -148,7 +148,7 @@ class SecurityController extends AbstractController
      * @param ChangePassword $handler
      * @return Response
      */
-    public function changePassowrd(Company $company, Request $request, ChangePassword $handler): Response
+    public function changePassword(Company $company, Request $request, ChangePassword $handler): Response
     {
         $this->denyAccessUnlessGranted('edit', $company);
 

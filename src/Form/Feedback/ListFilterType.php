@@ -28,7 +28,7 @@ class ListFilterType extends AbstractType
                 'empty_data' => null
             ])
             ->add('fulltext', TextType::class, [
-                'label' => 'Search in description and contact',
+                'label' => 'Description or contact',
                 'required' => false
             ])
             ->add('save', SubmitType::class, [

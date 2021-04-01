@@ -42,7 +42,7 @@
 
     {% endif %}
 
-    <h2 class="h4 mt-5">Přidat features</h2>
+    <h2 class="h4 mt-5">Add feature</h2>
     <p class="mb-0 pb-0 mt-3">
             <a data-toggle="collapse" href="#filters" aria-expanded="false" aria-controls="filters"
                                  class="font-weight-bold">
@@ -73,8 +73,8 @@
         <table id="{{ scrollTo }}" class="table table-striped mt-3" id="{{ scrollTo }}">
         {% for unrelatedFeature in unrelatedFeatureList %}
             <tr>
-                <td class="w-25 font-weight-bold" style="color: {{ unrelatedFeature.state.color }}">{{ unrelatedFeature.state.name }}</td>
-                <td class="w-50">
+                <td class="w-25 font-weight-bold align-middle" style="color: {{ unrelatedFeature.state.color }}">{{ unrelatedFeature.state.name }}</td>
+                <td class="w-50 align-middle">
                     <a class="text-dark" href="{{ path('bo_feature_detail', {'company_slug':app.user.slug, 'feature_id':unrelatedFeature.id}) }}">
                         {{ unrelatedFeature.name }}
                         <i class="bi bi-arrow-right-square-fill"></i>
