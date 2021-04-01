@@ -4,6 +4,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Feature;
+use App\Entity\Feedback;
 use App\Entity\Insight;
 use App\Entity\InsightWeight;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -28,12 +29,12 @@ class InsightFixtures extends Fixture implements DependentFixtureInterface
                 $addedFeedbacks = [];
                 for($i = 0; $i < rand(0, 15); $i++)
                 {
-                    $feedback = rand(1,40);
-                    if(in_array($feedback, $addedFeedbacks)){
+                    $feedbackName = rand(1,40);
+                    if(in_array($feedbackName, $addedFeedbacks)){
                         continue;
                     }
 
-                    array_push($addedFeedbacks, $feedback);
+                    array_push($addedFeedbacks, $feedbackName);
 
                     /** @var Feature $feature */
                     $feature = $this->getReference('feature-'.strtolower($company).'-'.strtolower($featureName));
@@ -41,15 +42,22 @@ class InsightFixtures extends Fixture implements DependentFixtureInterface
                     /** @var InsightWeight $weight */
                     $weight = $this->getReference('insightWeight-'.strtolower(self::$weights[rand(0,3)]));
 
+                    /** @var Feedback $feedback */
+                    $feedback = $this->getReference('feedback-'.strtolower($company).'-'.strtolower($feedbackName));
+
                     $feature->setScoreUpBy($weight->getNumber());
 
                     $insight = new Insight();
                     $insight->setFeature($feature);
-                    $insight->setFeedback($this->getReference('feedback-'.strtolower($company).'-'.strtolower($feedback)));
+                    $insight->setFeedback($feedback);
                     $insight->setWeight($weight);
 
                     if($feature->getPortalFeature()){
-                        $feature->getPortalFeature()->setFeedbackCountUpByOne();
+
+                        if($feedback->getFromPortal())
+                        {
+                            $feature->getPortalFeature()->setFeedbackCountUpByOne();
+                        }
                     }
 
                     $manager->persist($insight);
