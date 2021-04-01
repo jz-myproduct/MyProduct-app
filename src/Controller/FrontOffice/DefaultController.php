@@ -18,7 +18,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class DefaultController extends AbstractController
 {
-    /* TEMPORARY */
     /**
      * @Route("/", name="fo_home")
      */

@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="bg-primary">
+        <nav class="navbar navbar-expand-lg navbar-light container">
+            <a class="navbar-brand text-light font-weight-bold" href="{{ path('fo_home') }}"><i class="bi bi-front"></i> {{ app_name }}</a>
+        </nav>
+    </div>
+
+    <main class="container mt-4">
+        {% include('shared_components/flash_messages_container.html.twig') %}
+
+        {% block header %}{% endblock %}
+
+        <p class="mt-4">Pokud se jedná o chybu, nahlašte nám ji prosím na <a href="mailto:{{ supportMail }}">{{ supportMail }}</a>, děkujeme.</p>
+        <p><a href="{{ path('fo_home') }}">Zpět na hlavní stranu</a></p>
+    </main>
+
+    <footer class="footer">
+        <div class="container text-right">
+            <span class="text-muted">{{ app_name }} &copy; 2021 {{ author }}</span>
+        </div>
+    </footer>
+{% endblock %}
