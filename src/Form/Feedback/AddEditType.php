@@ -11,6 +11,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -32,7 +33,7 @@ class AddEditType extends AbstractType
     {
         $builder
             ->add('description', TextareaType::class, ['label' => 'Popis'])
-            ->add('source', TextareaType::class, ['required' => false, 'label' => 'Zdroj'])
+            ->add('source', TextType::class, ['required' => false, 'label' => 'Kontakt'])
             ->add('save', SubmitType::class, ['label' => 'Uložit']);
 
     }

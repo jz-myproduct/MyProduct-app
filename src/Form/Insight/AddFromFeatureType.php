@@ -27,8 +27,8 @@ class AddFromFeatureType extends AbstractType
             ->add('description', TextareaType::class, [
                 'label' => 'Popis'
             ])
-            ->add('source', TextareaType::class, [
-                'label' => 'Zdroj',
+            ->add('source', TextType::class, [
+                'label' => 'Kontakt',
                 'required' => false
             ])
             ->add('weight', ChoiceType::class, [
