@@ -47,7 +47,7 @@ class FeatureController extends AbstractController
 
 
     /**
-     * @Route("/admin/{slug}/feature/pridat", name="bo_feature_add")
+     * @Route("/admin/{slug}/feature/add", name="bo_feature_add")
      * @param Company $company
      * @param Request $request
      * @param Add $handler
@@ -81,7 +81,7 @@ class FeatureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feature/{feature_id}/upravit", name="bo_feature_edit")
+     * @Route("/admin/{company_slug}/feature/{feature_id}/edit", name="bo_feature_edit")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @param Company $company
@@ -119,7 +119,7 @@ class FeatureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{slug}/features/seznam/{state_slug?}", name="bo_feature_list")
+     * @Route("/admin/{slug}/features/list/{state_slug?}", name="bo_feature_list")
      * @ParamConverter("company", options={"mapping": {"slug": "slug"}})
      * @ParamConverter("state", options={"mapping": {"state_slug": "slug"}})
      * @param Company $company
@@ -218,7 +218,7 @@ class FeatureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feature/{feature_id}/smazat", name="bo_feature_delete")
+     * @Route("/admin/{company_slug}/feature/{feature_id}/delete", name="bo_feature_delete")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @param Company $company
@@ -240,7 +240,7 @@ class FeatureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feature/{feature_id}/popis", name="bo_feature_detail")
+     * @Route("/admin/{company_slug}/feature/{feature_id}/description", name="bo_feature_detail")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @param Company $company
@@ -259,7 +259,7 @@ class FeatureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feature/{feature_id}/posunout-status/{direction}", name="bo_feature_status_move")
+     * @Route("/admin/{company_slug}/feature/{feature_id}/move-status/{direction}", name="bo_feature_status_move")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @param Company $company

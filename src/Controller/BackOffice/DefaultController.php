@@ -18,7 +18,7 @@ class DefaultController extends AbstractController
 {
 
     /**
-     * @Route("/admin/{slug}/nastaveni/info", name="bo_settings_info")
+     * @Route("/admin/{slug}/settings/info", name="bo_settings_info")
      * @param Company $company
      * @param Request $request
      * @param EditCompany $handler

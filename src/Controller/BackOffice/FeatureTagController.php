@@ -23,7 +23,7 @@ class FeatureTagController extends AbstractController
 {
 
     /**
-     * @Route("/admin/{slug}/tag/pridat", name="bo_feature_tag_add")
+     * @Route("/admin/{slug}/tag/add", name="bo_feature_tag_add")
      * @param Company $company
      * @param Request $request
      * @param Add $handler
@@ -53,7 +53,7 @@ class FeatureTagController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/tag/{tag_id}/upravit", name="bo_feature_tag_edit")
+     * @Route("/admin/{company_slug}/tag/{tag_id}/edit", name="bo_feature_tag_edit")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("tag", options={"mapping": {"tag_id": "id"}} )
      * @param Company $company
@@ -97,7 +97,7 @@ class FeatureTagController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/tag/{tag_id}/smazat", name="bo_feature_tag_delete")
+     * @Route("/admin/{company_slug}/tag/{tag_id}/delete", name="bo_feature_tag_delete")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("tag", options={"mapping": {"tag_id": "id"}} )
      * @param Company $company

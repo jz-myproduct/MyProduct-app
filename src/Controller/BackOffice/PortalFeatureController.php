@@ -94,7 +94,7 @@ class PortalFeatureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feature/{feature_id}/portal/smazat-obrazek/{file_id}", name="bo_feature_portal_image_delete")
+     * @Route("/admin/{company_slug}/feature/{feature_id}/portal/delete-image/{file_id}", name="bo_feature_portal_image_delete")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @ParamConverter("file", options={"mapping": {"file_id": "id"}})

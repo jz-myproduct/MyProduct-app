@@ -48,7 +48,7 @@ class InsightController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/pridat-insight/{feedback_id}/{feature_id}", name="bo_insight_feedback_add")
+     * @Route("/admin/{company_slug}/add-insight/{feedback_id}/{feature_id}", name="bo_insight_feedback_add")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
@@ -200,7 +200,7 @@ class InsightController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/upravit-insight/{insight_id}", name="bo_insight_edit")
+     * @Route("/admin/{company_slug}/edit-insight/{insight_id}", name="bo_insight_edit")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("insight", options={"mapping": {"insight_id": "id"}})
      * @param Company $company
@@ -249,7 +249,7 @@ class InsightController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/smazat-insight/{insight_id}", name="bo_insight_delete")
+     * @Route("/admin/{company_slug}/delete-insight/{insight_id}", name="bo_insight_delete")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("insight", options={"mapping": {"insight_id": "id"}})
      * @param Company $company

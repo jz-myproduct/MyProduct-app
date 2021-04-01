@@ -51,9 +51,9 @@ class PortalFeatureStateFixtures extends Fixture
     private function getData()
     {
         return [
-            ['name' => 'Nápady', 'position' => 1],
-            ['name' => 'Připravujeme', 'position' => 2],
-            ['name' => 'Hotovo', 'position' => 3]
+            ['name' => 'Ideas', 'position' => 1],
+            ['name' => 'In-progress', 'position' => 2],
+            ['name' => 'Done', 'position' => 3]
         ];
     }
 }

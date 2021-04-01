@@ -72,7 +72,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/zaregistrovat", name="fo_register")
+     * @Route("/register", name="fo_register")
      * @param Request $request
      * @param RegisterCompany $handler
      * @return Response
@@ -107,7 +107,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/prihlasit", name="fo_login")
+     * @Route("/login", name="fo_login")
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */
@@ -142,7 +142,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{slug}/nastaveni/zmenit-heslo", name="bo_settings_password")
+     * @Route("/admin/{slug}/settings/change-password", name="bo_settings_password")
      * @param Company $company
      * @param Request $request
      * @param ChangePassword $handler
@@ -181,7 +181,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/zapomenute-heslo", name="fo_renew_password")
+     * @Route("/forgotten-password", name="fo_renew_password")
      * @param Request $request
      * @param RenewPassword $handler
      * @return RedirectResponse|Response
@@ -220,7 +220,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/nastavit-heslo/{hash}", name="fo_set_new_password")
+     * @Route("/set-password/{hash}", name="fo_set_new_password")
      * @ParamConverter("company", options={"mapping": {"hash": "passwordRenewHash"}})
      * @param Company $company
      * @param Request $request
@@ -263,7 +263,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{slug}/nastaveni/smazat-firmu", name="bo_settings_delete")
+     * @Route("/admin/{slug}/settings/delete-company", name="bo_settings_delete")
      * @param Company $company
      * @param Request $request
      * @param DeleteCompany $handler

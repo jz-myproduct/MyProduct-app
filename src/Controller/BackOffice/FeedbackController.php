@@ -42,7 +42,7 @@ class FeedbackController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{slug}/feedback/pridat", name="bo_feedback_add")
+     * @Route("/admin/{slug}/feedback/add", name="bo_feedback_add")
      * @param Company $company
      * @param Request $request
      * @param Add $handler
@@ -76,7 +76,7 @@ class FeedbackController extends AbstractController
 
 
     /**
-     * @Route("/admin/{company_slug}/feedback/{feedback_id}/upravit", name="bo_feedback_edit")
+     * @Route("/admin/{company_slug}/feedback/{feedback_id}/edit", name="bo_feedback_edit")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
@@ -111,7 +111,7 @@ class FeedbackController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{slug}/feedbacks", name="bo_feedback_list")
+     * @Route("/admin/{slug}/feedback/list", name="bo_feedback_list")
      * @param Company $company
      * @param ListView $view
      * @param Request $request
@@ -144,7 +144,7 @@ class FeedbackController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feedback/{feedback_id}/smazat", name="bo_feedback_delete")
+     * @Route("/admin/{company_slug}/feedback/{feedback_id}/delete", name="bo_feedback_delete")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
@@ -166,7 +166,7 @@ class FeedbackController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feedback/{feedback_id}/zmenit-status", name="bo_feedback_change_status")
+     * @Route("/admin/{company_slug}/feedback/{feedback_id}/change-status", name="bo_feedback_change_status")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
@@ -200,7 +200,7 @@ class FeedbackController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feedback/{feedback_id}/popis", name="bo_feedback_detail")
+     * @Route("/admin/{company_slug}/feedback/{feedback_id}/description", name="bo_feedback_detail")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
