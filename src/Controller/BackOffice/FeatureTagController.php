@@ -9,7 +9,6 @@ use App\FormRequest\FeatureTag\AddEditRequest;
 use App\Handler\FeatureTag\Add;
 use App\Handler\FeatureTag\Delete;
 use App\Handler\FeatureTag\Edit;
-use App\Service\SlugService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
