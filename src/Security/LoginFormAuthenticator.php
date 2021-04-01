@@ -72,7 +72,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
         if (!$user) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Company not foun.');
+            throw new CustomUserMessageAuthenticationException('Company not found.');
         }
 
         return $user;

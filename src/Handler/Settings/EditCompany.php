@@ -29,10 +29,14 @@ class EditCompany
 
     public function handle(InfoRequest $request, Company $company)
     {
-        $company->setName($request->name);
-        $company->setSlug(
-            $this->slugService->createCompanySlug($request->name, $company)
-        );
+        if($company->getName() !== $request->name)
+        {
+            $company->setName($request->name);
+            $company->setSlug(
+                $this->slugService->createCompanySlug($request->name, $company)
+            );
+        }
+
         $company->setEmail($request->username);
 
         $company->setUpdatedAt(new \DateTime());

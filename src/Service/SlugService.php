@@ -31,8 +31,10 @@ class SlugService
     {
         $slug = $this->prepareSlug($value);
 
-        $count = $this->entityManager->getRepository(Company::class)
+        $initialCount = $this->entityManager->getRepository(Company::class)
             ->getSimilarSlugsCountForNewCompany($slug);
+
+        $count = $this->checkUnique($slug, $initialCount, Company::class);
 
         return $this->handleCount($slug, $count);
     }
@@ -41,8 +43,10 @@ class SlugService
     {
         $slug = $this->prepareSlug($value);
 
-        $count = $this->entityManager->getRepository(Company::class)
+        $initialCount = $this->entityManager->getRepository(Company::class)
             ->getSimilarSlugsCountForExistingCompany($slug, $company);
+
+        $count = $this->checkUnique($slug, $initialCount, Company::class);
 
         return $this->handleCount($slug, $count);
 
@@ -52,8 +56,10 @@ class SlugService
     {
         $slug = $this->prepareSlug($value);
 
-        $count = $this->entityManager->getRepository(Portal::class)
+        $initialCount = $this->entityManager->getRepository(Portal::class)
             ->getSimilarSlugsCountForNewPortal($slug);
+
+        $count = $this->checkUnique($slug, $initialCount, Portal::class);
 
         return $this->handleCount($slug, $count);
     }
@@ -64,10 +70,31 @@ class SlugService
             $portal->getName()
         );
 
-        $count = $this->entityManager->getRepository(Portal::class)
+        $initialCount = $this->entityManager->getRepository(Portal::class)
             ->getSimilarSlugsCountForExistingCompany($slug, $portal);
 
+        $count = $this->checkUnique($slug, $initialCount, Portal::class);
+
         return $this->handleCount($slug, $count);
+    }
+
+    private function checkUnique($slug, $count, string $class)
+    {
+        $unique = false;
+        while(!$unique)
+        {
+            if($this->entityManager->getRepository($class)->findBy(
+                ['slug' => $this->handleCount($slug, $count)]
+            ))
+            {
+                $count++;
+                continue;
+            }
+
+            $unique = true;
+        }
+
+        return $count;
     }
 
     private function handleCount( $slug, $count )

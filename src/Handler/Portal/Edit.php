@@ -29,10 +29,14 @@ class Edit
     public function handle(SettingsRequest $request, Portal $portal)
     {
 
-        $portal->setName($request->name);
-        $portal->setSlug(
-            $this->slugService->createPortalSlug($portal)
-        );
+        if($portal->getName() !== $request->name)
+        {
+            $portal->setName($request->name);
+            $portal->setSlug(
+                $this->slugService->createPortalSlug($portal)
+            );
+        }
+
         $portal->setDisplay($request->display);
 
         $portal->setUpdatedAt(new \DateTime());
