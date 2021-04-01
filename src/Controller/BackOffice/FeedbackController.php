@@ -3,9 +3,7 @@
 namespace App\Controller\BackOffice;
 
 use App\Entity\Company;
-use App\Entity\Feature;
 use App\Entity\Feedback;
-use App\Entity\Insight;
 use App\Form\Feedback\AddEditType;
 use App\Form\Feedback\ListFilterType;
 use App\FormRequest\Feedback\AddEditRequest;
@@ -24,11 +22,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class FeedbackController extends AbstractController
 {

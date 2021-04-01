@@ -3,9 +3,6 @@
 
 namespace App\Controller\FrontOffice;
 
-
-use App\Entity\Feedback;
-use App\Entity\Insight;
 use App\Entity\InsightWeight;
 use App\Entity\Portal;
 use App\Entity\PortalFeature;
@@ -14,7 +11,6 @@ use App\Form\Insight\AddFromFeatureType;
 use App\Form\Feedback\AddEditType;
 use App\FormRequest\Feedback\AddEditRequest;
 use App\FormRequest\Insight\AddFromFeatureRequest;
-use App\Handler\Feedback\AddFromPortal;
 use App\Handler\Feedback\Add;
 use App\View\Shared\PortalDetail;
 use Doctrine\ORM\EntityManagerInterface;

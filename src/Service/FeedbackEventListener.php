@@ -10,7 +10,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
-use phpDocumentor\Reflection\Types\Null_;
 use Symfony\Component\Security\Core\Security;
 
 class FeedbackEventListener

@@ -2,7 +2,6 @@
 
 namespace App\Form\FeatureTag;
 
-use App\Entity\FeatureTag;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

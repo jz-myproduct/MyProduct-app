@@ -6,7 +6,6 @@ namespace App\Controller\BackOffice;
 
 use App\Entity\Company;
 use App\Entity\Feature;
-use App\Entity\FeatureTag;
 use App\Entity\Feedback;
 use App\Entity\Insight;
 use App\Entity\InsightWeight;
@@ -33,8 +32,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
+
 
 class InsightController extends AbstractController
 {

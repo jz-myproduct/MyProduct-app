@@ -3,8 +3,6 @@
 
 namespace App\DataFixtures;
 
-
-use App\Entity\Company;
 use App\Entity\Feedback;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

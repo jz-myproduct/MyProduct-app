@@ -13,7 +13,6 @@ use App\Entity\Insight;
 use App\FormRequest\Insight\FilterOnFeedbackRequest;
 use App\Handler\Feedback\SwitchStatusRedirect;
 use App\Handler\Insight\Redirect;
-use App\Repository\FeatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormView;
 

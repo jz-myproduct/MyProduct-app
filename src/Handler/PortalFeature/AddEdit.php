@@ -10,11 +10,8 @@ use App\Entity\PortalFeature;
 use App\FormRequest\PortalFeature\AddEditRequest;
 use App\Service\FileUploader;
 use App\Service\SlugService;
-use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 class AddEdit
 {

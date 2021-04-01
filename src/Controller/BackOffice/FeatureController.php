@@ -5,16 +5,9 @@ namespace App\Controller\BackOffice;
 use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\FeatureState;
-use App\Entity\FeatureTag;
-use App\Entity\Feedback;
-use App\Entity\Insight;
-use App\Entity\InsightWeight;
-use App\Entity\PortalFeature;
-use App\Events\FeedbackUpdatedEvent;
 use App\Form\Feature\AddEditType;
 use App\Form\Feature\ListFilterType;
 use App\Form\Feature\RoadmapFilterType;
-use App\Form\AddFromFeatureType;
 use App\FormRequest\Feature\ListFilterRequest;
 use App\FormRequest\Feature\AddEditRequest;
 use App\FormRequest\Feature\RoadmapFilterRequest;
@@ -23,29 +16,21 @@ use App\Handler\Feature\Delete;
 use App\Handler\Feature\Edit;
 use App\Handler\Feature\MoveState;
 use App\Handler\Feature\Search;
-use App\Handler\Insight\AddFromFeature;
-use App\Service\SlugService;
 use App\View\BackOffice\Feature\DetailView;
 use App\View\BackOffice\Feature\FilterFormView;
 use App\View\BackOffice\Feature\ListView;
 use App\View\BackOffice\Feature\RoadmapView;
-use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
-use Exception;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+
 
 class FeatureController extends AbstractController
 {

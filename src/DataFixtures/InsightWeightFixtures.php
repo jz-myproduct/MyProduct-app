@@ -3,8 +3,6 @@
 
 namespace App\DataFixtures;
 
-
-use App\Entity\Insight;
 use App\Entity\InsightWeight;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;

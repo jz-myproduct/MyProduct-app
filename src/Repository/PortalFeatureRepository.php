@@ -6,7 +6,6 @@ use App\Entity\Company;
 use App\Entity\PortalFeature;
 use App\Entity\PortalFeatureState;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**

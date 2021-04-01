@@ -3,9 +3,7 @@
 
 namespace App\DataFixtures;
 
-
 use App\Entity\PortalFeature;
-use App\Entity\PortalFeatureState;
 use App\Service\FeatureUtils;
 use App\Service\SlugService;
 use Doctrine\Bundle\FixturesBundle\Fixture;

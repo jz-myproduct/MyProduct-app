@@ -8,7 +8,6 @@ use App\Entity\Company;
 use App\Entity\Feedback;
 use App\FormRequest\Feedback\AddEditRequest;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Types\Boolean;
 
 class Add
 {

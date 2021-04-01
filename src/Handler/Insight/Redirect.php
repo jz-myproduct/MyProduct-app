@@ -6,8 +6,6 @@ namespace App\Handler\Insight;
 
 use App\Entity\Company;
 use App\Entity\Insight;
-use phpDocumentor\Reflection\Types\Self_;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class Redirect

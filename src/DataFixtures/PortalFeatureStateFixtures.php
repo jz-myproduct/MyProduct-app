@@ -8,7 +8,6 @@ use App\Entity\PortalFeatureState;
 use App\Service\SlugService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class PortalFeatureStateFixtures extends Fixture
 {

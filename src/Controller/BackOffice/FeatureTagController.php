@@ -5,7 +5,6 @@ namespace App\Controller\BackOffice;
 use App\Entity\Company;
 use App\Entity\FeatureTag;
 use App\Form\FeatureTag\AddEditType;
-use App\Form\FeatureTagFormType;
 use App\FormRequest\FeatureTag\AddEditRequest;
 use App\Handler\FeatureTag\Add;
 use App\Handler\FeatureTag\Delete;
@@ -18,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
 
 class FeatureTagController extends AbstractController
 {

@@ -2,8 +2,6 @@
 
 namespace App\Form\Feature;
 
-use App\Entity\Feature;
-use App\Entity\FeatureState;
 use App\Entity\FeatureTag;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -21,7 +19,6 @@ class AddEditType extends AbstractType
      * @var EntityManagerInterface
      */
     private $entityManager;
-    private $tags;
 
     public function __construct(EntityManagerInterface $entityManager)
     {

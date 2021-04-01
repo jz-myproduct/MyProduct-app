@@ -2,7 +2,6 @@
 
 namespace App\Form\Portal;
 
-use App\Entity\Portal;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

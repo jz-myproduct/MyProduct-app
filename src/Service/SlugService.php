@@ -4,9 +4,6 @@ namespace App\Service;
 
 use App\Entity\Company;
 use App\Entity\Portal;
-use phpDocumentor\Reflection\Types\ClassString;
-use phpDocumentor\Reflection\Types\Integer;
-use PhpParser\Node\Scalar\String_;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 

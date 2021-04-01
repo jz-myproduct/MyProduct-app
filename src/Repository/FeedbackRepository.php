@@ -3,10 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Company;
-use App\Entity\Feature;
 use App\Entity\Feedback;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**

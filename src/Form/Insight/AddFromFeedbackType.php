@@ -27,7 +27,6 @@ class AddFromFeedbackType extends AbstractType
                 'label' => false
             ])
             ->add('save', SubmitType::class, ['label' => 'Uložit']);
-        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -6,7 +6,6 @@ namespace App\Controller\BackOffice;
 
 use App\Entity\Company;
 use App\Entity\Feature;
-use App\Entity\Feedback;
 use App\Entity\PortalFeature;
 use App\Entity\PortalFeatureState;
 use App\Form\PortalFeature\AddEditFormType;
@@ -15,7 +14,6 @@ use App\Handler\PortalFeature\AddEdit;
 use App\Handler\PortalFeature\DeleteImage;
 use App\View\BackOffice\PortalFeature\DetailView;
 use Doctrine\ORM\EntityManagerInterface;
-use PhpParser\Node\Scalar\MagicConst\File;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -115,7 +113,6 @@ class PortalFeatureController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $feature);
 
         // allow to delete only file related to feature, because we are sure, that user has access to feature
-        // TODO maybe make a voter?
         if($feature->getPortalFeature()->getImage() !== $file)
         {
             throw new NotFoundHttpException();
