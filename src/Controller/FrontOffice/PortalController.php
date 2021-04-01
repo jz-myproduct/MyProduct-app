@@ -84,7 +84,7 @@ class PortalController extends AbstractController
 
             $handler->addFromPortal($formRequest, $portalFeature);
 
-            $this->addFlash('success', 'Děkujeme za feeedback!');
+            $this->addFlash('success', 'Thank you for the feedback!');
 
             return $this->redirectToRoute('fo_portal_detail', [
                 'slug' => $portal->getSlug(),
@@ -117,7 +117,7 @@ class PortalController extends AbstractController
 
             $handler->addFromPortal($formRequest, $portal->getCompany());
 
-            $this->addFlash('success', 'Děkujeme za feeedback!');
+            $this->addFlash('success', 'Thank you for the feedback!');
 
             return $this->redirectToRoute('fo_portal_detail', [
                 'slug' => $portal->getSlug()

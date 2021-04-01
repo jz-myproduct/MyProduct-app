@@ -19,7 +19,7 @@ class RoadmapFilterType extends AbstractType
 
         $builder
             ->add('fulltext', TextType::class, [
-                'label' => 'Název nebo popis',
+                'label' => 'Name or description',
                 'required' => false
             ])
             ->add('tags', ChoiceType::class, [
@@ -31,7 +31,7 @@ class RoadmapFilterType extends AbstractType
                 ]
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Filtrovat',
+                'label' => 'Search',
                 'attr' => ['class' => 'btn-outline-primary']
             ]) ;
     }

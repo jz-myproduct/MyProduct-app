@@ -60,7 +60,7 @@ class FeedbackController extends AbstractController
 
             $feedback = $handler->add($formRequest, $company);
 
-            $this->addFlash('success', 'Feedback přidán.');
+            $this->addFlash('success', 'Feedback added.');
 
             return $this->redirectToRoute('bo_feedback_detail', [
                 'company_slug' => $company->getSlug(),
@@ -97,7 +97,7 @@ class FeedbackController extends AbstractController
 
             $handler->handle($feedback, $formRequest);
 
-            $this->addFlash('success', 'Feedback upraven.');
+            $this->addFlash('success', 'Feedback edited.');
 
             return $this->redirectToRoute('bo_feedback_detail', [
                'company_slug' => $company->getSlug(),
@@ -158,7 +158,7 @@ class FeedbackController extends AbstractController
 
         $handler->delete($feedback);
 
-        $this->addFlash('success', 'Feedback smazán.');
+        $this->addFlash('success', 'Feedback deleted.');
 
         return $this->redirectToRoute('bo_feedback_list', [
             'slug' => $company->getSlug()
@@ -187,7 +187,7 @@ class FeedbackController extends AbstractController
 
         $switchHandler->handle($feedback);
 
-        $this->addFlash('success', 'Status upraven.');
+        $this->addFlash('success', 'Status edited.');
 
         return new RedirectResponse(
           $redirectHandler->handle(

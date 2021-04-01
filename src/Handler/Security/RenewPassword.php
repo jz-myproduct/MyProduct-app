@@ -95,7 +95,7 @@ class RenewPassword
         return (new TemplatedEmail())
                     ->from($this->fromMail)
                     ->to($company->getEmail())
-                    ->subject('Obnovení hesla | '.$this->appName)
+                    ->subject('Password renewal | '.$this->appName)
                     ->htmlTemplate('email/forgotten_password.html.twig')
                     ->textTemplate('email/forgotten_password.txt.twig')
                     ->context([

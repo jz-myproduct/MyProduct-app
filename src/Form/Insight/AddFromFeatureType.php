@@ -20,17 +20,17 @@ class AddFromFeatureType extends AbstractType
 
         $builder
             ->add('description', TextareaType::class, [
-                'label' => 'Popis'
+                'label' => 'Description'
             ])
             ->add('source', TextType::class, [
-                'label' => 'Kontakt',
+                'label' => 'Contact',
                 'required' => false
             ])
             ->add('weight', ChoiceType::class, [
                 'choices' => $weights,
                 'choice_value' => 'id',
                 'choice_label' => 'name',
-                'label' => 'Feature je'
+                'label' => 'How important is this to you?'
             ])
             ->add('save', SubmitType::class, ['label' => 'Uložit']);
     }

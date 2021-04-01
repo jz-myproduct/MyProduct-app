@@ -8,22 +8,22 @@
                 <ul class="navbar-nav mr-auto">
                     {% if not app.user %}
                         <li class="nav-item p-2">
-                            <a class="nav-link text-light btn btn-outline-light" href="{{ path('fo_login') }}">Přihlásit</a>
+                            <a class="nav-link text-light btn btn-outline-light" href="{{ path('fo_login') }}">Log in</a>
                         </li>
                         <li class="nav-item p-2">
-                            <a class="nav-link btn-light btn text-primary" href="{{ path('fo_register') }}">Registrovat</a>
+                            <a class="nav-link btn-light btn text-primary" href="{{ path('fo_register') }}">Register</a>
                         </li>
                     {% else %}
                         <li class="nav-item active">
                             <a class="nav-link btn btn-outline-light text-light" href="{{ path('bo_feedback_list', {'slug':app.user.slug}) }}">
-                                Přejít do firmy <span class="font-weight-bold">{{ app.user.name }}</span> <i class="bi bi-arrow-bar-right"></i></a>
+                                Go to company <span class="font-weight-bold">{{ app.user.name }}</span> <i class="bi bi-arrow-bar-right"></i></a>
                         </li>
                     {% endif %}
                 </ul>
                 {% if app.user %}
                     <span class="navbar-text">
                         <ul class="navbar-nav mr-auto">
-                            <li class="nav-item"><a href="{{ path('fo_logout') }}" class="nav-link text-light"><i class="bi bi-box-arrow-right"></i> Odhlásit</a></li>
+                            <li class="nav-item"><a href="{{ path('fo_logout') }}" class="nav-link text-light"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
                         </ul>
                     </span>
                 {% endif %}

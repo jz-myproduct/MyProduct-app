@@ -70,7 +70,7 @@ class PortalController extends AbstractController
         {
             $handler->handle($formRequest, $portal);
 
-            $this->addFlash('success', 'Portal upraven.');
+            $this->addFlash('success', 'Portal edited.');
         }
 
         return $this->render(

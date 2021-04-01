@@ -67,7 +67,7 @@ class FeatureController extends AbstractController
 
             $feature = $handler->handle($formRequest, $company);
 
-            $this->addFlash('success', 'Feature přidána.');
+            $this->addFlash('success', 'Feature added.');
 
             return $this->redirectToRoute('bo_feature_detail', [
                 'company_slug' => $company->getSlug(),
@@ -105,7 +105,7 @@ class FeatureController extends AbstractController
 
             $handler->handle($formRequest, $feature);
 
-            $this->addFlash('success', 'Feature upravena.');
+            $this->addFlash('success', 'Feature edited.');
 
             return $this->redirectToRoute('bo_feature_detail', [
                 'company_slug' => $company->getSlug(),
@@ -232,7 +232,7 @@ class FeatureController extends AbstractController
 
         $handler->handle($feature);
 
-        $this->addFlash('success', 'Feature smazána.');
+        $this->addFlash('success', 'Feature deleted.');
 
         return $this->redirectToRoute('bo_feature_list', [
             'slug' => $company->getSlug()
@@ -279,7 +279,7 @@ class FeatureController extends AbstractController
 
         $handler->handle($feature, $direction);
 
-        $this->addFlash('success', 'Stav featury posunut.');
+        $this->addFlash('success', 'Feature state updated.');
 
         return $this->redirectToRoute('bo_feature_list_roadmap', [
             'slug' => $company->getSlug(),

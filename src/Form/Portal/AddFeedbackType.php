@@ -15,9 +15,9 @@ class AddFeedbackType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('description', TextareaType::class, ['label' => 'Popiště featuru a uveďte proč ji potřebujete'])
-            ->add('source', TextType::class, ['required' => false, 'label' => 'E-mail či jiný kontakt'])
-            ->add('save', SubmitType::class, ['label' => 'Přidat'])
+            ->add('description', TextareaType::class, ['label' => 'Your feedback'])
+            ->add('source', TextType::class, ['required' => false, 'label' => 'Contact'])
+            ->add('save', SubmitType::class, ['label' => 'Add'])
         ;
     }
 

@@ -36,7 +36,7 @@ class DefaultController extends AbstractController
 
             $updatedCompany = $handler->handle($formRequest, $company);
 
-            $this->addFlash('success', 'Nastavení aktualizováno.');
+            $this->addFlash('success', 'Settings updated');
 
             return $this->redirectToRoute('bo_settings_info', [
                 'slug' => $updatedCompany->getSlug()

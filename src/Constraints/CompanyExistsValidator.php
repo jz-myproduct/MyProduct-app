@@ -37,7 +37,7 @@ class CompanyExistsValidator extends ConstraintValidator
 
         $this
             ->context
-            ->buildViolation('Firma s tímto emailem neexistuje.')
+            ->buildViolation('Company with this email does not exist.')
             ->addViolation();
     }
 }

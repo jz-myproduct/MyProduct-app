@@ -2,10 +2,6 @@
 
 namespace App\Form\Insight;
 
-use App\Entity\FeatureState;
-use App\Entity\Insight;
-use App\Entity\InsightWeight;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -26,7 +22,7 @@ class AddFromFeedbackType extends AbstractType
                 'choice_label' => 'name',
                 'label' => false
             ])
-            ->add('save', SubmitType::class, ['label' => 'Uložit']);
+            ->add('save', SubmitType::class, ['label' => 'Save']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

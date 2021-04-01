@@ -3,7 +3,6 @@
 namespace App\Form\Feature;
 
 use App\Entity\FeatureTag;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -15,15 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AddEditType extends AbstractType
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -31,13 +21,13 @@ class AddEditType extends AbstractType
         $states = $options['states'] ?? null;
 
         $builder
-            ->add('name', TextType::class, ['label' => 'Jméno'])
-            ->add('description', TextareaType::class, ['required' => false, 'label' => 'Popis'])
+            ->add('name', TextType::class, ['label' => 'Name'])
+            ->add('description', TextareaType::class, ['required' => false, 'label' => 'Description'])
             ->add('state', ChoiceType::class, [
                'choices' => $states,
                'choice_value' => 'id',
                'choice_label' => 'name',
-               'label' => 'Stav'
+               'label' => 'State'
             ]);
 
         if($tags){
@@ -51,7 +41,7 @@ class AddEditType extends AbstractType
             ]);
         }
 
-        $builder->add('save', SubmitType::class, ['label' => 'Uložit']);
+        $builder->add('save', SubmitType::class, ['label' => 'Save']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

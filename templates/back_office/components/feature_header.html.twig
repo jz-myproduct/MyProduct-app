@@ -9,13 +9,13 @@
                 <span class="badge badge-info">{{ tag.name }}</span>
             {% endfor %}
         </p>
-        <p class="text-center text-secondary">Přidáno {{ feature.createdAt|date('d.m.y H:i') }}</p>
+        <p class="text-center text-secondary">Added {{ feature.createdAt|date('d.m.y H:i') }}</p>
     </div>
     <div>
         <p class="text-center">
             <a style="font-size: 20px" href="{{ path('bo_feature_edit', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}"
                class="btn btn-outline-primary"
-               data-toggle="tooltip" data-placement="top" title="Upravit">
+               data-toggle="tooltip" data-placement="top" title="Edit">
                 <i class="bi bi-pencil-square"></i></a>
             <a style="font-size: 20px" href="{{ path('bo_feature_delete', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}" c
                class="btn btn-outline-danger"

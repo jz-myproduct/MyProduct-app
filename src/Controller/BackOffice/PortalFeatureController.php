@@ -76,11 +76,11 @@ class PortalFeatureController extends AbstractController
                 $form->get('image')->getData() ?? null
             ))
             {
-                $this->addFlash('error', 'Chyba při nahrávání obrázku.');
+                $this->addFlash('error', 'Error occurs, try it later please.');
 
             } else {
 
-                $this->addFlash('success', 'Featura na portálu upravena.');
+                $this->addFlash('success', 'Feature edited.');
 
                 return $this->redirectToRoute('bo_feature_portal', [
                     'company_slug' => $company->getSlug(),
@@ -120,7 +120,7 @@ class PortalFeatureController extends AbstractController
 
         $handler->handle($file, $feature);
 
-        $this->addFlash('success', 'Obrázek smazán.');
+        $this->addFlash('success', 'Picture deleted.');
 
         return $this->redirectToRoute('bo_feature_portal', [
             'company_slug' => $company->getSlug(),

@@ -162,7 +162,7 @@ class SecurityController extends AbstractController
                 $company,
                 $formRequest->password))
             {
-                $this->addFlash('error', 'Zadejte správné současné heslo.');
+                $this->addFlash('error', 'Wrong current password.');
 
             } else {
 
@@ -171,7 +171,7 @@ class SecurityController extends AbstractController
                     $formRequest->newPassword
                 );
 
-                $this->addFlash('success', 'Heslo úspěšně změněno');
+                $this->addFlash('success', 'Password successfully changed.');
             }
         }
 
@@ -206,12 +206,12 @@ class SecurityController extends AbstractController
                     )
                 )
             ){
-                $this->addFlash('success', 'Následujte instrukce ve svém emailu.');
+                $this->addFlash('success', 'Follow instructions in your email inbox.');
 
                 return $this->redirectToRoute('fo_renew_password');
             }
 
-            $this->addFlash('error', 'Email se nepodařilo odeslat. Zkuste to později');
+            $this->addFlash('error', 'Email cannot be sent, try it later please.');
         }
 
         return $this->render('front_office/password/renew.html.twig', [
@@ -252,7 +252,7 @@ class SecurityController extends AbstractController
                 $formRequest->password
             );
 
-            $this->addFlash('success', 'Heslo bylo úspěšně změněno.');
+            $this->addFlash('success', 'Password successfully changed.');
 
             return $this->redirectToRoute('fo_login');
         }
@@ -283,12 +283,12 @@ class SecurityController extends AbstractController
                 $company,
                 $formRequest->password))
             {
-                $this->addFlash('error', 'Zadejte správné současné heslo.');
+                $this->addFlash('error', 'Wrong current password.');
 
             } else {
                 $handler->handle($company);
 
-                $this->addFlash('success','Firma úspěšně smazána.');
+                $this->addFlash('success','Company deleted.');
                 return $this->redirectToRoute('fo_home');
             }
         }

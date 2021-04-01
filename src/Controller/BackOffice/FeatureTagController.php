@@ -40,7 +40,7 @@ class FeatureTagController extends AbstractController
 
             $handler->handle($formRequest, $company);
 
-            $this->addFlash('success', 'Tag přidán.');
+            $this->addFlash('success', 'Tag added.');
 
             return $this->redirectToRoute('bo_feature_tag_list', [
                 'slug' => $company->getSlug()
@@ -73,7 +73,7 @@ class FeatureTagController extends AbstractController
 
             $handler->handle($formRequest, $tag);
 
-            $this->addFlash('success', 'Tag upraven.');
+            $this->addFlash('success', 'Tag edited.');
         }
 
         return $this->render('back_office/feature_tag/add_edit.html.twig', [
@@ -111,7 +111,7 @@ class FeatureTagController extends AbstractController
 
         $handler->handle($tag);
 
-        $this->addFlash('success', 'Tag smazán.');
+        $this->addFlash('success', 'Tag deleted.');
 
         return $this->redirectToRoute('bo_feature_tag_list', [
             'slug' => $company->getSlug()

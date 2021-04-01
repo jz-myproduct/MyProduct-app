@@ -1,9 +1,9 @@
 {% extends "back_office/base.html.twig" %}
 
 {% if app.request.get('_route') == 'bo_feedback_add' %}
-    {% set title_start = 'Přidat' %}
+    {% set title_start = 'Add' %}
 {% else %}
-    {% set title_start = 'Upravit' %}
+    {% set title_start = 'Edit' %}
 {% endif %}
 
 {% block title %}{{ title_start }} feedback{% endblock %}

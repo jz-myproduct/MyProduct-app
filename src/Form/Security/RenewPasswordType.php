@@ -15,6 +15,6 @@ class RenewPasswordType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, ['label' => 'Email'])
-            ->add('save', SubmitType::class, ['label' => 'Odeslat']);
+            ->add('save', SubmitType::class, ['label' => 'Send']);
     }
 }

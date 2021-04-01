@@ -1,11 +1,11 @@
 {% extends "back_office/base.html.twig" %}
 
-{% block title %}Smazat firmu{% endblock %}
+{% block title %}Delete company{% endblock %}
 
 {% block content %}
     {% include('back_office/components/settings_tabs.html.twig') %}
 
-    <p class="pb-3">Dojde ke smazání všech dat firmy, akce je nevratná.</p>
+    <p class="pb-3">All company's data will be deleted. The action cannot be undone.</p>
     {{ form(form) }}
 {% endblock %}
 

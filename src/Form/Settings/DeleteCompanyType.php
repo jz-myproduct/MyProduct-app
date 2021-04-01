@@ -16,11 +16,11 @@ class DeleteCompanyType extends AbstractType
     {
         $builder
             ->add('password', PasswordType::class, [
-                'label' => 'Heslo',
+                'label' => 'Password',
                 'required' => true
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Smazat firmu',
+                'label' => 'Delete company',
                 'attr' => ['class' => 'btn-danger']
             ]);
     }

@@ -13,8 +13,8 @@ class AddEditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, ['label' => 'Jméno'])
-            ->add('save', SubmitType::class, ['label' => 'Uložit'])
+            ->add('name', TextType::class, ['label' => 'Name'])
+            ->add('save', SubmitType::class, ['label' => 'Save'])
         ;
     }
 

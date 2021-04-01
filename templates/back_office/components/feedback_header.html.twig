@@ -2,14 +2,14 @@
     <div class="flex-grow-1">
         <h1 class="h3 text-center">
             {% if feedback.isNew %}
-                <span class="badge badge-danger">Nový</span>
+                <span class="badge badge-danger">New</span>
             {% endif %}
             {% if feedback.fromPortal %}
                 <span class="badge badge-info">Portal</span>
             {% endif %}
             Feedback
         </h1>
-        <p class="text-center text-secondary">Přidáno {{ feedback.createdAt|date('d.m.y H:i') }}</p>
+        <p class="text-center text-secondary">Added {{ feedback.createdAt|date('d.m.y H:i') }}</p>
     </div>
     <div style="font-size: 16px">
         <p>
@@ -19,7 +19,7 @@
             <a style="font-size: 20px" href="{{ path('bo_feedback_change_status', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'p':redirectTo}) }}"
                class="btn btn-outline-secondary"
                data-toggle="tooltip" data-placement="top"
-               title="Označit za {% if feedback.isNew %}zpracovaný{% else %}nový{% endif %}">
+               title="Označit za {% if feedback.isNew %}zpracovaný{% else %}new{% endif %}">
                 {% if feedback.isNew %}
                     <i class="bi bi-check-square-fill"></i>
                 {% else %}

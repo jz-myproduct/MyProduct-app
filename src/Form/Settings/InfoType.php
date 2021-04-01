@@ -15,8 +15,8 @@ class InfoType extends AbstractType
     {
         $builder
             ->add('username', EmailType::class, ['label' => 'Email'])
-            ->add('name', TextType::class, ['label' => 'Jméno firmy'])
-            ->add('save', SubmitType::class, ['label' => 'Uložit'])
+            ->add('name', TextType::class, ['label' => 'Company name'])
+            ->add('save', SubmitType::class, ['label' => 'Save'])
         ;
     }
 

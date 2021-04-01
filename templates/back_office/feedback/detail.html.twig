@@ -7,11 +7,11 @@
 
     {% include('back_office/components/feedback_tabs.html.twig') %}
 
-    <p class="font-weight-bold">Co uživatelé říkají?</p>
+    <p class="font-weight-bold">What users say?</p>
     <p>{{ feedback.description }}</p>
 
     {% if feedback.source %}
-        <p class="font-weight-bold">Od koho feedback máte?</p>
+        <p class="font-weight-bold">Contact</p>
         <p>{{ feedback.source }}</p>
     {% endif %}
 

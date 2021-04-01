@@ -10,11 +10,11 @@
     {%  include('back_office/components/feature_tabs.html.twig') %}
 
     {% if portalFeature %}
-        <p class="font-weight-bold text-secondary mb-0 pb-1">Počet feedbacků od uživatelů</p>
+        <p class="font-weight-bold text-secondary mb-0 pb-1">Number of users who have sent the feedback</p>
         <p style="font-size:20px"><span class="badge badge-warning"><i class="bi bi-person"></i>{{ portalFeature.feedbackCount }}</span></p>
     {% endif %}
 
-    <h2 class="h5 mb-4 mt-4">Nastavit zobrazení na portále</h2>
+    <h2 class="h5 mb-4 mt-4">Settings</h2>
     {{ form_start(form) }}
 
       {{ form_row(form.display) }}
@@ -27,10 +27,10 @@
           <p class="pb-0 mb-1"><img src="{{ asset(upload_directory ~ '/' ~ portalFeature.image.name) }}"
                   alt="{{ portalFeature.name }}" style="max-width:500px" /></p>
           <p class="pt-0">
-              <a href="{{ path('bo_feature_portal_image_delete', {'company_slug':app.user.slug, 'feature_id':feature.id, 'file_id':portalFeature.image.id}) }}">Smazat aktuální obrázek</a>
+              <a href="{{ path('bo_feature_portal_image_delete', {'company_slug':app.user.slug, 'feature_id':feature.id, 'file_id':portalFeature.image.id}) }}">Delete picture</a>
           </p>
 
-          <label>Nahrát jiný obrázek</label>
+          <label>Upload different picture</label>
       {% endif %}
       {{ form_row(form.image) }}
 

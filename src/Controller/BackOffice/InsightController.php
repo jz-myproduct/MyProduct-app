@@ -75,7 +75,7 @@ class InsightController extends AbstractController
                 'feedback' => $feedback,
                 'feature' => $feature]))
         {
-            $this->addFlash('info', 'Featura je již přidána.');
+            $this->addFlash('info', 'Feature already connected.');
 
             return $this->redirectToRoute('bo_insight_feedback_list',[
                 'company_slug' => $company->getSlug(),
@@ -93,7 +93,7 @@ class InsightController extends AbstractController
 
             $handler->addFromFeedback($formRequest, $feedback, $feature);
 
-            $this->addFlash('success', 'Featura připojena.');
+            $this->addFlash('success', 'Feature added.');
 
             return $this->redirectToRoute('bo_insight_feedback_list',[
                 'company_slug' => $company->getSlug(),
@@ -135,7 +135,7 @@ class InsightController extends AbstractController
 
             $handler->addFromFeature($formRequest, $feature);
 
-            $this->addFlash('success', 'Insight přidán.');
+            $this->addFlash('success', 'Insight added.');
 
             return $this->redirectToRoute('bo_insight_feature_list', [
                 'company_slug' => $company->getSlug(),
@@ -232,7 +232,7 @@ class InsightController extends AbstractController
 
             $editHandler->handle($formRequest, $insight);
 
-            $this->addFlash('success', 'Upraveno.');
+            $this->addFlash('success', 'Edited.');
 
             return new RedirectResponse(
                 $redirectHandler->handle(
@@ -270,7 +270,7 @@ class InsightController extends AbstractController
 
         $deleteHandler->handle($insight);
 
-        $this->addFlash('success', 'Smazáno.');
+        $this->addFlash('success', 'Deleted.');
 
         return new RedirectResponse(
             $redirectHandler->handle(

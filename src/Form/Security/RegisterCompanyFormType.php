@@ -16,9 +16,9 @@ class RegisterCompanyFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, ['label' => 'Email'])
-            ->add('password', PasswordType::class, ['label' => 'Heslo'])
-            ->add('name', TextType::class, ['label' => 'Jméno firmy'])
-            ->add('save', SubmitType::class, ['label' => 'Vytvořit firmu'])
+            ->add('password', PasswordType::class, ['label' => 'Password'])
+            ->add('name', TextType::class, ['label' => 'Company name'])
+            ->add('save', SubmitType::class, ['label' => 'Create company'])
         ;
     }
 
