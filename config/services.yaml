@@ -14,7 +14,7 @@ parameters:
     author: 'Jan Zabloudil'
     weightsCount: 4
     supportMail: 'myproduct@janzabloudil.cz'
-    doc.url: 'https://github.com/repository_url'
+    doc.url: '!change!'
 
 
 services:
