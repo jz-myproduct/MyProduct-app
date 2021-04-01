@@ -1,9 +1,9 @@
 {% extends "back_office/base.html.twig" %}
 
 {% if app.request.get('_route') == 'bo_feature_add' %}
-    {% set title_start = 'Přidat' %}
+    {% set title_start = 'Add' %}
 {% else %}
-    {% set title_start = 'Upravit' %}
+    {% set title_start = 'Edit' %}
 {% endif %}
 
 {% block title %}{{ title_start }} feature{% endblock %}
@@ -19,8 +19,8 @@
 
             {% if form.tags is not defined %}
                 <div class="form-group">
-                    <label>Tagy</label>
-                    <p>Zatím nemáte žádné tagy. <a href="{{ path('bo_feature_tag_add', {'slug':app.user.slug}) }}">Přidejte první</a>.</p>
+                    <label>Tags</label>
+                    <p>No tags yet. <a href="{{ path('bo_feature_tag_add', {'slug':app.user.slug}) }}">Add first tag</a>.</p>
                 </div>
             {% else %}
                 {{ form_row(form.tags) }}

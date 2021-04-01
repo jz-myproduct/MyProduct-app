@@ -5,7 +5,7 @@
 {% block content %}
 
     <h1 class="h3">Feature tags</h1>
-    <a href="{{ path('bo_feature_tag_add', {'slug':app.user.slug}) }}" class="btn btn-primary mt-3" role="button">Přidat tag</a>
+    <a href="{{ path('bo_feature_tag_add', {'slug':app.user.slug}) }}" class="btn btn-primary mt-3" role="button">Add tag</a>
 
     {% if tags is not empty %}
         <table class="table table-striped mt-5">
@@ -21,7 +21,7 @@
             {% endfor %}
         </table>
     {% else %}
-        <p class="mt-5 lead">Zatím nemáte žádné features tags.</p>
+        <p class="mt-5 lead">No feature tags yet.</p>
     {% endif %}
 
 {% endblock %}

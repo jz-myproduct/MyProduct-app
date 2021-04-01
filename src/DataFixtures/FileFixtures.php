@@ -7,7 +7,6 @@ namespace App\DataFixtures;
 use App\Entity\File;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use phpDocumentor\Reflection\Types\Self_;
 
 class FileFixtures extends Fixture
 {

@@ -2,13 +2,8 @@
 
 namespace App\Form\Insight;
 
-use App\Entity\Insight;
-use App\Entity\InsightWeight;
-use App\Form\Feedback\AddEditType;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -25,17 +20,17 @@ class AddFromFeatureType extends AbstractType
 
         $builder
             ->add('description', TextareaType::class, [
-                'label' => 'Popis'
+                'label' => 'Description'
             ])
-            ->add('source', TextareaType::class, [
-                'label' => 'Zdroj',
+            ->add('source', TextType::class, [
+                'label' => 'Contact',
                 'required' => false
             ])
             ->add('weight', ChoiceType::class, [
                 'choices' => $weights,
                 'choice_value' => 'id',
                 'choice_label' => 'name',
-                'label' => 'Feature je'
+                'label' => 'How important is this to you?'
             ])
             ->add('save', SubmitType::class, ['label' => 'Uložit']);
     }

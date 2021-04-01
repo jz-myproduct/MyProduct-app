@@ -24,7 +24,7 @@ class RegisterCompanyRequest
      * @Assert\Length(max=255)
      * @Assert\Length(
      *      min = 6,
-     *      minMessage = "Heslo musí obsahovat minimálně 6 znaků",
+     *      minMessage = "The password must contain at least 6 characters",
      * )
      */
     public $password;

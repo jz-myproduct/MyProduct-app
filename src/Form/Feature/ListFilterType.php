@@ -1,12 +1,7 @@
 <?php
 
-
 namespace App\Form\Feature;
 
-
-use App\Entity\FeatureState;
-use App\Entity\FeatureTag;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -25,12 +20,12 @@ class ListFilterType extends AbstractType
 
         $builder
             ->add('fulltext', TextType::class, [
-                'label' => 'Název nebo popis',
+                'label' => 'Name or description',
                 'required' => false
             ])
             ->add('state', ChoiceType::class, [
                 'choices' => $stateChoices,
-                'label' => 'Stav'
+                'label' => 'State'
             ])
             ->add('tags', ChoiceType::class, [
                 'label' => 'Tags',
@@ -42,7 +37,7 @@ class ListFilterType extends AbstractType
                 ]
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Filtrovat',
+                'label' => 'Search',
                 'attr' => ['class' => 'btn-outline-primary']
             ]) ;
     }

@@ -5,14 +5,8 @@ namespace App\Service;
 
 
 use App\Entity\Company;
-use App\Entity\Feature;
-use App\Entity\Feedback;
 use App\Entity\Insight;
 use Doctrine\ORM\EntityManagerInterface;
-use PhpParser\Internal\DiffElem;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Security;
 
 class FeatureUtils
 {

@@ -16,7 +16,7 @@ class ChangePasswordRequest
      * @Constraints\Length(max=255)
      * @Constraints\Length(
      *      min = 6,
-     *      minMessage = "Heslo musí obsahovat minimálně 6 znaků",
+     *      minMessage = "The password must contain at least 6 characters",
      * )
      * @var string
      */
@@ -27,7 +27,7 @@ class ChangePasswordRequest
      * @Constraints\Length(max=255)
      * @Constraints\Length(
      *      min = 6,
-     *      minMessage = "Heslo musí obsahovat minimálně 6 znaků",
+     *      minMessage = "The password must contain at least 6 characters",
      * )
      * @var string
      */

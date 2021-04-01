@@ -3,8 +3,6 @@
 
 namespace App\DataFixtures;
 
-
-use App\Entity\Company;
 use App\Entity\Portal;
 use App\Service\SlugService;
 use Doctrine\Bundle\FixturesBundle\Fixture;

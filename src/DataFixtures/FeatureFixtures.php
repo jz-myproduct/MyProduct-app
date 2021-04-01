@@ -3,10 +3,7 @@
 
 namespace App\DataFixtures;
 
-
-use App\Entity\Company;
 use App\Entity\Feature;
-use App\Entity\FeatureState;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

@@ -52,7 +52,7 @@ class CompanyEmailUniqueValidator extends ConstraintValidator
 
         $this
             ->context
-            ->buildViolation('Firma s tímto emailem již existuje.')
+            ->buildViolation('Email is already used.')
             ->addViolation();
 
     }

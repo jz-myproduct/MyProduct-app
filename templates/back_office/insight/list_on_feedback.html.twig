@@ -42,12 +42,12 @@
 
     {% endif %}
 
-    <h2 class="h4 mt-5">Přidat features</h2>
+    <h2 class="h4 mt-5">Add feature</h2>
     <p class="mb-0 pb-0 mt-3">
             <a data-toggle="collapse" href="#filters" aria-expanded="false" aria-controls="filters"
                                  class="font-weight-bold">
             <i class="bi bi-search"></i>
-            &nbspRozšířené vyhledávání</a>
+            &nbspAdvanced search</a>
     </p>
     <div class="collapse card mt-4 p-4 {% if isFiltered %}show{% endif %}" id="filters">
         {{ form_start(form) }}
@@ -73,8 +73,8 @@
         <table id="{{ scrollTo }}" class="table table-striped mt-3" id="{{ scrollTo }}">
         {% for unrelatedFeature in unrelatedFeatureList %}
             <tr>
-                <td class="w-25 font-weight-bold" style="color: {{ unrelatedFeature.state.color }}">{{ unrelatedFeature.state.name }}</td>
-                <td class="w-50">
+                <td class="w-25 font-weight-bold align-middle" style="color: {{ unrelatedFeature.state.color }}">{{ unrelatedFeature.state.name }}</td>
+                <td class="w-50 align-middle">
                     <a class="text-dark" href="{{ path('bo_feature_detail', {'company_slug':app.user.slug, 'feature_id':unrelatedFeature.id}) }}">
                         {{ unrelatedFeature.name }}
                         <i class="bi bi-arrow-right-square-fill"></i>
@@ -88,13 +88,13 @@
                        href="{{ path('bo_insight_feedback_add', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'feature_id': unrelatedFeature.id, 'p':redirectToFeedback } ) }}"
                        role="button">
                        <i class="bi bi-plus"></i>
-                       Přidat
+                       Add
                     </a>
                 </td>
             </tr>
         {% endfor %}
         </table>
     {% else %}
-        <p class="lead mt-3">Žádné další featury k propojení.</p>
+        <p class="lead mt-3">No features.</p>
     {% endif %}
 {% endblock %}

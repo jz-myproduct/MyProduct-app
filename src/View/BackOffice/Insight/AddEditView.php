@@ -4,13 +4,11 @@
 namespace App\View\BackOffice\Insight;
 
 
-use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\Feedback;
 use App\Entity\Insight;
 use App\Handler\Insight\Redirect;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class AddEditView

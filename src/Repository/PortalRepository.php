@@ -2,11 +2,8 @@
 
 namespace App\Repository;
 
-use App\Entity\Company;
 use App\Entity\Portal;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**

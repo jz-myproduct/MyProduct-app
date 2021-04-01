@@ -11,14 +11,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\Company;
-use App\Form\RegisterCompanyFormType;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class DefaultController extends AbstractController
 {
-    /* TEMPORARY */
     /**
      * @Route("/", name="fo_home")
      */

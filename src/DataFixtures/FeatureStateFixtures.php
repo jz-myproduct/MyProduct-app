@@ -3,11 +3,10 @@
 
 namespace App\DataFixtures;
 
-
+use App\Entity\FeatureState;
 use App\Service\SlugService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Proxies\__CG__\App\Entity\FeatureState;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class FeatureStateFixtures extends Fixture

@@ -5,7 +5,6 @@ namespace App\Controller\BackOffice;
 use App\Entity\Company;
 use App\Entity\FeatureTag;
 use App\Form\FeatureTag\AddEditType;
-use App\Form\FeatureTagFormType;
 use App\FormRequest\FeatureTag\AddEditRequest;
 use App\Handler\FeatureTag\Add;
 use App\Handler\FeatureTag\Delete;
@@ -19,11 +18,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
+
 class FeatureTagController extends AbstractController
 {
 
     /**
-     * @Route("/admin/{slug}/tag/pridat", name="bo_feature_tag_add")
+     * @Route("/admin/{slug}/tag/add", name="bo_feature_tag_add")
      * @param Company $company
      * @param Request $request
      * @param Add $handler
@@ -40,7 +40,7 @@ class FeatureTagController extends AbstractController
 
             $handler->handle($formRequest, $company);
 
-            $this->addFlash('success', 'Tag přidán.');
+            $this->addFlash('success', 'Tag added.');
 
             return $this->redirectToRoute('bo_feature_tag_list', [
                 'slug' => $company->getSlug()
@@ -53,7 +53,7 @@ class FeatureTagController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/tag/{tag_id}/upravit", name="bo_feature_tag_edit")
+     * @Route("/admin/{company_slug}/tag/{tag_id}/edit", name="bo_feature_tag_edit")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("tag", options={"mapping": {"tag_id": "id"}} )
      * @param Company $company
@@ -73,7 +73,7 @@ class FeatureTagController extends AbstractController
 
             $handler->handle($formRequest, $tag);
 
-            $this->addFlash('success', 'Tag upraven.');
+            $this->addFlash('success', 'Tag edited.');
         }
 
         return $this->render('back_office/feature_tag/add_edit.html.twig', [
@@ -97,7 +97,7 @@ class FeatureTagController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/tag/{tag_id}/smazat", name="bo_feature_tag_delete")
+     * @Route("/admin/{company_slug}/tag/{tag_id}/delete", name="bo_feature_tag_delete")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("tag", options={"mapping": {"tag_id": "id"}} )
      * @param Company $company
@@ -111,7 +111,7 @@ class FeatureTagController extends AbstractController
 
         $handler->handle($tag);
 
-        $this->addFlash('success', 'Tag smazán.');
+        $this->addFlash('success', 'Tag deleted.');
 
         return $this->redirectToRoute('bo_feature_tag_list', [
             'slug' => $company->getSlug()

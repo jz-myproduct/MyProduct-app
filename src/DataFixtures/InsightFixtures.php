@@ -3,9 +3,7 @@
 
 namespace App\DataFixtures;
 
-
 use App\Entity\Feature;
-use App\Entity\FeatureTag;
 use App\Entity\Insight;
 use App\Entity\InsightWeight;
 use Doctrine\Bundle\FixturesBundle\Fixture;

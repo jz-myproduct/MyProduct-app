@@ -1,10 +1,7 @@
 <?php
 
-
 namespace App\Form\Feature;
 
-
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -22,7 +19,7 @@ class RoadmapFilterType extends AbstractType
 
         $builder
             ->add('fulltext', TextType::class, [
-                'label' => 'Název nebo popis',
+                'label' => 'Name or description',
                 'required' => false
             ])
             ->add('tags', ChoiceType::class, [
@@ -34,7 +31,7 @@ class RoadmapFilterType extends AbstractType
                 ]
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Filtrovat',
+                'label' => 'Search',
                 'attr' => ['class' => 'btn-outline-primary']
             ]) ;
     }

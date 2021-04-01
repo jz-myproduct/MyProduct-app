@@ -2,16 +2,11 @@
 
 namespace App\Repository;
 
-use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\Feedback;
 use App\Entity\Insight;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\Expr\Select;
-use Doctrine\ORM\Query\ResultSetMapping;
-use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use MongoDB\Driver\Query;
 
 /**
  * @method Insight|null find($id, $lockMode = null, $lockVersion = null)

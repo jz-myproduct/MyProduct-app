@@ -1,16 +1,16 @@
 {% extends "back_office/base.html.twig" %}
 
-{% block title %}Feedbacks{% endblock %}
+{% block title %}Feedback{% endblock %}
 
 {% block content %}
 
-    <h1 class="h3">Feedbacks</h1>
-    <a href="{{ path('bo_feedback_add', {'slug':app.user.slug}) }}" class="btn btn-primary mt-3 mb-4" role="button">Přidat feedback</a>
+    <h1 class="h3">Feedback</h1>
+    <a href="{{ path('bo_feedback_add', {'slug':app.user.slug}) }}" class="btn btn-primary mt-3 mb-4" role="button">Add feedback</a>
 
     <p class="mb-0 pb-0 mt-3"><a data-toggle="collapse" href="#filters" aria-expanded="false" aria-controls="filters"
                                  class="font-weight-bold">
             <i class="bi bi-search"></i>
-            &nbsp;Rozšířené vyhledávání</a></p>
+            &nbsp;Advanced search</a></p>
     <div class="collapse card mt-4 p-4 {% if isFiltered %}show{% endif %}" id="filters">
         {{ form(form) }}
     </div>
@@ -22,10 +22,10 @@
                     <td class="px-4 text-center pt-3" style="font-size: 12px">
                         <a href="{{ path('bo_feedback_change_status', {'company_slug': app.user.slug, 'feedback_id': feedback.id, 'p':redirectTo, 'isNew':isNew, 'fulltext':fulltext}) }}"
                         {% if feedback.isNew %}
-                               class="text-danger" data-toggle="tooltip" data-placement="top" title="Označit za zpracovaný">
+                               class="text-danger" data-toggle="tooltip" data-placement="top" title="Mark as processed">
                                <i class="bi bi-circle-fill"></i>
                         {% else %}
-                               class="text-dark" data-toggle="tooltip" data-placement="top" title="Označit za nový">
+                               class="text-dark" data-toggle="tooltip" data-placement="top" title="Mark as new">
                                <i class="bi bi-circle"></i>
                         {% endif %}
                         </a>
@@ -60,7 +60,7 @@
             {% endfor %}
         </table>
     {% else %}
-            <p class="mt-5 lead">Zatím nemáte žádné feedbacks.</p>
+            <p class="mt-5 lead">No feedback yet.</p>
     {% endif %}
 
 {% endblock %}

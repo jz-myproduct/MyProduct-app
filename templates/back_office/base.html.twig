@@ -10,7 +10,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="{{ path('bo_feedback_list', {'slug':app.user.slug}) }}">Feedbacks</a>
+                        <a class="nav-link text-light" href="{{ path('bo_feedback_list', {'slug':app.user.slug}) }}">Feedback</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-light" href="{{ path('bo_feature_list', {'slug':app.user.slug}) }}">Features</a>
@@ -21,8 +21,8 @@
                 </ul>
                 <span class="navbar-text">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item"><a href="{{ path('bo_settings_info', {'slug':app.user.slug}) }}" class="nav-link text-light"><i class="bi bi-gear"></i> Nastavení</a></li>
-                        <li class="nav-item"><a href="{{ path('fo_logout') }}" class="nav-link text-light"><i class="bi bi-box-arrow-right"></i> Odhlásit</a></li>
+                        <li class="nav-item"><a href="{{ path('bo_settings_info', {'slug':app.user.slug}) }}" class="nav-link text-light"><i class="bi bi-gear"></i> Settings</a></li>
+                        <li class="nav-item"><a href="{{ path('fo_logout') }}" class="nav-link text-light"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
                     </ul>
                 </span>
             </div>
@@ -34,10 +34,10 @@
             <div class="navbar my-0 py-0">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('bo_feedback_add', {'slug':app.user.slug}) }}"><i class="bi bi-plus"></i> Přidat feedback</a>
+                        <a class="nav-link" href="{{ path('bo_feedback_add', {'slug':app.user.slug}) }}"><i class="bi bi-plus"></i> Add feedback</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('bo_feature_add', {'slug':app.user.slug}) }}"><i class="bi bi-plus"></i> Přidat feature</a>
+                        <a class="nav-link" href="{{ path('bo_feature_add', {'slug':app.user.slug}) }}"><i class="bi bi-plus"></i> Add feature</a>
                     </li>
                 </ul>
             </div>

@@ -6,7 +6,6 @@ namespace App\Controller\BackOffice;
 
 use App\Entity\Company;
 use App\Entity\Feature;
-use App\Entity\Feedback;
 use App\Entity\PortalFeature;
 use App\Entity\PortalFeatureState;
 use App\Form\PortalFeature\AddEditFormType;
@@ -15,7 +14,6 @@ use App\Handler\PortalFeature\AddEdit;
 use App\Handler\PortalFeature\DeleteImage;
 use App\View\BackOffice\PortalFeature\DetailView;
 use Doctrine\ORM\EntityManagerInterface;
-use PhpParser\Node\Scalar\MagicConst\File;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,11 +76,11 @@ class PortalFeatureController extends AbstractController
                 $form->get('image')->getData() ?? null
             ))
             {
-                $this->addFlash('error', 'Chyba při nahrávání obrázku.');
+                $this->addFlash('error', 'Error occurs, try it later please.');
 
             } else {
 
-                $this->addFlash('success', 'Featura na portálu upravena.');
+                $this->addFlash('success', 'Feature edited.');
 
                 return $this->redirectToRoute('bo_feature_portal', [
                     'company_slug' => $company->getSlug(),
@@ -96,7 +94,7 @@ class PortalFeatureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feature/{feature_id}/portal/smazat-obrazek/{file_id}", name="bo_feature_portal_image_delete")
+     * @Route("/admin/{company_slug}/feature/{feature_id}/portal/delete-image/{file_id}", name="bo_feature_portal_image_delete")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @ParamConverter("file", options={"mapping": {"file_id": "id"}})
@@ -115,7 +113,6 @@ class PortalFeatureController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $feature);
 
         // allow to delete only file related to feature, because we are sure, that user has access to feature
-        // TODO maybe make a voter?
         if($feature->getPortalFeature()->getImage() !== $file)
         {
             throw new NotFoundHttpException();
@@ -123,7 +120,7 @@ class PortalFeatureController extends AbstractController
 
         $handler->handle($file, $feature);
 
-        $this->addFlash('success', 'Obrázek smazán.');
+        $this->addFlash('success', 'Picture deleted.');
 
         return $this->redirectToRoute('bo_feature_portal', [
             'company_slug' => $company->getSlug(),

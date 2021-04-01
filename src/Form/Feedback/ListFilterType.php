@@ -3,7 +3,6 @@
 
 namespace App\Form\Feedback;
 
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -19,21 +18,21 @@ class ListFilterType extends AbstractType
 
         $builder
             ->add('isNew', ChoiceType::class, [
-                'label' => 'Stav',
+                'label' => 'State',
                 'required' => false,
                 'choices' => [
-                    'Oboje' => null,
-                    'Nový' => 1,
-                    'Přečtený' => 0
+                    'All' => null,
+                    'New' => 1,
+                    'Processed' => 0
                 ],
                 'empty_data' => null
             ])
             ->add('fulltext', TextType::class, [
-                'label' => 'Hledat feedback',
+                'label' => 'Description or contact',
                 'required' => false
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Filtrovat',
+                'label' => 'Search',
                 'attr' => ['class' => 'btn-outline-primary']
             ]) ;
     }

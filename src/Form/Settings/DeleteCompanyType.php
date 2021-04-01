@@ -6,7 +6,6 @@ namespace App\Form\Settings;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -17,11 +16,11 @@ class DeleteCompanyType extends AbstractType
     {
         $builder
             ->add('password', PasswordType::class, [
-                'label' => 'Heslo',
+                'label' => 'Password',
                 'required' => true
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Smazat firmu',
+                'label' => 'Delete company',
                 'attr' => ['class' => 'btn-danger']
             ]);
     }

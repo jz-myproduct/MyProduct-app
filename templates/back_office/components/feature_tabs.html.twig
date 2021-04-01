@@ -1,7 +1,7 @@
 <ul class="nav nav-tabs mb-4">
     <li class="nav-item">
         <a class="nav-link {% if app.request.get('_route') == 'bo_feature_detail' %}active{% endif %}"
-           href="{{ path('bo_feature_detail', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Popis</a>
+           href="{{ path('bo_feature_detail', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Description</a>
     </li>
     <li class="nav-item">
         <a class="nav-link {% if app.request.get('_route') == 'bo_insight_feature_list' %}active{% endif %}"
@@ -12,12 +12,12 @@
            href="{{ path('bo_feature_portal', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Portal
            {% if feature.portalFeature %}
                {% if feature.portalFeature.display %}
-                   <span class="badge-success badge">nezobrazeno</span>
+                   <span class="badge-success badge">displayed</span>
                {% else %}
-                   <span class="badge-secondary badge">nezobrazeno</span>
+                   <span class="badge-secondary badge">not displayed</span>
                {% endif %}
            {% else %}
-               <span class="badge-secondary badge">nezobrazeno</span>
+               <span class="badge-secondary badge">not displayed</span>
            {% endif %}
         </a>
     </li>

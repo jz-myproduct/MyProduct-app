@@ -7,7 +7,7 @@
             <div class="navbar" id="navbarNav">
                 <ul class="navbar-nav mr-auto ml-4">
                     <li class="nav-item active">
-                        <a class="nav-link btn btn-primary text-light" href="{{ path('fo_portal_feedback_add', {'slug':portal.slug}) }}"><i class="bi bi-journal-plus"></i> Přidat feedback</a>
+                        <a class="nav-link btn btn-primary text-light" href="{{ path('fo_portal_feedback_add', {'slug':portal.slug}) }}"><i class="bi bi-journal-plus"></i> Add feedback</a>
                     </li>
                 </ul>
             </div>
@@ -22,7 +22,7 @@
 
     <footer class="footer">
         <div class="container text-right">
-            <span class="text-muted">Vytvořeno pomocí <a href="{{ path('fo_home') }}" class="text-secondary">{{ app_name }}</a></span>
+            <span class="text-muted">Created by <a href="{{ path('fo_home') }}" class="text-secondary">{{ app_name }}</a></span>
         </div>
     </footer>
 {% endblock %}

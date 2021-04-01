@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Company;
-use App\Entity\Feature;
-use App\Entity\Portal;
 use App\Form\Settings\ChangePasswordType;
 use App\Form\Security\RegisterCompanyFormType;
 use App\Form\Security\RenewPasswordType;
@@ -28,14 +26,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
-use Symfony\Component\Uid\Uuid;
-use Symfony\Component\Validator\Constraints\DateTime;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 
 class SecurityController extends AbstractController
 {
@@ -77,7 +72,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/zaregistrovat", name="fo_register")
+     * @Route("/register", name="fo_register")
      * @param Request $request
      * @param RegisterCompany $handler
      * @return Response
@@ -112,7 +107,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/prihlasit", name="fo_login")
+     * @Route("/login", name="fo_login")
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */
@@ -147,13 +142,13 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{slug}/nastaveni/zmenit-heslo", name="bo_settings_password")
+     * @Route("/admin/{slug}/settings/change-password", name="bo_settings_password")
      * @param Company $company
      * @param Request $request
      * @param ChangePassword $handler
      * @return Response
      */
-    public function changePassowrd(Company $company, Request $request, ChangePassword $handler): Response
+    public function changePassword(Company $company, Request $request, ChangePassword $handler): Response
     {
         $this->denyAccessUnlessGranted('edit', $company);
 
@@ -167,7 +162,7 @@ class SecurityController extends AbstractController
                 $company,
                 $formRequest->password))
             {
-                $this->addFlash('error', 'Zadejte správné současné heslo.');
+                $this->addFlash('error', 'Wrong current password.');
 
             } else {
 
@@ -176,7 +171,7 @@ class SecurityController extends AbstractController
                     $formRequest->newPassword
                 );
 
-                $this->addFlash('success', 'Heslo úspěšně změněno');
+                $this->addFlash('success', 'Password successfully changed.');
             }
         }
 
@@ -186,7 +181,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/zapomenute-heslo", name="fo_renew_password")
+     * @Route("/forgotten-password", name="fo_renew_password")
      * @param Request $request
      * @param RenewPassword $handler
      * @return RedirectResponse|Response
@@ -211,12 +206,12 @@ class SecurityController extends AbstractController
                     )
                 )
             ){
-                $this->addFlash('success', 'Následujte instrukce ve svém emailu.');
+                $this->addFlash('success', 'Follow instructions in your email inbox.');
 
                 return $this->redirectToRoute('fo_renew_password');
             }
 
-            $this->addFlash('error', 'Email se nepodařilo odeslat. Zkuste to později');
+            $this->addFlash('error', 'Email cannot be sent, try it later please.');
         }
 
         return $this->render('front_office/password/renew.html.twig', [
@@ -225,7 +220,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/nastavit-heslo/{hash}", name="fo_set_new_password")
+     * @Route("/set-password/{hash}", name="fo_set_new_password")
      * @ParamConverter("company", options={"mapping": {"hash": "passwordRenewHash"}})
      * @param Company $company
      * @param Request $request
@@ -257,7 +252,7 @@ class SecurityController extends AbstractController
                 $formRequest->password
             );
 
-            $this->addFlash('success', 'Heslo bylo úspěšně změněno.');
+            $this->addFlash('success', 'Password successfully changed.');
 
             return $this->redirectToRoute('fo_login');
         }
@@ -268,9 +263,10 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{slug}/nastaveni/smazat-firmu", name="bo_settings_delete")
+     * @Route("/admin/{slug}/settings/delete-company", name="bo_settings_delete")
      * @param Company $company
      * @param Request $request
+     * @param DeleteCompany $handler
      * @return Response
      */
     public function delete(Company $company, Request $request, DeleteCompany $handler)
@@ -287,12 +283,12 @@ class SecurityController extends AbstractController
                 $company,
                 $formRequest->password))
             {
-                $this->addFlash('error', 'Zadejte správné současné heslo.');
+                $this->addFlash('error', 'Wrong current password.');
 
             } else {
                 $handler->handle($company);
 
-                $this->addFlash('success','Firma úspěšně smazána.');
+                $this->addFlash('success','Company deleted.');
                 return $this->redirectToRoute('fo_home');
             }
         }

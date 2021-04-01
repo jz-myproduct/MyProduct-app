@@ -1,14 +1,14 @@
 <ul class="nav nav-tabs mb-4 justify-content-center">
     <li class="nav-item">
         <a class="nav-link {% if app.request.get('_route') == 'bo_settings_info' %}active{% endif %}"
-           href="{{ path('bo_settings_info', {'slug':app.user.slug}) }}">Nastavení firmy</a>
+           href="{{ path('bo_settings_info', {'slug':app.user.slug}) }}">Company settings</a>
     </li>
     <li class="nav-item">
         <a class="nav-link {% if app.request.get('_route') == 'bo_settings_password' %}active{% endif %}"
-           href="{{ path('bo_settings_password', {'slug':app.user.slug}) }}">Změnit heslo</a>
+           href="{{ path('bo_settings_password', {'slug':app.user.slug}) }}">Change password</a>
     </li>
     <li class="nav-item">
         <a class="nav-link {% if app.request.get('_route') == 'bo_settings_delete' %}active{% endif %}"
-           href="{{ path('bo_settings_delete', {'slug':app.user.slug}) }}">Smazat firmu</a>
+           href="{{ path('bo_settings_delete', {'slug':app.user.slug}) }}">Delete company</a>
     </li>
 </ul>

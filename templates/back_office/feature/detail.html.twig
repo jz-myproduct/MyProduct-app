@@ -8,13 +8,13 @@
     {% include('back_office/components/feature_header.html.twig') %}
 
     {% include('back_office/components/feature_tabs.html.twig') %}
-    <p class="font-weight-bold">Prioritizační skóre</p>
+    <p class="font-weight-bold">Prioritization score</p>
     <p>
         <span class="badge badge-warning" style="font-size:16px"><i class="bi bi-heart"></i> {{ feature.score }}</span>
     </p>
 
     {% if feature.description %}
-        <p class="font-weight-bold">Popis</p>
+        <p class="font-weight-bold">Description</p>
         <p>{{ feature.description }}</p>
     {% endif %}
 {% endblock %}

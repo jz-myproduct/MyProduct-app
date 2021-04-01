@@ -6,7 +6,6 @@ namespace App\Controller\BackOffice;
 
 use App\Entity\Company;
 use App\Entity\Feature;
-use App\Entity\FeatureTag;
 use App\Entity\Feedback;
 use App\Entity\Insight;
 use App\Entity\InsightWeight;
@@ -33,8 +32,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
+
 
 class InsightController extends AbstractController
 {
@@ -50,7 +48,7 @@ class InsightController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/pridat-insight/{feedback_id}/{feature_id}", name="bo_insight_feedback_add")
+     * @Route("/admin/{company_slug}/add-insight/{feedback_id}/{feature_id}", name="bo_insight_feedback_add")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
@@ -77,7 +75,7 @@ class InsightController extends AbstractController
                 'feedback' => $feedback,
                 'feature' => $feature]))
         {
-            $this->addFlash('info', 'Featura je již přidána.');
+            $this->addFlash('info', 'Feature already connected.');
 
             return $this->redirectToRoute('bo_insight_feedback_list',[
                 'company_slug' => $company->getSlug(),
@@ -95,7 +93,7 @@ class InsightController extends AbstractController
 
             $handler->addFromFeedback($formRequest, $feedback, $feature);
 
-            $this->addFlash('success', 'Featura připojena.');
+            $this->addFlash('success', 'Feature added.');
 
             return $this->redirectToRoute('bo_insight_feedback_list',[
                 'company_slug' => $company->getSlug(),
@@ -137,7 +135,7 @@ class InsightController extends AbstractController
 
             $handler->addFromFeature($formRequest, $feature);
 
-            $this->addFlash('success', 'Insight přidán.');
+            $this->addFlash('success', 'Insight added.');
 
             return $this->redirectToRoute('bo_insight_feature_list', [
                 'company_slug' => $company->getSlug(),
@@ -202,7 +200,7 @@ class InsightController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/upravit-insight/{insight_id}", name="bo_insight_edit")
+     * @Route("/admin/{company_slug}/edit-insight/{insight_id}", name="bo_insight_edit")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("insight", options={"mapping": {"insight_id": "id"}})
      * @param Company $company
@@ -234,7 +232,7 @@ class InsightController extends AbstractController
 
             $editHandler->handle($formRequest, $insight);
 
-            $this->addFlash('success', 'Upraveno.');
+            $this->addFlash('success', 'Edited.');
 
             return new RedirectResponse(
                 $redirectHandler->handle(
@@ -251,7 +249,7 @@ class InsightController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/smazat-insight/{insight_id}", name="bo_insight_delete")
+     * @Route("/admin/{company_slug}/delete-insight/{insight_id}", name="bo_insight_delete")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("insight", options={"mapping": {"insight_id": "id"}})
      * @param Company $company
@@ -272,7 +270,7 @@ class InsightController extends AbstractController
 
         $deleteHandler->handle($insight);
 
-        $this->addFlash('success', 'Smazáno.');
+        $this->addFlash('success', 'Deleted.');
 
         return new RedirectResponse(
             $redirectHandler->handle(

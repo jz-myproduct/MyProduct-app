@@ -4,10 +4,6 @@
 namespace App\Controller\BackOffice;
 
 use App\Entity\Company;
-use App\Entity\Feature;
-use App\Entity\FeatureState;
-use App\Entity\Portal;
-use App\Entity\PortalFeature;
 use App\Entity\PortalFeatureState;
 use App\Form\Portal\SettingsFormType;
 use App\FormRequest\Portal\SettingsRequest;
@@ -74,7 +70,7 @@ class PortalController extends AbstractController
         {
             $handler->handle($formRequest, $portal);
 
-            $this->addFlash('success', 'Portal upraven.');
+            $this->addFlash('success', 'Portal edited.');
         }
 
         return $this->render(

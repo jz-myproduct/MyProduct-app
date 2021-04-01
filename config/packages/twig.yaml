@@ -10,3 +10,4 @@ twig:
         weightsCount: '%weightsCount%'
         supportMail: '%supportMail%'
         favicon_directory_name: '%favicon.directory.name%'
+        doc_url: '%doc.url%'

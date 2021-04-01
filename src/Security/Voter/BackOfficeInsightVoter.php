@@ -3,7 +3,6 @@
 namespace App\Security\Voter;
 
 use App\Entity\Company;
-use App\Entity\Feature;
 use App\Entity\Insight;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;

@@ -5,16 +5,9 @@ namespace App\Controller\BackOffice;
 use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\FeatureState;
-use App\Entity\FeatureTag;
-use App\Entity\Feedback;
-use App\Entity\Insight;
-use App\Entity\InsightWeight;
-use App\Entity\PortalFeature;
-use App\Events\FeedbackUpdatedEvent;
 use App\Form\Feature\AddEditType;
 use App\Form\Feature\ListFilterType;
 use App\Form\Feature\RoadmapFilterType;
-use App\Form\AddFromFeatureType;
 use App\FormRequest\Feature\ListFilterRequest;
 use App\FormRequest\Feature\AddEditRequest;
 use App\FormRequest\Feature\RoadmapFilterRequest;
@@ -23,29 +16,21 @@ use App\Handler\Feature\Delete;
 use App\Handler\Feature\Edit;
 use App\Handler\Feature\MoveState;
 use App\Handler\Feature\Search;
-use App\Handler\Insight\AddFromFeature;
-use App\Service\SlugService;
 use App\View\BackOffice\Feature\DetailView;
 use App\View\BackOffice\Feature\FilterFormView;
 use App\View\BackOffice\Feature\ListView;
 use App\View\BackOffice\Feature\RoadmapView;
-use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
-use Exception;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+
 
 class FeatureController extends AbstractController
 {
@@ -62,7 +47,7 @@ class FeatureController extends AbstractController
 
 
     /**
-     * @Route("/admin/{slug}/feature/pridat", name="bo_feature_add")
+     * @Route("/admin/{slug}/feature/add", name="bo_feature_add")
      * @param Company $company
      * @param Request $request
      * @param Add $handler
@@ -82,7 +67,7 @@ class FeatureController extends AbstractController
 
             $feature = $handler->handle($formRequest, $company);
 
-            $this->addFlash('success', 'Feature přidána.');
+            $this->addFlash('success', 'Feature added.');
 
             return $this->redirectToRoute('bo_feature_detail', [
                 'company_slug' => $company->getSlug(),
@@ -96,7 +81,7 @@ class FeatureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feature/{feature_id}/upravit", name="bo_feature_edit")
+     * @Route("/admin/{company_slug}/feature/{feature_id}/edit", name="bo_feature_edit")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @param Company $company
@@ -120,7 +105,7 @@ class FeatureController extends AbstractController
 
             $handler->handle($formRequest, $feature);
 
-            $this->addFlash('success', 'Feature upravena.');
+            $this->addFlash('success', 'Feature edited.');
 
             return $this->redirectToRoute('bo_feature_detail', [
                 'company_slug' => $company->getSlug(),
@@ -134,7 +119,7 @@ class FeatureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{slug}/features/seznam/{state_slug?}", name="bo_feature_list")
+     * @Route("/admin/{slug}/features/list/{state_slug?}", name="bo_feature_list")
      * @ParamConverter("company", options={"mapping": {"slug": "slug"}})
      * @ParamConverter("state", options={"mapping": {"state_slug": "slug"}})
      * @param Company $company
@@ -233,7 +218,7 @@ class FeatureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feature/{feature_id}/smazat", name="bo_feature_delete")
+     * @Route("/admin/{company_slug}/feature/{feature_id}/delete", name="bo_feature_delete")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @param Company $company
@@ -247,7 +232,7 @@ class FeatureController extends AbstractController
 
         $handler->handle($feature);
 
-        $this->addFlash('success', 'Feature smazána.');
+        $this->addFlash('success', 'Feature deleted.');
 
         return $this->redirectToRoute('bo_feature_list', [
             'slug' => $company->getSlug()
@@ -255,7 +240,7 @@ class FeatureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feature/{feature_id}/popis", name="bo_feature_detail")
+     * @Route("/admin/{company_slug}/feature/{feature_id}/description", name="bo_feature_detail")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @param Company $company
@@ -274,7 +259,7 @@ class FeatureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feature/{feature_id}/posunout-status/{direction}", name="bo_feature_status_move")
+     * @Route("/admin/{company_slug}/feature/{feature_id}/move-status/{direction}", name="bo_feature_status_move")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @param Company $company
@@ -294,7 +279,7 @@ class FeatureController extends AbstractController
 
         $handler->handle($feature, $direction);
 
-        $this->addFlash('success', 'Stav featury posunut.');
+        $this->addFlash('success', 'Feature state updated.');
 
         return $this->redirectToRoute('bo_feature_list_roadmap', [
             'slug' => $company->getSlug(),

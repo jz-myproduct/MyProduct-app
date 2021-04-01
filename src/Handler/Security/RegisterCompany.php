@@ -9,7 +9,6 @@ use App\Entity\Portal;
 use App\FormRequest\Security\RegisterCompanyRequest;
 use App\Service\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class RegisterCompany

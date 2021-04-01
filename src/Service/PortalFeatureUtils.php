@@ -7,7 +7,6 @@ namespace App\Service;
 use App\Entity\Company;
 use App\Entity\Insight;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Security;
 
 class PortalFeatureUtils
 {

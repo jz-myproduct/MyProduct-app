@@ -9,7 +9,6 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\Length;
 
 class SetNewPasswordType extends AbstractType
 {
@@ -18,12 +17,12 @@ class SetNewPasswordType extends AbstractType
         $builder
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'Zadané heslo se neshoduje',
+                'invalid_message' => 'Your new password and confirmation password do not match.' ,
                 'required' => true,
-                'first_options' => ['label' => 'Nové heslo'],
-                'second_options' => ['label' => 'Nové heslo znova'],
+                'first_options' => ['label' => 'New password'],
+                'second_options' => ['label' => 'New password confirmation'],
             ])
-            ->add('save', SubmitType::class, ['label' => 'Změnit heslo']);
+            ->add('save', SubmitType::class, ['label' => 'Change password']);
     }
 
 }

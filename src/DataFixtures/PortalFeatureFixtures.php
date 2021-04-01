@@ -3,9 +3,7 @@
 
 namespace App\DataFixtures;
 
-
 use App\Entity\PortalFeature;
-use App\Entity\PortalFeatureState;
 use App\Service\FeatureUtils;
 use App\Service\SlugService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -16,7 +14,7 @@ class PortalFeatureFixtures extends Fixture implements DependentFixtureInterface
 {
 
     private static $companies = ['microsoft', 'apple'];
-    private static $states = ['Nápady', 'Připravujeme', 'Hotovo'];
+    private static $states = ['Ideas', 'In-progress', 'Done'];
     private static $description
         = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi scelerisque ipsum mi, at 
     dapibus risus auctor in. Pellentesque ac facilisis dui, in dictum odio. Nunc ac tellus id erat feugiat blandit.

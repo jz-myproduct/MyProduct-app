@@ -2,11 +2,6 @@
 
 namespace App\Form\PortalFeature;
 
-use App\Entity\FeatureState;
-use App\Entity\PortalFeature;
-use App\Entity\PortalFeatureState;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -28,17 +23,17 @@ class AddEditFormType extends AbstractType
 
         $builder
             ->add('display', CheckboxType::class, [
-                'label' => 'Zobrazit na portále',
+                'label' => 'Display on portal',
                 'required' => false
             ])
             ->add('state', ChoiceType::class, [
                 'choices' => $states,
                 'choice_value' => 'id',
                 'choice_label' => 'name',
-                'label' => 'Zobrazit v sekci'
+                'label' => 'Section'
             ])
-            ->add('name', TextType::class, ['label' => 'Jméno'])
-            ->add('description', TextareaType::class, ['required' => false, 'label' => 'Popis'])
+            ->add('name', TextType::class, ['label' => 'Name'])
+            ->add('description', TextareaType::class, ['required' => false, 'label' => 'Description'])
             ->add('image', FileType::class, [
                 'label' => false,
                 'mapped' => false,
@@ -52,11 +47,11 @@ class AddEditFormType extends AbstractType
                             'image/x-png',
                             'image/pjpeg'
                         ],
-                        'mimeTypesMessage' => 'Nepovolený typ souboru',
+                        'mimeTypesMessage' => 'Unsupported file format',
                     ])
                 ]
             ])
-            ->add('save', SubmitType::class, ['label' => 'Uložit']);
+            ->add('save', SubmitType::class, ['label' => 'Save']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

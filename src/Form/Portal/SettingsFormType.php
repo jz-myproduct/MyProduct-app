@@ -2,7 +2,6 @@
 
 namespace App\Form\Portal;
 
-use App\Entity\Portal;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -15,12 +14,12 @@ class SettingsFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, ['label' => 'Název'])
+            ->add('name', TextType::class, ['label' => 'Name'])
             ->add('display', CheckboxType::class, [
-                'label' => 'Aktivovat portál',
+                'label' => 'Activate the portal',
                 'required' => false
             ])
-            ->add('save', SubmitType::class, ['label' => 'Uložit'])
+            ->add('save', SubmitType::class, ['label' => 'Save'])
 
         ;
     }

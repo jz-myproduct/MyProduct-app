@@ -3,9 +3,7 @@
 namespace App\Controller\BackOffice;
 
 use App\Entity\Company;
-use App\Entity\Feature;
 use App\Entity\Feedback;
-use App\Entity\Insight;
 use App\Form\Feedback\AddEditType;
 use App\Form\Feedback\ListFilterType;
 use App\FormRequest\Feedback\AddEditRequest;
@@ -24,11 +22,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class FeedbackController extends AbstractController
 {
@@ -46,7 +42,7 @@ class FeedbackController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{slug}/feedback/pridat", name="bo_feedback_add")
+     * @Route("/admin/{slug}/feedback/add", name="bo_feedback_add")
      * @param Company $company
      * @param Request $request
      * @param Add $handler
@@ -64,7 +60,7 @@ class FeedbackController extends AbstractController
 
             $feedback = $handler->add($formRequest, $company);
 
-            $this->addFlash('success', 'Feedback přidán.');
+            $this->addFlash('success', 'Feedback added.');
 
             return $this->redirectToRoute('bo_feedback_detail', [
                 'company_slug' => $company->getSlug(),
@@ -80,7 +76,7 @@ class FeedbackController extends AbstractController
 
 
     /**
-     * @Route("/admin/{company_slug}/feedback/{feedback_id}/upravit", name="bo_feedback_edit")
+     * @Route("/admin/{company_slug}/feedback/{feedback_id}/edit", name="bo_feedback_edit")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
@@ -101,7 +97,7 @@ class FeedbackController extends AbstractController
 
             $handler->handle($feedback, $formRequest);
 
-            $this->addFlash('success', 'Feedback upraven.');
+            $this->addFlash('success', 'Feedback edited.');
 
             return $this->redirectToRoute('bo_feedback_detail', [
                'company_slug' => $company->getSlug(),
@@ -115,7 +111,7 @@ class FeedbackController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{slug}/feedbacks", name="bo_feedback_list")
+     * @Route("/admin/{slug}/feedback/list", name="bo_feedback_list")
      * @param Company $company
      * @param ListView $view
      * @param Request $request
@@ -148,7 +144,7 @@ class FeedbackController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feedback/{feedback_id}/smazat", name="bo_feedback_delete")
+     * @Route("/admin/{company_slug}/feedback/{feedback_id}/delete", name="bo_feedback_delete")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
@@ -162,7 +158,7 @@ class FeedbackController extends AbstractController
 
         $handler->delete($feedback);
 
-        $this->addFlash('success', 'Feedback smazán.');
+        $this->addFlash('success', 'Feedback deleted.');
 
         return $this->redirectToRoute('bo_feedback_list', [
             'slug' => $company->getSlug()
@@ -170,7 +166,7 @@ class FeedbackController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feedback/{feedback_id}/zmenit-status", name="bo_feedback_change_status")
+     * @Route("/admin/{company_slug}/feedback/{feedback_id}/change-status", name="bo_feedback_change_status")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
@@ -191,7 +187,7 @@ class FeedbackController extends AbstractController
 
         $switchHandler->handle($feedback);
 
-        $this->addFlash('success', 'Status upraven.');
+        $this->addFlash('success', 'Status edited.');
 
         return new RedirectResponse(
           $redirectHandler->handle(
@@ -204,7 +200,7 @@ class FeedbackController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feedback/{feedback_id}/popis", name="bo_feedback_detail")
+     * @Route("/admin/{company_slug}/feedback/{feedback_id}/description", name="bo_feedback_detail")
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company

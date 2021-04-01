@@ -3,9 +3,6 @@
 
 namespace App\Controller\FrontOffice;
 
-
-use App\Entity\Feedback;
-use App\Entity\Insight;
 use App\Entity\InsightWeight;
 use App\Entity\Portal;
 use App\Entity\PortalFeature;
@@ -14,7 +11,6 @@ use App\Form\Insight\AddFromFeatureType;
 use App\Form\Feedback\AddEditType;
 use App\FormRequest\Feedback\AddEditRequest;
 use App\FormRequest\Insight\AddFromFeatureRequest;
-use App\Handler\Feedback\AddFromPortal;
 use App\Handler\Feedback\Add;
 use App\View\Shared\PortalDetail;
 use Doctrine\ORM\EntityManagerInterface;
@@ -88,7 +84,7 @@ class PortalController extends AbstractController
 
             $handler->addFromPortal($formRequest, $portalFeature);
 
-            $this->addFlash('success', 'Děkujeme za feeedback!');
+            $this->addFlash('success', 'Thank you for the feedback!');
 
             return $this->redirectToRoute('fo_portal_detail', [
                 'slug' => $portal->getSlug(),
@@ -104,7 +100,7 @@ class PortalController extends AbstractController
     }
 
     /**
-     * @Route("/portal/{slug}/feedback/pridat", name="fo_portal_feedback_add")
+     * @Route("/portal/{slug}/feedback/add", name="fo_portal_feedback_add")
      * @param Portal $portal
      * @param Request $request
      * @param Add $handler
@@ -121,7 +117,7 @@ class PortalController extends AbstractController
 
             $handler->addFromPortal($formRequest, $portal->getCompany());
 
-            $this->addFlash('success', 'Děkujeme za feeedback!');
+            $this->addFlash('success', 'Thank you for the feedback!');
 
             return $this->redirectToRoute('fo_portal_detail', [
                 'slug' => $portal->getSlug()
