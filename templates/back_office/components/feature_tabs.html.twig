@@ -12,7 +12,7 @@
            href="{{ path('bo_feature_portal', {'company_slug':app.user.slug, 'feature_id': feature.id}) }}">Portal
            {% if feature.portalFeature %}
                {% if feature.portalFeature.display %}
-                   <span class="badge-success badge">nezobrazeno</span>
+                   <span class="badge-success badge">zobrazeno</span>
                {% else %}
                    <span class="badge-secondary badge">nezobrazeno</span>
                {% endif %}
