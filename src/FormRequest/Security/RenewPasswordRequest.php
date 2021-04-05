@@ -2,7 +2,7 @@
 namespace App\FormRequest\Security;
 
 use Symfony\Component\Validator\Constraints as Constraints;
-use App\Constraints as Custom;
+use App\Constraint as Custom;
 
 class RenewPasswordRequest
 {
