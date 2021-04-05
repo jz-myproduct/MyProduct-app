@@ -5,7 +5,7 @@ namespace App\Handler\Insight;
 
 
 use App\Entity\Insight;
-use App\Events\FeedbackUpdatedEvent;
+use App\Event\FeedbackUpdatedEvent;
 use App\FormRequest\Insight\AddFromFeedbackRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

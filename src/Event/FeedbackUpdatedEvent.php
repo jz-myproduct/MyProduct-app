@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace App\Event;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class FeedbackUpdatedEvent extends Event
