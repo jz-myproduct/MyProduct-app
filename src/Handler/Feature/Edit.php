@@ -22,26 +22,39 @@ class Edit
 
     public function handle(AddEditRequest $request, Feature $feature)
     {
+        $feature =
+            $this->handleTags(
+                $feature,
+                $request->tags->toArray()
+            );
+
         $feature->setUpdatedAt(new \DateTime());
         $feature->setName($request->name);
         $feature->setDescription($request->description);
         $feature->setState($request->state);
 
-        if($feature->getTags()){
-            foreach ($feature->getTags() as $tag)
+        $this->manager->flush();
+    }
+
+    private function handleTags(Feature $feature, $requestedTags)
+    {
+
+        foreach ($feature->getCompany()->getFeatureTags() as $tag)
+        {
+            if(! in_array($tag, $requestedTags))
             {
                 $feature->removeTag($tag);
+                continue;
             }
-        }
 
-        if($request->tags){
-            foreach ($request->tags as $tag)
+            if(in_array($tag, $requestedTags))
             {
                 $feature->addTag($tag);
+                continue;
             }
         }
 
-        $this->manager->flush();
+        return $feature;
     }
 
 }
