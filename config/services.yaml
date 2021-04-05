@@ -13,7 +13,7 @@ parameters:
     domain.url: 'http://127.0.0.1:8000'
     author: 'Jan Zabloudil'
     weightsCount: 4
-    supportMail: 'myproduct@janzabloudil.cz'
+    supportMail: '!change!'
     doc.url: '!change!'
 
 
