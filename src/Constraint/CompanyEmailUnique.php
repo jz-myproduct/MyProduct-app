@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Constraints;
+namespace App\Constraint;
 
 use Symfony\Component\Validator\Constraint;
 

@@ -6,7 +6,7 @@
     {% include('back_office/components/feature_list_header.html.twig') %}
 
     {% if featureList is not empty %}
-        <table class="table table-striped mt-3" id="{{ scrollTo }}">
+        <table class="table table-striped mt-3 table-responsive-sm" id="{{ scrollTo }}">
         {% for feature in featureList %}
             <tr>
                 <td style="color: {{ feature.state.color }}"class="font-weight-bold align-middle">{{ feature.state.name }}</td>

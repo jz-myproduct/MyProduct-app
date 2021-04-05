@@ -5,7 +5,7 @@ namespace App\Handler\Feedback;
 
 
 use App\Entity\Feedback;
-use App\Events\FeedbackUpdatedEvent;
+use App\Event\FeedbackUpdatedEvent;
 use App\FormRequest\Feedback\AddEditRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

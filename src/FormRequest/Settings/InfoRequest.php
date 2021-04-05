@@ -5,7 +5,7 @@ namespace App\FormRequest\Settings;
 
 use App\Entity\Company;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Constraints as Custom;
+use App\Constraint as Custom;
 
 class InfoRequest
 {

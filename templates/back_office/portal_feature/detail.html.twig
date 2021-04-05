@@ -22,7 +22,7 @@
       {{ form_row(form.name) }}
       {{ form_row(form.description) }}
 
-      <p class="font-weight-bold">Obrázek</p>
+      <p class="font-weight-bold">Image</p>
       {% if portalFeature.image is defined and portalFeature.image is not null %}
           <p class="pb-0 mb-1"><img src="{{ asset(upload_directory ~ '/' ~ portalFeature.image.name) }}"
                   alt="{{ portalFeature.name }}" style="max-width:500px" /></p>
