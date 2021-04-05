@@ -1,11 +1,13 @@
 <?php
 
 
-namespace App\Service;
+namespace App\EventListener;
 
 
 use App\Entity\Company;
 use App\Entity\Feedback;
+use App\Service\FeatureUtils;
+use App\Service\PortalFeatureUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
