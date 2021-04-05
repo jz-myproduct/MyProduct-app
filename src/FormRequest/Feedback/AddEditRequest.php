@@ -12,7 +12,6 @@ class AddEditRequest
 {
 
     /**
-     * @Assert\Length(max=255)
      * @Assert\NotBlank()
      */
     public $description;
