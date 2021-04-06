@@ -7,7 +7,7 @@
 
     {% if features %}
 
-        <div class="d-flex flex-row w-100 flex-wrap mt-4">
+        <div class="d-flex flex-row w-100 flex-wrap mt-4" {% if not movedFeatureId %}id="{{ scrollTo }}"{% endif %}>
         {% for stateWithFeatures in features %}
 
             <div class="flex-fill w-{{ columnWidth }}" style="min-width: 200px">
