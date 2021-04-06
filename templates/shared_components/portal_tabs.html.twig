@@ -14,7 +14,7 @@
                 {% if app.request.get('_route') == 'fo_portal_detail' %}
                     {{ path('fo_portal_detail', {'slug':portal.slug, 'state':state.slug}) }}#{{ scrollTo }}
                 {% endif %}"
-               class="nav-link {% if slugState == state.slug %}active{% endif %} }">{{ state.name }}</a>
+               class="nav-link {% if slugState == state.slug %}active{% endif %}">{{ state.name }}</a>
         </li>
     {% endfor %}
 </ul>
