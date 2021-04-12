@@ -10,7 +10,6 @@ class RenewPasswordRequest
      * @Constraints\NotBlank
      * @Constraints\Email
      * @Constraints\Length(max=255)
-     * @Custom\CompanyExists()
      * @var string
      */
     public $email;

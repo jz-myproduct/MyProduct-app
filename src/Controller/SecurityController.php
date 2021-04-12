@@ -200,18 +200,12 @@ class SecurityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            if($handler->handle(
-                    $this->manager->getRepository(Company::class)
-                    ->findOneBy(['email' => $formRequest->email]
-                    )
-                )
-            ){
-                $this->addFlash('success', 'Follow instructions in your email inbox.');
+            $handler->handle($formRequest);
 
-                return $this->redirectToRoute('fo_renew_password');
-            }
+            $this->addFlash('success',
+                'If you have entered correct email, follow instructions that were sent to your inbox.');
 
-            $this->addFlash('error', 'Email cannot be sent, try it later please.');
+            return $this->redirectToRoute('fo_renew_password');
         }
 
         return $this->render('front_office/password/renew.html.twig', [

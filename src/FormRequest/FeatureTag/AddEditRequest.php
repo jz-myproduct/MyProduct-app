@@ -5,8 +5,7 @@ namespace App\FormRequest\FeatureTag;
 
 use App\Entity\FeatureTag;
 use Symfony\Component\Validator\Constraints as Assert;
-
-
+use App\Constraint as Custom;
 
 class AddEditRequest
 {
@@ -14,6 +13,7 @@ class AddEditRequest
     /**
      * @Assert\NotBlank()
      * @Assert\Length(max=255)
+     * @Custom\FeatureTagNameUnique()
      */
     public $name;
 

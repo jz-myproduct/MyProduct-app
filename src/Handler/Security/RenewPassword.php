@@ -5,6 +5,7 @@ namespace App\Handler\Security;
 
 
 use App\Entity\Company;
+use App\FormRequest\Security\RenewPasswordRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -48,8 +49,14 @@ class RenewPassword
         $this->appName = $appName;
     }
 
-    public function handle(Company $company)
+    public function handle(RenewPasswordRequest $request)
     {
+        if(! $company = $this->manager->getRepository(Company::class)
+            ->findOneBy(['email' => $request->email]))
+        {
+            return false;
+        }
+
         $company->setPasswordRenewHash(
             uuid_create(UUID_TYPE_RANDOM)
         );
