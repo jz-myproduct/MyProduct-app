@@ -43,6 +43,10 @@ label.required:before {
     display:none;
 }
 
+a.nav-link.text-light.btn.btn-outline-light:hover {
+    color: #007bff !important;
+}
+
 @media screen and (max-width: 979px) {
     .portal-card {
         width:100%;
