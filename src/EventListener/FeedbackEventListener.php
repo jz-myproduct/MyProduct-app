@@ -10,11 +10,7 @@ use Symfony\Component\Security\Core\Security;
 
 class FeedbackEventListener
 {
-    /**
-     * @var FeatureUtils
-     */
-
-
+    
     private $scoreService;
     /**
      * @var PortalFeatureUtils
