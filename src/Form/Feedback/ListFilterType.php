@@ -19,7 +19,6 @@ class ListFilterType extends AbstractType
         $builder
             ->add('isNew', ChoiceType::class, [
                 'label' => 'State',
-                'required' => false,
                 'choices' => [
                     'All' => null,
                     'New' => 1,
