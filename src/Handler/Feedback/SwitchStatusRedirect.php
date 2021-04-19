@@ -49,7 +49,7 @@ class SwitchStatusRedirect
             ]);
         }
 
-        return $this->router->generate('bo_home', [
+        return $this->router->generate('bo_feedback_list', [
             'slug' => $company->getSlug()
         ]);
 
