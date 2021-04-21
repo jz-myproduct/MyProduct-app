@@ -11,6 +11,8 @@ Try the app on https://myproduct.janzabloudil.cz/!
 - Features planning and priorization 
 - Sharing features with your users
 
+See [app screenshots](#screenshots-from-the-app).
+
 ## Tech stack & Notes on app structure
 
 See  [documentation](https://github.com/jz-myproduct/app/wiki).
