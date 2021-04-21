@@ -41,7 +41,7 @@ php bin/console doctrine:migrations:migrate -n -q
 
 ## Other installation instructions
 
-- Set up APP_SECRET in .ENV file
+Set up APP_SECRET in .ENV file
 
 ## Testing data
 
