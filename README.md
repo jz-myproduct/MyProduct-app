@@ -91,6 +91,6 @@ You can also use myproduct@janzabloudil.cz.
 
 ## Screenshots from the app
 
-<img src="https://www.janzabloudil.cz/myproduct-screens/add-feedback.png" width="250">
+<img src="https://www.janzabloudil.cz/myproduct-screens/add-feedback.png" width="350">
 
 
