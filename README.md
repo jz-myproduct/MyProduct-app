@@ -11,6 +11,10 @@ Try the app on https://myproduct.janzabloudil.cz/!
 - Features planning and priorization 
 - Sharing features with your users
 
+## Tech stack & Notes on app structure
+
+See documentation.
+
 ## Installation
 
 Clone the repository and run the following commands to install all the dependencies.
