@@ -83,4 +83,4 @@ MyProduct is completely free and released under the MIT License.
 
 If you have any problems using the application, please open a Github issue. The same applies to any questions or feature requests.
 
-If you have any question, send message to myproduct@janzabloudil.cz.
+You can also use myproduct@janzabloudil.cz.
