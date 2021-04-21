@@ -66,7 +66,7 @@ bin/console doctrine:fixtures:load
 
 Basic application controller tests are implemented.
 
-If you want to run test, load fixtures first.
+If you want to run tests, load fixtures first.
 
 ```
 bin/console doctrine:fixtures:load
