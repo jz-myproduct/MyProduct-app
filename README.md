@@ -92,10 +92,10 @@ You can also use myproduct@janzabloudil.cz.
 ## Screenshots from the app
 
 <p><img src="https://www.janzabloudil.cz/myproduct-screens/add-feedback.png" width="350"> 
-<img src="https://www.janzabloudil.cz/myproduct-screens/detail-feedbacku.png" width="350">
+<img src="https://www.janzabloudil.cz/myproduct-screens/detail-feedbacku.png" width="350"></p>
 <img src="https://www.janzabloudil.cz/myproduct-screens/feedback.png" width="350"></p>
+<img src="https://www.janzabloudil.cz/myproduct-screens/portal.png" width="350">
 
-<p><img src="https://www.janzabloudil.cz/myproduct-screens/portal.png" width="350">
 <img src="https://www.janzabloudil.cz/myproduct-screens/produktova-mapa.png" width="350">  
 <img src="https://www.janzabloudil.cz/myproduct-screens/detail-feature.png" width="350"></p> 
 
