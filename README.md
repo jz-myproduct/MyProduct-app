@@ -13,7 +13,7 @@ Try the app on https://myproduct.janzabloudil.cz/!
 
 See [app screenshots](#screenshots-from-the-app).
 
-## Tech stack & Notes on app structure
+## Tech stack & Notes on app architecture
 
 See  [documentation](https://github.com/jz-myproduct/app/wiki).
 
