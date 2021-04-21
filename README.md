@@ -94,16 +94,26 @@ You can also use myproduct@janzabloudil.cz.
 
 Adding feedback through the Portal
 
-<img src="https://www.janzabloudil.cz/myproduct-screens/add-feedback.png" width="350"> 
+<img src="https://www.janzabloudil.cz/myproduct-screens/add-feedback.png" width="400"> 
+
+Feedback detail
 
 <img src="https://www.janzabloudil.cz/myproduct-screens/detail-feedbacku.png" width="350">
 
+Feedback list
+
 <img src="https://www.janzabloudil.cz/myproduct-screens/feedback.png" width="350">
+
+Portal
  
 <img src="https://www.janzabloudil.cz/myproduct-screens/portal.png" width="350">
 
+Roadmap
+
 <img src="https://www.janzabloudil.cz/myproduct-screens/produktova-mapa.png" width="350"> 
  
+Feature detail
+
 <img src="https://www.janzabloudil.cz/myproduct-screens/detail-feature.png" width="350">
 
 
