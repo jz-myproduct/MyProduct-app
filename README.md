@@ -1,6 +1,6 @@
 # MyProduct 
 
-Open-source product management tool. Collect custom feedback, prioritize new features and share plans with your users! 
+Open-source product management tool. Collect customer feedback, prioritize new features and share plans with your users!
 
 Try the app on https://myproduct.janzabloudil.cz/!
 
