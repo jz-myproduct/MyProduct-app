@@ -78,8 +78,9 @@ Then run tests by following command
  php ./vendor/bin/phpunit tests
 ```
 
-## Contributions
-Any contribution is appreciated. See issues section.
+## Contribution
+
+Any contribution is appreciated. See issues section and read our [https://github.com/jz-myproduct/app/blob/master/CONTRIBUTING.md](CONTRIBUTING) file.
 
 ## MIT License
 
