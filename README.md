@@ -72,7 +72,7 @@ If you want to run tests, load fixtures first.
 bin/console doctrine:fixtures:load
 ```
 
-Then run test by following command
+Then run tests by following command
 
 ```
  php ./vendor/bin/phpunit tests
