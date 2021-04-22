@@ -218,21 +218,26 @@ class FeatureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feature/{feature_id}/delete", name="bo_feature_delete")
+     * @Route("/admin/{company_slug}/feature/{feature_id}/delete", name="bo_feature_delete", methods={"POST"})
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feature", options={"mapping": {"feature_id": "id"}})
      * @param Company $company
      * @param Feature $feature
      * @param Delete $handler
+     * @param Request $request
      * @return RedirectResponse
      */
-    public function delete(Company $company, Feature $feature, Delete $handler)
+    public function delete(Company $company, Feature $feature, Delete $handler, Request $request)
     {
         $this->denyAccessUnlessGranted('edit', $feature);
 
-        $handler->handle($feature);
+        if ($this->isCsrfTokenValid('delete-item', $request->request->get('token'))) {
 
-        $this->addFlash('success', 'Feature deleted.');
+            $handler->handle($feature);
+
+            $this->addFlash('success', 'Feature deleted.');
+
+        }
 
         return $this->redirectToRoute('bo_feature_list', [
             'slug' => $company->getSlug()

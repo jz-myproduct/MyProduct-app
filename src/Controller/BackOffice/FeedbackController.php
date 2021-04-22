@@ -144,21 +144,26 @@ class FeedbackController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{company_slug}/feedback/{feedback_id}/delete", name="bo_feedback_delete")
+     * @Route("/admin/{company_slug}/feedback/{feedback_id}/delete", name="bo_feedback_delete", methods={"POST"})
      * @ParamConverter("company", options={"mapping": {"company_slug": "slug"}})
      * @ParamConverter("feedback", options={"mapping": {"feedback_id": "id"}})
      * @param Company $company
      * @param Feedback $feedback
      * @param Delete $handler
+     * @param Request $request
      * @return RedirectResponse
      */
-    public function delete(Company $company, Feedback $feedback, Delete $handler)
+    public function delete(Company $company, Feedback $feedback, Delete $handler, Request $request)
     {
         $this->denyAccessUnlessGranted('edit', $feedback);
 
-        $handler->delete($feedback);
+        if ($this->isCsrfTokenValid('delete-item', $request->request->get('token'))) {
 
-        $this->addFlash('success', 'Feedback deleted.');
+            $handler->delete($feedback);
+
+            $this->addFlash('success', 'Feedback deleted.');
+
+        }
 
         return $this->redirectToRoute('bo_feedback_list', [
             'slug' => $company->getSlug()
