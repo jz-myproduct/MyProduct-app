@@ -12,15 +12,17 @@
         <p class="text-center text-secondary">Added {{ feature.createdAt|date('d.m.y H:i') }}</p>
     </div>
     <div>
-        <p class="text-center">
+        <div class="d-flex pb-3">
             <a style="font-size: 20px" href="{{ path('bo_feature_edit', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}"
                class="btn btn-outline-primary"
                data-toggle="tooltip" data-placement="top" title="Edit">
-                <i class="bi bi-pencil-square"></i></a>
-            <a style="font-size: 20px" href="{{ path('bo_feature_delete', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}" c
-               class="btn btn-outline-danger"
-               {% include('back_office/components/delete_confirmation.html.twig') %}
-            ><i class="bi bi-trash-fill"></i></a>
-        </p>
+                    <i class="bi bi-pencil-square"></i></a>
+
+            <form class="pl-2" action="{{ path('bo_feature_delete', {'company_slug':app.user.slug, 'feature_id':feature.id}) }}" method="post">
+                <input type="hidden" name="token" value="{{ csrf_token('delete-item') }}"/>
+                <button type="submit" class="btn btn-outline-danger"
+                        {% include('back_office/components/delete_confirmation.html.twig') %} style="font-size:20px"><i class="bi bi-trash-fill"></i></button>
+            </form>
+        </div>
     </div>
 </div>
