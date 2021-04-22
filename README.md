@@ -84,7 +84,7 @@ Any contribution is appreciated. See issues section and read our [CONTRIBUTING](
 
 ## MIT License
 
-MyProduct is completely free and released under the MIT License.
+MyProduct is completely free and released under the [MIT License](https://github.com/jz-myproduct/app/blob/master/LICENSE).
 
 ## Contact 
 
