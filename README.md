@@ -97,27 +97,27 @@ You can also use myproduct@janzabloudil.cz.
 
 Feedback detail
 
-<img src="https://www.janzabloudil.cz/myproduct-screens/detail-feedbacku.png" width="350">
+<img src="https://www.janzabloudil.cz/myproduct-screens-eng/feedback-detail.png" width="350">
 
 Feedback list
 
-<img src="https://www.janzabloudil.cz/myproduct-screens/feedback.png" width="350">
+<img src="https://www.janzabloudil.cz/myproduct-screens-eng/feedback-list.png" width="350">
 
 Roadmap
 
-<img src="https://www.janzabloudil.cz/myproduct-screens/produktova-mapa.png" width="350"> 
+<img src="https://www.janzabloudil.cz/myproduct-screens-eng/roadmap.png" width="350"> 
  
 Feature detail
 
-<img src="https://www.janzabloudil.cz/myproduct-screens/detail-feature.png" width="350">
+<img src="https://www.janzabloudil.cz/myproduct-screens-eng/feature-detail.png" width="350">
 
 Portal
  
-<img src="https://www.janzabloudil.cz/myproduct-screens/portal.png" width="350">
+<img src="https://www.janzabloudil.cz/myproduct-screens-eng/portal.png" width="350">
 
 Adding feedback through the Portal
 
-<img src="https://www.janzabloudil.cz/myproduct-screens/add-feedback.png" width="400"> 
+<img src="https://www.janzabloudil.cz/myproduct-screens-eng/portal-feedback.png" width="400"> 
 
 
 
