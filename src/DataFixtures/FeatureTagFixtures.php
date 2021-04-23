@@ -73,8 +73,8 @@ class FeatureTagFixtures extends Fixture implements DependentFixtureInterface
             'DevOps',
             'Performance',
             'Onboarding',
-            'Nové features',
-            'Vylepšení stávajích features'
+            'New features',
+            'Improve current features'
         ];
     }
 }
