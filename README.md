@@ -97,7 +97,7 @@ You can also use myproduct@janzabloudil.cz.
 
 Feedback detail
 
-<img src="https://www.janzabloudil.cz/myproduct-screens-eng/feedback-detail.png" width="350">
+<img src="https://www.janzabloudil.cz/myproduct-screens-eng/feedback-detail-improved.png" width="350">
 
 Feedback list
 
