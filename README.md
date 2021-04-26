@@ -2,7 +2,7 @@
 
 Open-source product management tool. Collect customer feedback, prioritize new features and share plans with your users!
 
-Try the app on https://myproduct.janzabloudil.cz/!
+Try the app on https://myproduct.janzabloudil.cz/! You can create your own account or log in with a testing user. Testing user credentials: `t@t.tt:heslo123`.
 
 ## Features
 
